@@ -1,1 +1,5 @@
-test_enviornment\ZR25\SimOutput\
+# OS Files
+*.DS_Store
+
+# Simulation Outputs
+test_enviornment/ZR25/SimOutput/
