@@ -1,0 +1,205 @@
+#INFOFILE1.1 - Do not remove this line!
+FileIdent = CarMaker-Tire-MF52 2
+FileCreator = CarMaker 2015-07-07 12:23:45
+Description:
+
+
+## General ###############################################################
+Side = right
+StandStill.cLong = 0.01
+StandStill.cSide = 0.2
+StandStill.vMax = 0.25
+
+
+## Visualization #########################################################
+FLoadMax = 2000
+NomWidth = 0.205
+AspectRatio = 0.45
+RimRadius = 0.1651
+
+
+## MF-Tire ###############################################################
+muRoad = 1.0
+
+# [MDI_HEADER]
+MDI_Header.FILE_TYPE = CAR
+MDI_Header.FILE_VERSION = 3.0
+MDI_Header.FILE_FORMAT = ASCII
+
+# [UNITS]
+Units.LENGTH = meter
+Units.FORCE = newton
+Units.ANGLE = radians
+Units.MASS = kg
+Units.TIME = second
+
+# [MODEL]
+Model.PROPERTY_FILE_FORMAT = MF_05
+Model.USE_MODE = 14
+Model.FITTYP = 5
+
+# [DIMENSION]
+Dim.UNLOADED_RADIUS = +2.550e-001
+Dim.WIDTH = +2.050e-001
+Dim.RIM_RADIUS = +1.651e-001
+Dim.RIM_WIDTH = +1.778e-001
+Dim.ASPECT_RATIO = +4.500e-001
+
+# [SHAPE]
+
+# [VERTICAL]
+Vertical.VERTICAL_STIFFNESS = +9.120e+004
+Vertical.VERTICAL_DAMPING = +1.000e+002
+Vertical.BREFF = +8.433e+000
+Vertical.DREFF = +2.744e-001
+Vertical.FREFF = +4.540e-002
+Vertical.FNOMIN = +8.000e+002
+
+# [RANGE]
+Range.KPUMIN = -0.250e+000
+Range.KPUMAX = +0.250e+000
+Range.ALPMIN = -1.745e-001
+Range.ALPMAX = +1.745e-001
+Range.CAMMIN = -1.047e-001
+Range.CAMMAX = +1.047e-001
+Range.FZMIN = +2.286e+002
+Range.FZMAX = +1.600e+003
+
+# [SCALING]
+Scale.LFZO = 1
+Scale.LCX = 1
+Scale.LMUX = 1
+Scale.LEX = 1
+Scale.LKX = 1
+Scale.LHX = 1
+Scale.LVX = 1
+Scale.LGAX = 1
+Scale.LCY = 1
+Scale.LMUY = 1
+Scale.LEY = 1
+Scale.LKY = 1
+Scale.LHY = 1
+Scale.LVY = 1
+Scale.LGAY = 1
+Scale.LTR = 1
+Scale.LRES = 0
+Scale.LGAZ = 1
+Scale.LXAL = 1
+Scale.LYKA = 1
+Scale.LVYKA = 1
+Scale.LS = 1
+Scale.LSGKP = 1
+Scale.LSGAL = 1
+Scale.LGYR = 1
+Scale.LMX = 1
+Scale.LVMX = 1
+Scale.LMY = 1
+
+# [LONGITUDINAL]
+Long.PCX1 = +1.616e+000
+Long.PDX1 = +2.749e+000
+Long.PDX2 = -2.010e-001
+Long.PDX3 = +1.223e+001
+Long.PEX1 = +7.202e-001
+Long.PEX2 = -9.124e-002
+Long.PEX3 = +2.430e-002
+Long.PEX4 = -7.010e-002
+Long.PKX1 = +7.530e+001
+Long.PKX2 = -2.025e+001
+Long.PKX3 = +4.110e-001
+Long.PHX1 = +0.000e+000
+Long.PHX2 = +0.000e+000
+Long.PVX1 = +0.000e+000
+Long.PVX2 = +0.000e+000
+Long.RBX1 = +1.391e+001
+Long.RBX2 = +1.485e+001
+Long.RCX1 = +7.595e-001
+Long.REX1 = -7.759e-001
+Long.REX2 = +5.009e-001
+Long.RHX1 = +0.000e+000
+Long.PTX1 = +0.2e+000
+Long.PTX2 = +0.200e+000
+Long.PTX3 = -0.15e+000
+
+# [OVERTURNING]
+OverTurn.QSX1 = +0.000e+000
+OverTurn.QSX2 = +1.710e+000
+OverTurn.QSX3 = -6.100e-003
+
+# [LATERAL]
+Lat.PCY1 = +1.757e+000
+Lat.PDY1 = +2.574e+000
+Lat.PDY2 = -5.027e-001
+Lat.PDY3 = -5.992e-001
+Lat.PEY1 = -5.379e-001
+Lat.PEY2 = -1.113e+000
+Lat.PEY3 = +3.180e-001
+Lat.PEY4 = -5.013e+000
+Lat.PKY1 = -5.785e+001
+Lat.PKY2 = +1.785e+000
+Lat.PKY3 = +5.450e-001
+Lat.PHY1 = +0.000e+000
+Lat.PHY2 = +0.000e+000
+Lat.PHY3 = -3.408e-004
+Lat.PVY1 = +0.000e+000
+Lat.PVY2 = +0.000e+000
+Lat.PVY3 = -2.652e+000
+Lat.PVY4 = -7.016e-001
+Lat.RBY1 = +2.833e+001
+Lat.RBY2 = +1.190e+001
+Lat.RBY3 = -1.243e-002
+Lat.RCY1 = +9.317e-001
+Lat.REY1 = -3.982e-004
+Lat.REY2 = +3.077e-001
+Lat.RHY1 = +0.000e+000
+Lat.RHY2 = +0.000e+000
+Lat.RVY1 = +0.000e+000
+Lat.RVY2 = +0.000e+000
+Lat.RVY3 = +0.000e+000
+Lat.RVY4 = +0.000e+000
+Lat.RVY5 = +0.000e+000
+Lat.RVY6 = +0.000e+000
+Lat.PTY1 = +0.2e+000
+Lat.PTY2 = +0.2e+000
+
+# [ROLLING]
+Roll.QSY1 = +1.000e-002
+Roll.QSY2 = +0.000e+000
+Roll.QSY3 = +0.000e+000
+Roll.QSY4 = +0.000e+000
+
+# [ALIGNING]
+Align.QBZ1 = +6.916e+000
+Align.QBZ2 = -2.384e+000
+Align.QBZ3 = -5.825e-001
+Align.QBZ4 = +1.858e+001
+Align.QBZ5 = +1.931e+001
+Align.QBZ9 = +7.982e+001
+Align.QBZ10 = +3.447e+000
+Align.QCZ1 = +1.125e+000
+Align.QDZ1 = +1.034e-001
+Align.QDZ2 = +9.725e-003
+Align.QDZ3 = -1.678e-001
+Align.QDZ4 = -1.162e+001
+Align.QDZ6 = -2.003e-003
+Align.QDZ7 = +8.467e-003
+Align.QDZ8 = -1.171e+000
+Align.QDZ9 = -7.594e-002
+Align.QEZ1 = -2.747e+001
+Align.QEZ2 = -4.072e+001
+Align.QEZ3 = -5.000e+001
+Align.QEZ4 = +1.071e+000
+Align.QEZ5 = -2.676e+000
+Align.QHZ1 = +0.000e+000
+Align.QHZ2 = +0.000e+000
+Align.QHZ3 = +8.989e-002
+Align.QHZ4 = +3.511e-002
+Align.SSZ1 = +1.840e-003
+Align.SSZ2 = -1.158e-002
+Align.SSZ3 = +8.294e-003
+Align.SSZ4 = +1.474e-002
+Align.QTZ1 = +1.000e+000
+Align.MBELT = +2.700e+000
+
+
+## Additional Parameters #################################################

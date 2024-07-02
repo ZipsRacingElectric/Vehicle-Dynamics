@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<asset version="2.15.0.1">
+	<guid>f481efc0d64ea01f15406ef2d28b01a979a85ef4</guid>
+	<type>material</type>
+	<hash>d43a1301</hash>
+	<runtimes>
+		<runtime id="f481efc0d64ea01f15406ef2d28b01a979a85ef4" name="FS_RaceCar_plastic_red" link="0" type="5"/>
+	</runtimes>
+	<parameters>
+		<parameter type="bool" name="unchanged">1</parameter>
+	</parameters>
+</asset>

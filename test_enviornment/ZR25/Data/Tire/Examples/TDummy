@@ -1,0 +1,51 @@
+#INFOFILE1 - Do not remove this line!
+FileIdent = CarMaker-Tire-MF52 2
+FileCreator = CarMaker 2012-02-24 13:54:04
+Description:
+
+
+## General ###############################################################
+Side = left
+StandStill.cLong = 0.01
+StandStill.cSide = 0.2
+StandStill.vMax = 0.25
+
+
+## Visualization #########################################################
+FLoadMax = 2500.0
+NomWidth = 0.01
+AspectRatio = 0.01
+RimRadius = 0.01
+
+
+## MF-Tire ###############################################################
+Scale.LFZO = 1.0
+Scale.LCX = 1.0
+Scale.LMUX = 1.0
+Scale.LEX = 1.0
+Scale.LKX = 1.0
+Scale.LHX = 1.0
+Scale.LVX = 1.0
+Scale.LGAX = 1.0
+Scale.LCY = 1.0
+Scale.LMUY = 1.0
+Scale.LEY = 1.0
+Scale.LKY = 1.0
+Scale.LHY = 1.0
+Scale.LVY = 1.0
+Scale.LGAY = 1.0
+Scale.LTR = 1.0
+Scale.LRES = 1.0
+Scale.LGAZ = 1.0
+Scale.LXAL = 1.0
+Scale.LYKA = 1.0
+Scale.LVYKA = 1.0
+Scale.LS = 1.0
+Scale.LSGKP = 1.0
+Scale.LSGAL = 1.0
+Scale.LGYR = 1.0
+Scale.LMX = 1.0
+Scale.LVMX = 1.0
+Scale.LMY = 1.0
+
+AdamsPropertyFile = Pacejka/MF_TDummy.tir

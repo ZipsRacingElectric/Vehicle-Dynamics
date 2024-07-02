@@ -1,0 +1,152 @@
+#INFOFILE1
+# Description file
+
+File.Format = erg
+File.ByteOrder = LittleEndian
+
+# 2 quantities of type 'Int'
+
+File.At.1.Name =	No
+File.At.1.Type =	Int
+
+File.At.2.Name =	Road.onRoad
+File.At.2.Type =	Int
+
+
+# 34 quantities of type 'Float'
+
+File.At.3.Name =	SDC.s
+File.At.3.Type =	Float
+Quantity.SDC.s.Unit =	m
+
+File.At.4.Name =	SDC.x
+File.At.4.Type =	Float
+Quantity.SDC.x.Unit =	m
+
+File.At.5.Name =	SDC.y
+File.At.5.Type =	Float
+Quantity.SDC.y.Unit =	m
+
+File.At.6.Name =	SDC.z
+File.At.6.Type =	Float
+Quantity.SDC.z.Unit =	m
+
+File.At.7.Name =	SDC.dz
+File.At.7.Type =	Float
+
+File.At.8.Name =	SDC.ddz
+File.At.8.Type =	Float
+
+File.At.9.Name =	SDC.Weight
+File.At.9.Type =	Float
+
+File.At.10.Name =	SDC.Curv
+File.At.10.Type =	Float
+Quantity.SDC.Curv.Unit =	1/m
+
+File.At.11.Name =	SDC.Track.lWidth
+File.At.11.Type =	Float
+Quantity.SDC.Track.lWidth.Unit =	m
+
+File.At.12.Name =	SDC.Track.rWidth
+File.At.12.Type =	Float
+Quantity.SDC.Track.rWidth.Unit =	m
+
+File.At.13.Name =	SDC.Track.Width
+File.At.13.Type =	Float
+Quantity.SDC.Track.Width.Unit =	m
+
+File.At.14.Name =	SDC.Track.l.x
+File.At.14.Type =	Float
+Quantity.SDC.Track.l.x.Unit =	m
+
+File.At.15.Name =	SDC.Track.l.y
+File.At.15.Type =	Float
+Quantity.SDC.Track.l.y.Unit =	m
+
+File.At.16.Name =	SDC.Track.c.x
+File.At.16.Type =	Float
+Quantity.SDC.Track.c.x.Unit =	m
+
+File.At.17.Name =	SDC.Track.c.y
+File.At.17.Type =	Float
+Quantity.SDC.Track.c.y.Unit =	m
+
+File.At.18.Name =	SDC.Track.r.x
+File.At.18.Type =	Float
+Quantity.SDC.Track.r.x.Unit =	m
+
+File.At.19.Name =	SDC.Track.r.y
+File.At.19.Type =	Float
+Quantity.SDC.Track.r.y.Unit =	m
+
+File.At.20.Name =	SDC.v
+File.At.20.Type =	Float
+Quantity.SDC.v.Unit =	m/s
+
+File.At.21.Name =	SDC.ax
+File.At.21.Type =	Float
+Quantity.SDC.ax.Unit =	m/s^2
+
+File.At.22.Name =	SDC.ay
+File.At.22.Type =	Float
+Quantity.SDC.ay.Unit =	m/s^2
+
+File.At.23.Name =	SDC.T
+File.At.23.Type =	Float
+Quantity.SDC.T.Unit =	s
+
+File.At.24.Name =	Road.s
+File.At.24.Type =	Float
+Quantity.Road.s.Unit =	m
+
+File.At.25.Name =	Road.Width
+File.At.25.Type =	Float
+Quantity.Road.Width.Unit =	m
+
+File.At.26.Name =	Road.l.Width
+File.At.26.Type =	Float
+Quantity.Road.l.Width.Unit =	m
+
+File.At.27.Name =	Road.r.Width
+File.At.27.Type =	Float
+Quantity.Road.r.Width.Unit =	m
+
+File.At.28.Name =	Road.l.x
+File.At.28.Type =	Float
+Quantity.Road.l.x.Unit =	m
+
+File.At.29.Name =	Road.l.y
+File.At.29.Type =	Float
+Quantity.Road.l.y.Unit =	m
+
+File.At.30.Name =	Road.c.x
+File.At.30.Type =	Float
+Quantity.Road.c.x.Unit =	m
+
+File.At.31.Name =	Road.c.y
+File.At.31.Type =	Float
+Quantity.Road.c.y.Unit =	m
+
+File.At.32.Name =	Road.r.x
+File.At.32.Type =	Float
+Quantity.Road.r.x.Unit =	m
+
+File.At.33.Name =	Road.r.y
+File.At.33.Type =	Float
+Quantity.Road.r.y.Unit =	m
+
+File.At.34.Name =	Road.Grad
+File.At.34.Type =	Float
+
+File.At.35.Name =	Road.Slope
+File.At.35.Type =	Float
+
+File.At.36.Name =	Road.Side
+File.At.36.Type =	Float
+Quantity.Road.Side.Unit =	m
+
+
+CarMaker.Version =	12.0.1
+Driver.Version =	12.0.1.2
+Driver.sCourse =	0 1e+100

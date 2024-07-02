@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<asset version="2.15.0.1">
+	<guid>5e873a709f858b0f2015fd2258ba5a19ca3c7ca4</guid>
+	<type>material</type>
+	<hash>f9c775ea</hash>
+	<runtimes>
+		<runtime id="5e873a709f858b0f2015fd2258ba5a19ca3c7ca4" name="FS_RaceCar_carbonfiber" link="0" type="5"/>
+	</runtimes>
+	<parameters>
+		<parameter type="bool" name="unchanged">1</parameter>
+	</parameters>
+</asset>

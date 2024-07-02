@@ -1,0 +1,201 @@
+#INFOFILE1
+# Description file
+
+File.Format = erg
+File.ByteOrder = LittleEndian
+
+# 1 quantities of type 'Double'
+
+File.At.1.Name =	Time
+File.At.1.Type =	Double
+Quantity.Time.Unit =	s
+
+
+# 38 quantities of type 'Float'
+
+File.At.2.Name =	Brake.Pedal
+File.At.2.Type =	Float
+
+File.At.3.Name =	Brake.Park
+File.At.3.Type =	Float
+
+File.At.4.Name =	Brake.Trq_WB_FL
+File.At.4.Type =	Float
+Quantity.Brake.Trq_WB_FL.Unit =	Nm
+
+File.At.5.Name =	Brake.Trq_PB_FL
+File.At.5.Type =	Float
+Quantity.Brake.Trq_PB_FL.Unit =	Nm
+
+File.At.6.Name =	Brake.Trq_WB_FR
+File.At.6.Type =	Float
+Quantity.Brake.Trq_WB_FR.Unit =	Nm
+
+File.At.7.Name =	Brake.Trq_PB_FR
+File.At.7.Type =	Float
+Quantity.Brake.Trq_PB_FR.Unit =	Nm
+
+File.At.8.Name =	Brake.Trq_WB_RL
+File.At.8.Type =	Float
+Quantity.Brake.Trq_WB_RL.Unit =	Nm
+
+File.At.9.Name =	Brake.Trq_PB_RL
+File.At.9.Type =	Float
+Quantity.Brake.Trq_PB_RL.Unit =	Nm
+
+File.At.10.Name =	Brake.Trq_WB_RR
+File.At.10.Type =	Float
+Quantity.Brake.Trq_WB_RR.Unit =	Nm
+
+File.At.11.Name =	Brake.Trq_PB_RR
+File.At.11.Type =	Float
+Quantity.Brake.Trq_PB_RR.Unit =	Nm
+
+File.At.12.Name =	Brake.Trq_WB_RL2
+File.At.12.Type =	Float
+Quantity.Brake.Trq_WB_RL2.Unit =	Nm
+
+File.At.13.Name =	Brake.Trq_PB_RL2
+File.At.13.Type =	Float
+Quantity.Brake.Trq_PB_RL2.Unit =	Nm
+
+File.At.14.Name =	Brake.Trq_WB_RR2
+File.At.14.Type =	Float
+Quantity.Brake.Trq_WB_RR2.Unit =	Nm
+
+File.At.15.Name =	Brake.Trq_PB_RR2
+File.At.15.Type =	Float
+Quantity.Brake.Trq_PB_RR2.Unit =	Nm
+
+File.At.16.Name =	Brake.Trq_WB_FL2
+File.At.16.Type =	Float
+Quantity.Brake.Trq_WB_FL2.Unit =	Nm
+
+File.At.17.Name =	Brake.Trq_PB_FL2
+File.At.17.Type =	Float
+Quantity.Brake.Trq_PB_FL2.Unit =	Nm
+
+File.At.18.Name =	Brake.Trq_WB_FR2
+File.At.18.Type =	Float
+Quantity.Brake.Trq_WB_FR2.Unit =	Nm
+
+File.At.19.Name =	Brake.Trq_PB_FR2
+File.At.19.Type =	Float
+Quantity.Brake.Trq_PB_FR2.Unit =	Nm
+
+File.At.20.Name =	Brake.Trq_WB_RL3
+File.At.20.Type =	Float
+Quantity.Brake.Trq_WB_RL3.Unit =	Nm
+
+File.At.21.Name =	Brake.Trq_PB_RL3
+File.At.21.Type =	Float
+Quantity.Brake.Trq_PB_RL3.Unit =	Nm
+
+File.At.22.Name =	Brake.Trq_WB_RR3
+File.At.22.Type =	Float
+Quantity.Brake.Trq_WB_RR3.Unit =	Nm
+
+File.At.23.Name =	Brake.Trq_PB_RR3
+File.At.23.Type =	Float
+Quantity.Brake.Trq_PB_RR3.Unit =	Nm
+
+File.At.24.Name =	Brake.Trq_WB_RL4
+File.At.24.Type =	Float
+Quantity.Brake.Trq_WB_RL4.Unit =	Nm
+
+File.At.25.Name =	Brake.Trq_PB_RL4
+File.At.25.Type =	Float
+Quantity.Brake.Trq_PB_RL4.Unit =	Nm
+
+File.At.26.Name =	Brake.Trq_WB_RR4
+File.At.26.Type =	Float
+Quantity.Brake.Trq_WB_RR4.Unit =	Nm
+
+File.At.27.Name =	Brake.Trq_PB_RR4
+File.At.27.Type =	Float
+Quantity.Brake.Trq_PB_RR4.Unit =	Nm
+
+File.At.28.Name =	Brake.trqGrad_FL
+File.At.28.Type =	Float
+Quantity.Brake.trqGrad_FL.Unit =	Nm/s
+
+File.At.29.Name =	Brake.trqGrad_FR
+File.At.29.Type =	Float
+Quantity.Brake.trqGrad_FR.Unit =	Nm/s
+
+File.At.30.Name =	Brake.trqGrad_RL
+File.At.30.Type =	Float
+Quantity.Brake.trqGrad_RL.Unit =	Nm/s
+
+File.At.31.Name =	Brake.trqGrad_RR
+File.At.31.Type =	Float
+Quantity.Brake.trqGrad_RR.Unit =	Nm/s
+
+File.At.32.Name =	Brake.trqGrad_RL2
+File.At.32.Type =	Float
+Quantity.Brake.trqGrad_RL2.Unit =	Nm/s
+
+File.At.33.Name =	Brake.trqGrad_RR2
+File.At.33.Type =	Float
+Quantity.Brake.trqGrad_RR2.Unit =	Nm/s
+
+File.At.34.Name =	Brake.trqGrad_FL2
+File.At.34.Type =	Float
+Quantity.Brake.trqGrad_FL2.Unit =	Nm/s
+
+File.At.35.Name =	Brake.trqGrad_FR2
+File.At.35.Type =	Float
+Quantity.Brake.trqGrad_FR2.Unit =	Nm/s
+
+File.At.36.Name =	Brake.trqGrad_RL3
+File.At.36.Type =	Float
+Quantity.Brake.trqGrad_RL3.Unit =	Nm/s
+
+File.At.37.Name =	Brake.trqGrad_RR3
+File.At.37.Type =	Float
+Quantity.Brake.trqGrad_RR3.Unit =	Nm/s
+
+File.At.38.Name =	Brake.trqGrad_RL4
+File.At.38.Type =	Float
+Quantity.Brake.trqGrad_RL4.Unit =	Nm/s
+
+File.At.39.Name =	Brake.trqGrad_RR4
+File.At.39.Type =	Float
+Quantity.Brake.trqGrad_RR4.Unit =	Nm/s
+
+
+CarMaker.Version =	12.0.1
+App.Version =		CarMaker 12.0.1 - Car_Generic
+App.BuildVersion =	3
+TestRun.Vehicle =	Examples_FS/FSE_AllWheelDrive
+TestRun.Tire.0 =	
+TestRun.Tire.1 =	
+TestRun.Tire.2 =	
+TestRun.Tire.3 =	
+Brake.ActivationTime = 0.200000
+Brake.ReleaseTime = 1.235000
+Brake.ResponseTime.0 = 0.020000
+Brake.BuildUpTime.0  = 0.483000
+Brake.ResponseTime.1 = 0.020000
+Brake.BuildUpTime.1  = 0.483000
+Brake.ResponseTime.2 = 0.026000
+Brake.BuildUpTime.2  = 0.620000
+Brake.ResponseTime.3 = 0.026000
+Brake.BuildUpTime.3  = 0.620000
+Brake.ResponseTime.4 = 0.000000
+Brake.BuildUpTime.4  = 0.000000
+Brake.ResponseTime.5 = 0.000000
+Brake.BuildUpTime.5  = 0.000000
+Brake.ResponseTime.6 = 0.000000
+Brake.BuildUpTime.6  = 0.000000
+Brake.ResponseTime.7 = 0.000000
+Brake.BuildUpTime.7  = 0.000000
+Brake.ResponseTime.8 = 0.000000
+Brake.BuildUpTime.8  = 0.000000
+Brake.ResponseTime.9 = 0.000000
+Brake.BuildUpTime.9  = 0.000000
+Brake.ResponseTime.10 = 0.000000
+Brake.BuildUpTime.10  = 0.000000
+Brake.ResponseTime.11 = 0.000000
+Brake.BuildUpTime.11  = 0.000000
+Brake.nAxle = 2

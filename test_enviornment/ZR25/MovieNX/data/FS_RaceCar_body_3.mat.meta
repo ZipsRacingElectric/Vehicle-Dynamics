@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<asset version="2.15.0.1">
+	<guid>2ba91cd5a64f483051e8bdcfaa1810e21c73dad9</guid>
+	<type>material</type>
+	<hash>5aae6239</hash>
+	<runtimes>
+		<runtime id="2ba91cd5a64f483051e8bdcfaa1810e21c73dad9" name="FS_RaceCar_body_3" link="0" type="5"/>
+	</runtimes>
+</asset>

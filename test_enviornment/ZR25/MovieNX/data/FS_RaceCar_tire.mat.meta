@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<asset version="2.15.0.1">
+	<guid>37c0587457c5a943fa743dc64d48fa6db19018e8</guid>
+	<type>material</type>
+	<hash>1ae3b0f3</hash>
+	<runtimes>
+		<runtime id="37c0587457c5a943fa743dc64d48fa6db19018e8" name="FS_RaceCar_tire" link="0" type="5"/>
+	</runtimes>
+	<parameters>
+		<parameter type="bool" name="unchanged">1</parameter>
+	</parameters>
+</asset>

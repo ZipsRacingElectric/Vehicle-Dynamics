@@ -1,0 +1,58 @@
+#INFOFILE1.1 - Do not remove this line!
+FileIdent = CarMaker-Tire-RTTire 3
+FileCreator = CarMaker 10.2.1
+
+Description:
+	NOTAVAIL
+	NOTAVAIL
+	Based on 'TUG_Racing.tdx'
+	""
+	#   Load:      32 points [ 0 N  to  3750 N ]
+	#   Slip:     128 points [ -0.9976   to  1 ]
+	#   Alpha:    128 points [ -45 deg  to  44.9082 deg ]
+
+
+## General ###############################################################
+Side = left
+StandStill.cLong = 0.01
+StandStill.cSide = 0.01
+StandStill.vMax = 0.25
+
+
+## Visualization #########################################################
+FLoadMax = 3000
+NomWidth = 0.195
+RimRadius = 0.193
+
+
+## RT-Tire ###############################################################
+muRoad = 1
+KinRollRadius = 0.200
+NomRadius = 0.217
+Radial.Stiffness = 200000
+Radial.Damping = 1000
+
+RollResist.Kind = TrqLoad
+RollResist.Factor = 0.1
+
+LongFrc.Length = 0.01
+SideFrc.Length = 0.1
+AlignTrq.Length = 0.1
+LongFrc.Stiffness = 1.0
+SideFrc.Stiffness = 1.0
+AlignTrq.Stiffness = 1.0
+
+InclinAngle2OffsetFy = 0.0
+InclinAngle2OffsetMz = 0.0
+InclinAngle2Alpha = 0.0
+
+TurnSlip.MzMax = 0.0
+TurnSlip.cMz = 0.0
+TurnSlip.Alpha2Mz = 0.0
+
+BinFName = Mapping/FS_180_50R10.bin
+
+
+## Additional ############################################################
+CreateArgs = -convert if TUG_Racing.tdx -of FS_195_50R13
+StandStill.cAlign = 0.01

@@ -1,0 +1,17 @@
+#INFOFILE1.1 - Do not remove this line!
+FileIdent = Scenario-LaneConfig 1.0
+FileCreator = CarMaker 8.0.2 2018-9-21
+
+Name = FCM_DEFAULT
+Prio = 1
+
+LaneL.0 = road 2.0
+LaneL.1 = border 0.1
+LaneR.0 = road 2.0
+LaneR.1 = border 0.1
+
+RoadMarkingL.0 = none 2.0 4.0 0.12 {0.00 0.00 0.00}
+RoadMarkingL.1 = none 2.0 4.0 0.12 {0.00 0.00 0.00}
+RoadMarkingR.0 = none 2.0 4.0 0.12 {0.00 0.00 0.00}
+RoadMarkingR.1 = none 2.0 4.0 0.12 {0.00 0.00 0.00}
+RoadMarkingC = none 2.0 4.0 0.15 {1.0 1.0 1.0}

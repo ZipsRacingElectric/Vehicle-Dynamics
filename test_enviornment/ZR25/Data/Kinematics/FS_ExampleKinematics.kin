@@ -1,0 +1,283 @@
+'                                                 '
+' IPG - KINEMATICS                                ' 'Version 3.6'
+' =============================================== '
+'                                                 '
+' Allgemeine Daten                                '
+' ----------------------------------------------- '
+' Radaufhaengung                                  ' 'Querlenker'
+' Anmerkung                                       ' 'Demo data'
+' Kraftfrei = 0, mit Kraeften = 1                 ' 1
+'                                                 '
+' Simulations - Steuerung                         '
+' ----------------------------------------------- '
+' Druckausgabe:             aus = 0, ein = 1..2   ' 2
+' Speicherausgabe:          aus = 0, ein = 1..2   ' 1
+'                                                 '
+' Kinematik Gleichseitig:   aus = 0, ein = 1      ' 1
+' Kinematik Wechselseitig:  aus = 0, ein = 1..2   ' 4
+' maximale Einfederung [mm]                       ' 40.0
+' maximale Ausfederung [mm]                       ' -40.0
+' Schrittweite [mm]                               ' 5.0
+'                                                 '
+' Lenkkinematik:            aus = 0, ein = 1..3   ' 1
+' maximaler Zahnstangenweg [mm]                   ' 70.0
+' minimaler Zahnstangenweg [mm]                   ' -70.0
+' Schrittweite [mm]                               ' 10.0
+'                                                 '
+' Seitenkraft:              aus = 0, ein = 1      ' 0
+' Seitenkraftfaktor kurveninnen (0 ... 1)         ' 1.0
+' maximale Seitenkraft [N]                        ' 5000.0
+' minimale Seitenkraft [N]                        ' -5000.0
+' Schrittweite [N]                                ' 500.0
+'                                                 '
+' Umfangskraft:             aus = 0, ein = 1      ' 0
+' Umfangskraftfaktor rechts (0 ... 1)             ' 1.0
+' maximale Umfangskraft [N]                       ' 5000.0
+' minimale Umfangskraft [N]                       ' -5000.0
+' Schrittweite [N]                                ' 500.0
+'                                                 '
+' Mixedkraft:               aus = 0, ein = 1..6   ' 0
+' Kraftschlussfaktor        (0 ... 1)             ' 1.0
+' Seitenkraft  links  [N]                         ' 0.0
+' Seitenkraft  rechts [N]                         ' 0.0
+' Umfangskraft links  [N]                         ' 0.0
+' Umfangskraft rechts [N]                         ' 0.0
+' Einfederung  [mm]                               ' 40.0
+'                                                 '
+' Fahrzeug - Parameter                            '
+' ----------------------------------------------- '
+' Vorderachse = VA, Hinterachse = HA              ' 'VA'
+' Vorspur Konstruktiv [Min]                       ' 0.0
+' Sturz   Konstruktiv [Grad]                      ' -5.0
+' Hoehe Fahrzeuggesamtschwerpunkt [mm]            ' 425.0
+' Radstand [mm]                                   ' 2715.0
+' Bremskraftanteil der Achse       (0 ... 1)      ' 0.7
+' Antriebsmomentenanteil der Achse (0 ... 1)      ' 0.0
+' Federbeiwert Reifenfeder [N/mm]                 ' 245.0
+'                                                 '
+' Modell-Konfiguration                            '
+' ----------------------------------------------- '
+' ohne Fahrschemel = 0, mit Fahrschemel = 1       ' 0
+' ohne elastische Lenkgetriebelager = 0, mit = 1  ' 0
+'                                                 '
+' Achsfeder                                       '
+' ----------------------------------------------- '
+' aus = 0, Querlenker U = 1, Radtraeger = 2       ' 0
+'          Querlenker O = 3                       '
+'                                                 '
+' Federelement Pull-/Pushrod / Torsion Bar        '
+' ----------------------------------------------- '
+' aus = 0, Querlenker U = 1, Radtraeger = 2       ' 1
+'          Querlenker O = 3                       '
+'                                                 '
+' Federbeiwert(linear) = 1, Federkennlinie = 2    ' 1
+'                                                 '
+' Federbeiwert [N/mm]                             ' 65.0
+'                                                 '
+' Federkennlinie Achsfeder bzw. Federelement      '
+' Verstaerkungsfaktor                             ' 1.0
+' Anzahl Wertepaare (min. 3, max. 25)             ' 15
+'                                                 '
+' Federweg [mm] - Federkraft [N]                  ' 0.0 0.0
+' Federweg [mm] - Federkraft [N]                  ' 10.0 490.0
+' Federweg [mm] - Federkraft [N]                  ' 20.0 620.0
+' Federweg [mm] - Federkraft [N]                  ' 30.0 750.0
+' Federweg [mm] - Federkraft [N]                  ' 40.0 880.0
+' Federweg [mm] - Federkraft [N]                  ' 50.0 1010.0
+' Federweg [mm] - Federkraft [N]                  ' 60.0 1140.0
+' Federweg [mm] - Federkraft [N]                  ' 70.0 1270.0
+' Federweg [mm] - Federkraft [N]                  ' 80.0 1400.0
+' Federweg [mm] - Federkraft [N]                  ' 90.0 1530.0
+' Federweg [mm] - Federkraft [N]                  ' 100.0 1660.0
+' Federweg [mm] - Federkraft [N]                  ' 110.0 1790.0
+' Federweg [mm] - Federkraft [N]                  ' 115.0 1855.0
+' Federweg [mm] - Federkraft [N]                  ' 120.0 1920.0
+' Federweg [mm] - Federkraft [N]                  ' 160.0 5000.0
+'                                                 '
+' U-Stabilisator                                  '
+' ----------------------------------------------- '
+' aus = 0, QLU = 1, RT = 2, PPR Body = 3          ' 3
+'                                                 '
+' Federbeiwert(linear) = 1, Federkennlinie = 2    ' 1
+'                                                 '
+' Drehfederbeiwert U-Stabilisator [N*m/Grad]      ' 25.0
+'                                                 '
+' Federkennlinie U-Stabilisator                   '
+' Anzahl Wertepaare (max. 25)                     ' 11
+'                                                 '
+' Winkel [Grad] - Moment [Nm]                     ' -5.0 -125.0
+' Winkel [Grad] - Moment [Nm]                     ' -4.0 -100.0
+' Winkel [Grad] - Moment [Nm]                     ' -3.0 -75.0
+' Winkel [Grad] - Moment [Nm]                     ' -2.0 -50.0
+' Winkel [Grad] - Moment [Nm]                     ' -1.0 -25.0
+' Winkel [Grad] - Moment [Nm]                     ' 0.0 0.0
+' Winkel [Grad] - Moment [Nm]                     ' 1.0 25.0
+' Winkel [Grad] - Moment [Nm]                     ' 2.0 50.0
+' Winkel [Grad] - Moment [Nm]                     ' 3.0 75.0
+' Winkel [Grad] - Moment [Nm]                     ' 4.0 100.0
+' Winkel [Grad] - Moment [Nm]                     ' 5.0 125.0
+'                                                 '
+' Laengsteifigkeit Pull-/Pushrod / Torsion Bar    '
+' ----------------------------------------------- '
+' Federbeiwert(linear) = 1, Federkennlinie = 2    ' 1
+'                                                 '
+' Federbeiwerte                                   '
+' Laengsteifigkeit Pull-/Pushrod [N/mm]           ' 5000.0
+'                                                 '
+' Federkennlinie Pull-/Pushrod                    '
+' Verstaerkungsfaktor                             ' 1.0
+' Anzahl Wertepaare (min. 3, max. 25)             ' 11
+'                                                 '
+' Federweg [mm] - Federkraft [N]                  ' -10.0 -20000.0
+' Federweg [mm] - Federkraft [N]                  ' -8.0 -10000.0
+' Federweg [mm] - Federkraft [N]                  ' -6.0 -6000.0
+' Federweg [mm] - Federkraft [N]                  ' -4.0 -4000.0
+' Federweg [mm] - Federkraft [N]                  ' -2.0 -2000.0
+' Federweg [mm] - Federkraft [N]                  ' 0.0 0.0
+' Federweg [mm] - Federkraft [N]                  ' 2.0 2000.0
+' Federweg [mm] - Federkraft [N]                  ' 4.0 4000.0
+' Federweg [mm] - Federkraft [N]                  ' 6.0 6000.0
+' Federweg [mm] - Federkraft [N]                  ' 8.0 10000.0
+' Federweg [mm] - Federkraft [N]                  ' 10.0 20000.0
+'                                                 '
+' 3. Federelement Pull-/Pushrod / Torsion Bar     '
+' ----------------------------------------------- '
+' aus = 0, Linear = 1, Kennlinie = 2              ' 1
+'                                                 '
+' Federbeiwert [N/mm]                             ' 65.0
+'                                                 '
+' Federkennlinie Achsfeder bzw. Federelement      '
+' Verstaerkungsfaktor                             ' 1.0
+' Anzahl Wertepaare (min. 3, max. 25)             ' 10
+'                                                 '
+' Federweg [mm] - Federkraft [N]                  ' 0.0 0.0
+' Federweg [mm] - Federkraft [N]                  ' 10.0 490.0
+' Federweg [mm] - Federkraft [N]                  ' 20.0 620.0
+' Federweg [mm] - Federkraft [N]                  ' 30.0 750.0
+' Federweg [mm] - Federkraft [N]                  ' 40.0 880.0
+' Federweg [mm] - Federkraft [N]                  ' 50.0 1010.0
+' Federweg [mm] - Federkraft [N]                  ' 60.0 1140.0
+' Federweg [mm] - Federkraft [N]                  ' 70.0 1270.0
+' Federweg [mm] - Federkraft [N]                  ' 80.0 1400.0
+' Federweg [mm] - Federkraft [N]                  ' 90.0 1530.0
+'                                                 '
+' ----------------------------------------------- '
+' Querlenker oben: Aufbau = 1, Fahrschemel = 2    ' 2
+' ----------------------------------------------- '
+'                                                 '
+' Massen [kg]                                     '
+' ----------------------------------------------- '
+' Beladung                                        ' 0.0
+'                                                 '
+' Anteil Aufbaumasse                              ' 500.0
+' Fahrschemel                                     ' 50.0
+' Querlenker unten                                ' 1.0
+' Radtraeger                                      ' 1.0
+' Rad                                             ' 20.0
+' Querlenker oben                                 ' 1.0
+' Spurstange                                      ' 1.0
+' Zahnstange                                      ' 1.0
+' Lenkgetriebe                                    ' 5.0
+' Stabilisator                                    ' 2.0
+' Stabipendel                                     ' 1.0
+' Kipphebel (bei Pull-/Pushrods)                  ' 1.0
+'                                                 '
+' Geometry [mm]: X - Y - Z                        '
+' ----------------------------------------------- '
+' Axis System                                     '
+' 0 = DIN 70000, 1 = Automobil Industrie          ' 1
+'                                                 '
+' Point  1 Wheel Center                           ' 0.0  -777.0  309.0
+' Point  2 Center of Tire Contact                 ' 0.0  -801.0  0.0
+' Point  3 Force Application Tire Forces          ' 0.0  -801.0  0.0
+' Point  4 Body - Chassis Subframe Front          ' -200.0  -400.0  165.0
+' Point  5 Body - Chassis Subframe Rear           ' 400.0  -400.0  215.0
+' Point  6 Wheel Carrier - Lower Wishbone         ' -1.0  -752.0  130.0
+' Point  7 Wheel Carrier - Upper Wishbone         ' 65.0  -610.0  482.0
+' Point  8 Wheel Carrier - Steering Rod           ' -175.0  -746.0  255.0
+' Point  9 Subframe - Bushing Front Lower Wishbone' -24.0  -340.0  118.0
+' Point 10 Subframe - Bushing Rear  Lower Wishbone' 300.0  -340.0  117.0
+' Point 11 Vehicle  - Bushing Front Upper Wishbone' -29.0  -440.0  472.0
+' Point 12 Vehicle  - Bushing Rear  Upper Wishbone' 196.0  -440.0  442.0
+' Point 13 Chassis Subframe - Stabilizer Bar      ' -250.0  -400.0  150.0
+' Point 14 Stabilizer Bar   - Stabilizer Link     ' 0.0  -600.0  150.0
+' Point 15 Stabilizer Link  - Wheel Suspension    ' 0.0  -600.0  400.0
+' Point 16 Steering Rod     - Steering Rack       ' -139.0  -461.0  235.0
+' Point 17 Chassis Subframe - Steering Gearbox    ' -140.0  -400.0  235.0
+' Point 18 Spring           - Body                ' 35.0  -450.0  715.0
+' Point 19 Spring           - Wheel Suspension    ' 30.0  -500.0  465.0
+' Point 20 Damper           - Body                ' 25.0  -400.0  715.0
+' Point 21 Damper           - Lower Wishbone      ' 20.0  -450.0  465.0
+' Point 22 Axle Drive Shaft - Differential        ' 0.0  -200.0  309.0
+' Point 23 Axle Drive Shaft - Wheel               ' 0.0  -750.0  309.0
+'                                                 '
+' Geometry by using Pull/Push Rods                '
+' ----------------------------------------------- '
+' Point 24 Body           - Rocker Arm            ' -50.0  -100.0  450.0
+' Point 25 Rotation Axis  - Rocker Arm            ' -50.0  -200.0  600.0
+' Point 26 Pull/Push Rod  - Wheel Suspension      ' 0.0  -600.0  150.0
+' Point 27 Pull/Push Rod  - Rocker Arm            ' 0.0  -125.0  475.0
+' Point 28 Spring Element - Body                  ' -250.0  -50.0  500.0
+' Point 29 Spring Element - Rocker Arm            ' -50.0  -50.0  500.0
+'                                                 '
+' Geometry by using Pull/Push Rods Stabilizer     '
+' ----------------------------------------------- '
+' Point 30 Joint Stabi Torsion Bar  - Body        ' 250.0  0.0  300.0
+' Point 31 Rod Stabi Torsion Bar    - Rocker Arm  ' 50.0  -50.0  500.0
+' Point 32 Rod Stabi Torsion Bar    - Torsion Bar ' 250.0  -50.0  500.0
+' Point 33 Spring Stabi Torsion Bar - Body        ' -50.0  0.0  500.0
+' Point 34 Spring Stabi Torsion Bar - Torsion Bar ' 250.0  0.0  500.0
+' Point 35 Marker Damper Rocker Arm               ' 100.0  -100.0  500.0
+'                                                 '
+' Point 36 Body -> Turning Circle Dia.: X-Y-Radius' -500.0  -775.0  250.0
+'                                                 '
+' Gummilager                                      '
+' ----------------------------------------------- '
+' Hauptpfad: Eingabe-Files                        ' '/opt/ipg/kinematics/linux-3.6.7/template/'
+'                                                 '
+' Vorderes Lager Fahrschemel - Aufbau           1 ' './data/gum/IPG/lin01000.gum'
+' Einbaulage - Punkt     Lagermitte [mm]          ' -200.0  -400.0  165.0
+'            - Punkt auf Lagerachse [mm]          ' -200.0  -400.0  265.0
+'            - Winkel um Lagerachse [Grad]        ' 0.0
+'                                                 '
+' Hinteres Lager Fahrschemel - Aufbau           2 ' './data/gum/IPG/lin01000.gum'
+' Einbaulage - Punkt     Lagermitte [mm]          ' 400.0  -400.0  215.0
+'            - Punkt auf Lagerachse [mm]          ' 400.0  -400.0  315.0
+'            - Winkel um Lagerachse [Grad]        ' 0.0
+'                                                 '
+' Vorderes Lager Querlenker unten - Fahrschemel 3 ' './data/gum/IPG/lin05000.gum'
+' Einbaulage - Punkt     Lagermitte [mm]          ' -24.0  -340.0  118.0
+'            - Punkt auf Lagerachse [mm]          ' -124.0  -340.0  118.0
+'            - Winkel um Lagerachse [Grad]        ' 0.0
+'                                                 '
+' Hinteres Lager Querlenker unten - Fahrschemel 4 ' './data/gum/IPG/lin05000.gum'
+' Einbaulage - Punkt     Lagermitte [mm]          ' 300.0  -340.0  117.0
+'            - Punkt auf Lagerachse [mm]          ' 400.0  -340.0  117.0
+'            - Winkel um Lagerachse [Grad]        ' 0.0
+'                                                 '
+' Vorderes Lager Querlenker oben - Fahrschemel  5 ' './data/gum/IPG/lin05000.gum'
+' Einbaulage - Punkt     Lagermitte [mm]          ' -29.0  -440.0  472.0
+'            - Punkt auf Lagerachse [mm]          ' -129.0  -440.0  472.0
+'            - Winkel um Lagerachse [Grad]        ' 0.0
+'                                                 '
+' Hinteres Lager Querlenker oben - Fahrschemel  6 ' './data/gum/IPG/lin05000.gum'
+' Einbaulage - Punkt     Lagermitte [mm]          ' 196.0  -440.0  442.0
+'            - Punkt auf Lagerachse [mm]          ' 96.0  -440.0  442.0
+'            - Winkel um Lagerachse [Grad]        ' 0.0
+'                                                 '
+' Spurstange - Zahnstange                       7 ' './data/gum/IPG/lin01000.gum'
+' Einbaulage - Punkt     Lagermitte [mm]          ' -139.0  -461.0  235.0
+'            - Punkt auf Lagerachse [mm]          ' -139.0  -461.0  335.0
+'            - Winkel um Lagerachse [Grad]        ' 0.0
+'                                                 '
+' Stabilisator - Radaufhaengung                 8 ' './data/gum/IPG/lin01000.gum'
+' Einbaulage - Punkt     Lagermitte [mm]          ' 100.0  -500.0  305.0
+'            - Punkt auf Lagerachse [mm]          ' 100.0  -600.0  305.0
+'            - Winkel um Lagerachse [Grad]        ' 0.0
+'                                                 '
+' Fahrschemel - Lenkgetriebe                    9 ' './data/gum/IPG/lin01000.gum'
+' Einbaulage - Punkt     Lagermitte [mm]          ' -140.0  -400.0  235.0
+'            - Punkt auf Lagerachse [mm]          ' -140.0  -400.0  335.0
+'            - Winkel um Lagerachse [Grad]        ' 0.0
+'                                                 '
+

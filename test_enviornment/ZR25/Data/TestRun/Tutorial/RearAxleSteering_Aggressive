@@ -1,0 +1,307 @@
+#INFOFILE1.1 (UTF-8) - Do not remove this line!
+FileIdent = CarMaker-TestRun 12
+FileCreator = CarMaker 12.0.1
+Description:
+	The FSC_RaceCar is driving on a round circle with a radius of 30 m using rear axle steering. The driver ist set to aggressive.
+Vehicle = Examples_FS/FSC_RaceCar
+Trailer =
+Tire.0 =
+Tire.1 =
+Tire.2 =
+Tire.3 =
+Snapshot.TimeLimit =
+Snapshot.DistLimit =
+VehicleLoad.0.mass = 0
+VehicleLoad.0.pos = 0 0 0
+VehicleLoad.1.mass = 0
+VehicleLoad.1.pos = 0 0 0
+VehicleLoad.2.mass = 0
+VehicleLoad.2.pos = 0 0 0
+VehicleLoad.3.mass = 0
+VehicleLoad.3.pos = 0 0 0
+TrailerLoad.0.mass = 0
+TrailerLoad.0.pos = 0 0 0
+TrailerLoad.1.mass = 0
+TrailerLoad.1.pos = 0 0 0
+TrailerLoad.2.mass = 0
+TrailerLoad.2.pos = 0 0 0
+Road.FileIdent = IPGRoad 12.0
+Road.LibVersion = 12.0.1
+Road.Country = DEU
+Road.nLinks = 1
+Road.nJunctions = 1
+Road.nObjects = 55
+Road.nRoutes = 1
+Road.RoadNetworkLength = 188.495557553769
+Road.BBox = -44.0761957934962 45.121153365761 -74.5839642387023 14.5992993977194 -11 11
+Road.Route.0.Length = 376.991115107538
+Road.RST.Unit = kmh
+Road.RST = 50 100 130 30 70 30 0 -1
+Road.Movie = 0.2 1 0.01 1.5 1.5 1 1
+Road.Visualization.SamplingParams = 0.2 1 0.01
+Road.Visualization.RoadsideWidth = 1.5 1.5
+Road.Visualization.RoadsideSlope = 1 1
+Road.Visualization.MovieNX.RenderMask = 4095
+Road.PathMode = -1
+Road.Terrain.Param = 50 25 300 100 0.75 0
+Road.Junction.0.ID = 55
+Road.Junction.0.Type = Direct
+Road.Junction.0.Knot = 0 0 0
+Road.Junction.0.RST = Urban
+Road.Junction.0.HMSimple = 1 -999 0 -999 0 -999
+Road.Junction.0.Arm.0.ID = 56
+Road.Junction.0.Arm.0 = 0 0.15 0 0 0
+Road.Junction.0.Arm.1.ID = 57
+Road.Junction.0.Arm.1 = 0 0.15 0 0 1
+Road.Junction.0.MainArms = 0 1
+Road.Link.0.ID = 0
+Road.Link.0.Node0 = 0 0 0 1
+Road.Link.0.Node1 = 2.22044604925031e-16 3.46944695195361e-18 0 1
+Road.Link.0.RST = Countryroad
+Road.Link.0.RL.ID = 1
+Road.Link.0.Seg.0.ID = 5
+Road.Link.0.Seg.0.Type = TurnRight
+Road.Link.0.Seg.0.Param = 30 359 0 0 0 0 0 0
+Road.Link.0.Seg.1.ID = 53
+Road.Link.0.Seg.1.Type = PointList
+Road.Link.0.Seg.1.Param = 0.999847695156391 0.0174524064372835 1 0 0 0 0 0
+Road.Link.0.Seg.1.PointList:
+	58 -1 0 0
+Road.Link.0.LateralCenterLineOffset.ID = 7
+Road.Link.0.LateralCenterLineOffset:
+	8 -1 0 0 0 2 0 -999 -999
+	10 -1 200 0 0 2 0 -999 -999
+Road.Link.0.LaneSection.0.ID = 6
+Road.Link.0.LaneSection.0.Start = 0
+Road.Link.0.LaneSection.0.LaneL.0.ID = 17
+Road.Link.0.LaneSection.0.LaneL.0 = 0 0.1 0.1 4 0 0 0
+Road.Link.0.LaneSection.0.LaneL.0.ARP = 18 19 20 21 22 23
+Road.Link.0.LaneSection.0.LaneL.1.ID = 27
+Road.Link.0.LaneSection.0.LaneL.1 = 0 2.5 2.5 5 0 0 0
+Road.Link.0.LaneSection.0.LaneR.0.ID = 28
+Road.Link.0.LaneSection.0.LaneR.0 = 0 4 4 0 0 0 0
+Road.Link.0.LaneSection.0.LaneR.0.ARP = 29 30 31 32 33 34
+Road.Link.0.LaneSection.0.LaneR.1.ID = 40
+Road.Link.0.LaneSection.0.LaneR.1 = 0 0.1 0.1 4 0 0 0
+Road.Link.0.LaneSection.0.LaneR.1.ARP = 41 42 43 44 45 46
+Road.Link.0.LaneSection.0.LaneR.2.ID = 50
+Road.Link.0.LaneSection.0.LaneR.2 = 0 2.5 2.5 5 0 0 0
+Road.LanePath.0 = 24 17 0.25 10 0.1 0.1 -1 -1
+Road.LanePath.1 = 35 28 2 10 0.1 0.1 -1 -1
+Road.LanePath.2 = 47 40 0.25 10 0.1 0.1 -1 -1
+Route.0.ID = 9
+Route.0.Name = Route_0
+Route.0.DrvPath.ID = 11
+Route.0.DrvPath:
+	35
+	35
+Road.RL.1.RoadMarking.0.ID = 4 28
+Road.RL.1.RoadMarking.0 = 0 0 0 1 0 -1 0.15 0 1 0 0 0 0 1 1 0 ""
+Road.RL.1.RoadMarking.0.Material.0 = 1.0,1.0,1.0 0 0 0 0 0 0 0 0 0 0 0
+Road.RL.1.RoadMarking.1.ID = 2 17
+Road.RL.1.RoadMarking.1 = 0 0 0 1 0 1 0.15 0 1 0 0 0 0 1 1 0 ""
+Road.RL.1.RoadMarking.1.Material.0 = 1.0,1.0,1.0 0 0 0 0 0 0 0 0 0 0 0
+Road.MaxUsedObjId = 58
+Vehicle.Routing.Type = Route
+Vehicle.Routing.ObjId = 9
+Vehicle.StartPos.Type = Route
+Vehicle.StartPos.ObjId = 9
+Vehicle.StartPos = 0 0
+Vehicle.StartPos.Orientation = 0
+DrivMan.nMan = 1
+DrivMan.Man.Start.Velocity = 0
+DrivMan.Man.Start.GearNo = 0
+DrivMan.Man.Start.SteerAng = 0
+DrivMan.Man.Start.LaneOffset = 0
+DrivMan.Man.Start.OperatorActive = 1
+DrivMan.Man.Start.OperatorState = drive
+DrivMan.VhclOperator.Kind = IPGOperator 1
+DrivMan.Man.0.nLongSteps = 1
+DrivMan.Man.0.nLatSteps = 1
+DrivMan.Man.0.CombinedSteps = 1
+DrivMan.Man.0.MaxExec = 1
+DrivMan.Man.0.ConsiderDomain = own
+DrivMan.Man.0.Transition.Interrupt = end
+DrivMan.Man.0.Transition.EndCond = end
+DrivMan.Man.0.Transition.SimultanStart = end
+DrivMan.Man.0.LongStep.0.Cmds:
+	Eval Time >= 100 && Time <= 200 ? Car.CRR.rz_ext = -0.1 :Car.CRR.rz_ext = 0
+	""
+	Eval Time >= 100 && Time <= 200 ? Car.CRL.rz_ext = -0.1 :Car.CRL.rz_ext = 0
+DrivMan.Man.0.LongStep.0.TimeLimit = 300.0
+DrivMan.Man.0.LongStep.0.Dyn = Driver 1 0
+DrivMan.Man.0.LatStep.0.Cmds:
+	Eval Time >= 100 && Time <= 200 ? Car.CRR.rz_ext = -0.1 :Car.CRR.rz_ext = 0
+	""
+	Eval Time >= 100 && Time <= 200 ? Car.CRL.rz_ext = -0.1 :Car.CRL.rz_ext = 0
+DrivMan.Man.0.LatStep.0.TimeLimit = 300.0
+DrivMan.Man.0.LatStep.0.Dyn = Driver 0
+Traffic.SpeedUnit = ms
+Traffic.IFF.FName =
+Traffic.IFF.Time.Name =
+Traffic.GenDriverBehavior.FName = Default
+Traffic.N = 0
+Traffic.SourceSink.Active = 0
+Traffic.SourceSink.Mode = LocalDens
+Traffic.SourceSink.Density = -1
+Traffic.SourceSink.CarRatio = 80
+Traffic.SourceSink.CovRange.nObjsMax = 300
+Traffic.SourceSink.CovRange.Range = 100 500
+Traffic.SourceSink.GenerateAtStart = 1
+Traffic.SourceSink.OLR.Mode = AlongPath
+Traffic.SourceSink.OLR.TimePreview = 4
+Traffic.SourceSink.OLR.DistPreview = 150
+Traffic.SourceSink.OLR.OffRoute = 1
+Traffic.SourceSink.OLR.OffRouteMaxLinks = 3
+Traffic.SourceSink.OLR.OffRouteMaxPreview = 400
+Traffic.SourceSink.nObjsMax = 1000
+Traffic.SourceSink.ConsiderManObjs = 0
+Traffic.SourceSink.dtMovieLatency = 0.2
+Traffic.SourceSink.MultiThread = 1
+Traffic.SourceSink.BlockSim = 1
+Traffic.SourceSink.tSync = 200 50
+Traffic.SourceSink.Template.N = 0
+Traffic.SourceSink.AutoDriver.N = 0
+DrivMan.OW.Active = 0
+DrivMan.OW.Quantities =
+DrivMan.OW.StartGearNo = 1
+DrivMan.OW.StartVelocity =
+DrivMan.OW.GasMax = 0.5
+DrivMan.OW.RefCh = Time
+DrivMan.OW.ConsiderRoadSigns = 0
+DrivMan.OW.sRoute.Offset = 0
+ErrorClass.0.Action = abort
+ErrorClass.0.Save = 0
+ErrorClass.0.WarningLimit = 3 5
+ErrorClass.1.Action = abort
+ErrorClass.1.Save = 0
+ErrorClass.1.WarningLimit = 3 5
+ErrorClass.2.Action = abort
+ErrorClass.2.Save = 0
+ErrorClass.2.WarningLimit = 3 5
+ErrorClass.3.Action = abort
+ErrorClass.3.Save = 0
+ErrorClass.3.WarningLimit = 3 5
+ErrorClass.4.Action = abort
+ErrorClass.4.Save = 0
+ErrorClass.4.WarningLimit = 3 5
+ErrorClass.5.Action = abort
+ErrorClass.5.Save = 0
+ErrorClass.5.WarningLimit = 3 5
+ErrorClass.6.Action = abort
+ErrorClass.6.Save = 0
+ErrorClass.6.WarningLimit = 10 5
+ErrorClass.7.Action = abort
+ErrorClass.7.Save = 0
+ErrorClass.7.WarningLimit = 3 5
+ErrorClass.10.Action = abort
+ErrorClass.10.Save = 0
+ErrorClass.10.WarningLimit = 3 5
+ErrorClass.11.Action = abort
+ErrorClass.11.Save = 0
+ErrorClass.11.WarningLimit = 3 5
+Env.StartTime.Year = 2017
+Env.StartTime.Month = 1
+Env.StartTime.Day = 1
+Env.StartTime.Hour = 12
+Env.StartTime.Min = 0
+Env.StartTime.Sec = 0
+Env.StartTime.DeltaUTC = 0
+Env.GNav.Active = 0
+Env.Temperature = 20.0
+Env.AirDensity = 1.205
+Env.AirPressure = 1.013
+Env.AirHumidity = 60
+Env.SolarRadiation = 400.0
+Env.Sun.Position = angleDefinition
+Env.Sun.Azimuth = 45.0
+Env.Sun.Elevation = 45.0
+Env.Cloud.Kind = simple
+Env.Cloud.Height = 800
+Env.Cloud.Intensity = 0.2
+Env.Cloud.Velocity = 10
+Env.Cloud.Angle = 45
+Env.FogActive = 0
+Env.VisRangeInFog = 10000
+Env.FogUseSkyColor = 0
+Env.FogColor = 0.5 0.5 0.5
+Env.RainRate = 0.0
+Env.Wind.Kind = none
+Env.Wind.Velocity = 0.0
+Env.Wind.Angle = 0.0
+Env.Kind = Generic
+Env.Temp.Offset_Elev = -0.0065
+Env.Temp.Offset_sRoad.Amplify = 1.0
+Env.Temp.Offset_sRoad.On = 0
+Env.Temp.Offset_Time.Amplify = 1.0
+Env.Temp.Offset_Time.On = 1
+Env.Temp.Offset_Time:
+	0.0 -2.0
+	3.0 -2.5
+	6.0 -2.7
+	7.5 -2.7
+	9.0 -2.5
+	10.0 -2.3
+	11.0 -1.6
+	12.0 0.0
+	13.0 1.4
+	14.0 2.1
+	15.5 2.5
+	17.0 2.2
+	18.0 1.7
+	19.0 1.1
+	20.0 0.2
+	21.0 -0.6
+	22.0 -1.1
+	23.0 -1.6
+	24.0 -2.0
+Driver.ParamIdent = IPGDriver 5
+Driver.Mode = std
+Driver.Long.DrivMaxSpeed = 0
+Driver.Long.CruisingSpeed = 250
+Driver.CornerCutCoef = 1
+Driver.ConsiderTraffic = 0
+Driver.Traffic.TimeGapMin = 1.8
+Driver.Traffic.TimeGapMax = 5.0
+Driver.Traffic.DistMin = 6
+Driver.Traffic.DistMax = 250
+Driver.Traffic.EcoCoef = 0.75
+Driver.Traffic.Overtake = 0
+Driver.Traffic.Overtake_Rate = 1
+Driver.Traffic.Overtake_dSpeedMin = 10
+Driver.Long.dtAccBrake = 0.25
+Driver.Long.axMax = 4.0
+Driver.Long.axMin = -6.0
+Driver.Long.ayMax = 5.0
+Driver.Long.GGExp:
+	50 1.5 1.5
+Driver.Long.DevMax = 0.0
+Driver.Long.tReact = 0.0
+Driver.Long.TractionControl = 1
+Driver.DecShift.UseBrakePark = 0
+Driver.DecShift.tSwitchGear = 0.5
+Driver.DecShift.nEngine.Limits:
+	2500 5000
+Driver.DecShift.nEngine.Shift:
+	3000 4500
+Driver.Lat.DevMax = 0.0
+Driver.Lat.tReact = 0.0
+Driver.Knowl.Long.tActionMin = 0.5
+Driver.Knowl.Lat.StWhlAngleMax = 630
+Driver.Knowl.Lat.StWhlAngleVelMax = 1500
+Driver.Knowl.Lat.StWhlAngleAccMax = 20000
+Driver.Learn.VehicleLimits.TestRun = Tutorial/RearAxleSteering
+Driver.Learn.VehicleLimits.Date = 1606150086
+Driver.Learn.ControllerDyn.TestRun = Tutorial/RearAxleSteering
+Driver.Learn.ControllerDyn.Date = 1606150086
+Driver.Learn.MaxSpeed.TestRun =
+Driver.Learn.MaxSpeed.Date = 0
+Driver.Learn.Remember = 0
+Driver.Learn.Friction = 1.0
+Driver.Knowl.Long.tPreviewBra = 0.6
+Driver.Knowl.Long.tPreviewAcc = 1.5
+Driver.Knowl.Lat.tPreview = 0.8
+Driver.Learn.NEng_S = 1
+Driver.Consider.SpeedLimit = 1
+Driver.Consider.StopMarker = 1
+Driver.Consider.TrfLight = 1

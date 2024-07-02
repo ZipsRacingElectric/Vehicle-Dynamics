@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<material version="2.15.0.1" guid="5e873a709f858b0f2015fd2258ba5a19ca3c7ca4" parent="1aad984ba140912e540ca6b5d32c88900a2b42af" base_material="4dfec30f491f753f6e89094db6d3d695e89f9d6f">
+	<texture name="albedo">guid://247e707573164750ebca726f0c25fd02b25d9879</texture>
+	<texture name="normal">guid://884a264f712d5f62604fd759f7fb58e4a7e14ef3</texture>
+	<parameter name="metalness" expression="0">1</parameter>
+	<parameter name="roughness" expression="0">0.623430014</parameter>
+	<parameter name="specular" expression="0">0.349999994</parameter>
+	<parameter name="uv_transform" expression="0">20 20 0 0</parameter>
+</material>

@@ -1,0 +1,41 @@
+#INFOFILE1
+# Description file
+
+File.Format = erg
+File.ByteOrder = LittleEndian
+
+# 7 quantities of type 'Float'
+
+File.At.1.Name =	tau
+File.At.1.Type =	Float
+Quantity.tau.Unit =	deg
+
+File.At.2.Name =	cDragF
+File.At.2.Type =	Float
+
+File.At.3.Name =	cSideF
+File.At.3.Type =	Float
+
+File.At.4.Name =	cLiftF
+File.At.4.Type =	Float
+
+File.At.5.Name =	cRollTrq
+File.At.5.Type =	Float
+
+File.At.6.Name =	cPitchTrq
+File.At.6.Type =	Float
+
+File.At.7.Name =	cYawTrq
+File.At.7.Type =	Float
+
+
+CarMaker.Version =	12.0.1
+App.Version =		CarMaker 12.0.1 - Car_Generic
+App.BuildVersion =	3
+TestRun.Vehicle =	Examples_FS/FSE_AllWheelDrive
+TestRun.Tire.0 =	
+TestRun.Tire.1 =	
+TestRun.Tire.2 =	
+TestRun.Tire.3 =	
+Aero.WindVel =  100
+Aero.Ax =       2

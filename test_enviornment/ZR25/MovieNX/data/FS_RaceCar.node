@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<nodes version="2.15.0.1">
+	<node type="NodeDummy" id="490107881" name="FS_RaceCar">
+		<transform>0.999999821245 -3.91453047698e-24 1.48014794441e-16 0.0 2.11403298369e-24 0.999999821245 1.21643036698e-08 0.0 -1.48014794441e-16 -1.21643036698e-08 0.999999821245 0.0 0 0 0 1.0</transform>
+		<node type="NodeDummy" id="1004829025" name="body_A2B">
+			<transform>1.00000005955 2.11403375171e-24 -1.48014829712e-16 0.0 -3.91453114557e-24 1.00000005955 -1.21643065686e-08 0.0 1.48014829712e-16 1.21643065686e-08 1.00000005955 0.0 0 0 0 1.0</transform>
+			<node type="ObjectMeshStatic" id="698903132" name="FS_RaceCar">
+				<mesh_name>guid://7dc5ea1456b3ce636f76e0662cd6fc8dd5bef488</mesh_name>
+				<surface name="shield" physics_friction="1" physics_restitution="1" material="b9db5b49fd12ac1454e5a8637edaf2669617e68d"/>
+				<surface name="body_2" physics_friction="1" physics_restitution="1" material="886283413b1483ac44bc2b1be8cce5be21ee5205"/>
+				<surface name="interior" physics_friction="1" physics_restitution="1" material="1aad984ba140912e540ca6b5d32c88900a2b42af"/>
+				<surface name="plastic_green" physics_friction="1" physics_restitution="1" material="aa0589c08759721fe47918f28627a3a9d32898f4"/>
+				<surface name="lights" physics_friction="1" physics_restitution="1" material="b736d6bb5c095cdeb5971ea5a96e3fc0fe2eb01f"/>
+				<surface name="frame" physics_friction="1" physics_restitution="1" material="82f2981365333e56e14561bddd5b37f849959af7"/>
+				<surface name="fl_glass_scatter" physics_friction="1" physics_restitution="1" material="8dce32d78f28324a6ebcfd21e11bf40ca3431ffb"/>
+				<surface name="black" physics_friction="1" physics_restitution="1" material="c8804a71a1c272d2e538b78fc052281fe2bb7d9a"/>
+				<surface name="carbonfiber" physics_friction="1" physics_restitution="1" material="5e873a709f858b0f2015fd2258ba5a19ca3c7ca4"/>
+				<surface name="body_3" physics_friction="1" physics_restitution="1" material="2ba91cd5a64f483051e8bdcfaa1810e21c73dad9"/>
+				<surface name="body" physics_friction="1" physics_restitution="1" material="db6be0994b575124c6b66a3360fda9f6d40e98dd"/>
+				<surface name="decals" physics_friction="1" physics_restitution="1" material="8a71d710a0773f2f1140e2c21c05c33905139344"/>
+				<surface name="frame_2" physics_friction="1" physics_restitution="1" material="52be5bf743dd08ea9f0fa3417c9f23ac74864b1b"/>
+				<surface name="black_scatter" physics_friction="1" physics_restitution="1" material="e3a16b5a983142f121245f9cbf9bf64b28cf572e"/>
+				<surface name="blue_plastic" physics_friction="1" physics_restitution="1" material="a1098535372ad510e910252f22a890c24b9d9939"/>
+				<surface name="alu_black" physics_friction="1" physics_restitution="1" material="5eb575aad621a9010693ee6ccb7d16dba4475e7e"/>
+				<surface name="plastic_red" physics_friction="1" physics_restitution="1" material="f481efc0d64ea01f15406ef2d28b01a979a85ef4"/>
+				<surface name="white_plastic" physics_friction="1" physics_restitution="1" material="20af4b52185a7289b20a5a54392701a3d6fbfaa6"/>
+				<surface name="brake" physics_friction="1" physics_restitution="1" material="70d264098fda9dd40f1f6f2361ba8a2603a91b4d"/>
+				<transform>1.00000011927 -3.9145314103e-24 1.48014842965e-16 0.0 2.11403348774e-24 1.00000011927 1.21643074583e-08 0.0 -1.48014842965e-16 -1.21643074583e-08 1.00000011927 0.0 0 0 0 1.0</transform>
+			</node>
+			<node type="NodeDummy" id="1465403094" name="driver_pov">
+				<transform>0.99999994046 -2.57416615908e-31 -4.40864044643e-24 0.0 7.23643552722e-32 0.99999994046 -1.62667060733e-16 0.0 4.40864049573e-24 1.62667060733e-16 0.99999994046 0.0 0 0 0 1.0</transform>
+			</node>
+		</node>
+		<node type="NodeDummy" id="1122107106" name="wheel.fl">
+			<transform>1 0 0 0.0 0 1 0 0.0 0 0 1 0.0 2.0343 0.60834 0.21696 1.0</transform>
+			<node type="ObjectMeshStatic" id="292669584" name="FS_RaceCar_WheelF">
+				<mesh_name>guid://e016629f2a644f721d506829ef059374fecba843</mesh_name>
+				<surface name="alu" physics_friction="1" physics_restitution="1" material="484d5a1085cee62ff23e5dc28ae702398c9dc644"/>
+				<surface name="tire" physics_friction="1" physics_restitution="1" material="37c0587457c5a943fa743dc64d48fa6db19018e8"/>
+				<transform>1 0 0 0.0 0 1 0 0.0 0 0 1 0.0 0 0 0 1.0</transform>
+			</node>
+		</node>
+		<node type="NodeDummy" id="184829829" name="wheel.fr">
+			<transform>1 0 0 0.0 0 1 0 0.0 0 0 1 0.0 2.0343 -0.60834 0.21696 1.0</transform>
+			<node type="ObjectMeshStatic" id="2076325298" name="FS_RaceCar_WheelF">
+				<mesh_name>guid://e016629f2a644f721d506829ef059374fecba843</mesh_name>
+				<surface name="alu" physics_friction="1" physics_restitution="1" material="484d5a1085cee62ff23e5dc28ae702398c9dc644"/>
+				<surface name="tire" physics_friction="1" physics_restitution="1" material="37c0587457c5a943fa743dc64d48fa6db19018e8"/>
+				<transform>-1 -8.74227765735e-08 0 0.0 8.74227765735e-08 -1 0 0.0 0 0 1 0.0 0 0 0 1.0</transform>
+			</node>
+		</node>
+		<node type="NodeDummy" id="621185979" name="body_B">
+			<transform>1 3.67341984632e-40 0 0.0 7.34683969264e-40 1 -1.65436122511e-24 0.0 0 1.65436122511e-24 1 0.0 0 0 0 1.0</transform>
+			<node type="NodeDummy" id="1585570802" name="wheel.rl">
+				<transform>0.999999940336 3.22247548756e-31 -1.32419556773e-23 0.0 -2.86114706019e-31 0.999999940336 -4.89824542079e-16 0.0 8.829435925e-24 3.2669522281e-16 0.999999999941 0.0 0.45763 0.58335 0.21696 1.0</transform>
+				<node type="ObjectMeshStatic" id="204029129" name="FS_RaceCar_WheelB">
+					<mesh_name>guid://ccec37ad3281b5282c1b166774cb209a48c6f731</mesh_name>
+					<surface name="alu" physics_friction="1" physics_restitution="1" material="484d5a1085cee62ff23e5dc28ae702398c9dc644"/>
+					<surface name="tire" physics_friction="1" physics_restitution="1" material="37c0587457c5a943fa743dc64d48fa6db19018e8"/>
+					<transform>1 0 0 0.0 0 1 0 0.0 0 0 1 0.0 0 0 0 1.0</transform>
+				</node>
+			</node>
+			<node type="NodeDummy" id="942633264" name="wheel.rr">
+				<transform>1 0 0 0.0 0 1 0 0.0 0 0 1 0.0 0.45763 -0.58335 0.21696 1.0</transform>
+				<node type="ObjectMeshStatic" id="192999987" name="FS_RaceCar_WheelB">
+					<mesh_name>guid://ccec37ad3281b5282c1b166774cb209a48c6f731</mesh_name>
+					<surface name="alu" physics_friction="1" physics_restitution="1" material="484d5a1085cee62ff23e5dc28ae702398c9dc644"/>
+					<surface name="tire" physics_friction="1" physics_restitution="1" material="37c0587457c5a943fa743dc64d48fa6db19018e8"/>
+					<transform>-1 -8.74227765735e-08 0 0.0 8.74227765735e-08 -1 0 0.0 0 0 1 0.0 0 0 0 1.0</transform>
+				</node>
+			</node>
+		</node>
+	</node>
+</nodes>

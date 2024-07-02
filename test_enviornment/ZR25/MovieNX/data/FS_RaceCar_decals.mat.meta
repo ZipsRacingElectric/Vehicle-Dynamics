@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<asset version="2.15.0.1">
+	<guid>8a71d710a0773f2f1140e2c21c05c33905139344</guid>
+	<type>material</type>
+	<hash>b3ebdd5c</hash>
+	<runtimes>
+		<runtime id="8a71d710a0773f2f1140e2c21c05c33905139344" name="FS_RaceCar_decals" link="0" type="5"/>
+	</runtimes>
+	<parameters>
+		<parameter type="bool" name="unchanged">1</parameter>
+	</parameters>
+</asset>

@@ -1,0 +1,1148 @@
+#INFOFILE1
+# Description file
+
+File.Format = erg
+File.ByteOrder = LittleEndian
+
+# 282 quantities of type 'Float'
+
+File.At.1.Name =	Time
+File.At.1.Type =	Float
+Quantity.Time.Unit =	s
+
+File.At.2.Name =	SuspFL.q0
+File.At.2.Type =	Float
+Quantity.SuspFL.q0.Unit =	mm
+
+File.At.3.Name =	SuspFL.q0p
+File.At.3.Type =	Float
+Quantity.SuspFL.q0p.Unit =	m/s
+
+File.At.4.Name =	SuspFL.GenFrc0
+File.At.4.Type =	Float
+Quantity.SuspFL.GenFrc0.Unit =	N
+
+File.At.5.Name =	SuspFL.GenFrc1
+File.At.5.Type =	Float
+Quantity.SuspFL.GenFrc1.Unit =	N
+
+File.At.6.Name =	AxleFrcFL
+File.At.6.Type =	Float
+Quantity.AxleFrcFL.Unit =	N
+
+File.At.7.Name =	SuspFL.ParasiticStiffFrc0
+File.At.7.Type =	Float
+Quantity.SuspFL.ParasiticStiffFrc0.Unit =	N
+
+File.At.8.Name =	SpringFL.l
+File.At.8.Type =	Float
+Quantity.SpringFL.l.Unit =	mm
+
+File.At.9.Name =	SpringFL.dldz
+File.At.9.Type =	Float
+Quantity.SpringFL.dldz.Unit =	mm/mm
+
+File.At.10.Name =	SpringFL.Frc
+File.At.10.Type =	Float
+Quantity.SpringFL.Frc.Unit =	N
+
+File.At.11.Name =	SpringFL.Frc_ext
+File.At.11.Type =	Float
+Quantity.SpringFL.Frc_ext.Unit =	N
+
+File.At.12.Name =	SpringFL.Frc_tot
+File.At.12.Type =	Float
+Quantity.SpringFL.Frc_tot.Unit =	N
+
+File.At.13.Name =	DampFL.l
+File.At.13.Type =	Float
+Quantity.DampFL.l.Unit =	mm
+
+File.At.14.Name =	DampFL.dldz
+File.At.14.Type =	Float
+Quantity.DampFL.dldz.Unit =	mm/mm
+
+File.At.15.Name =	DampFL.v
+File.At.15.Type =	Float
+Quantity.DampFL.v.Unit =	m/s
+
+File.At.16.Name =	DampFL.Frc
+File.At.16.Type =	Float
+Quantity.DampFL.Frc.Unit =	N
+
+File.At.17.Name =	DampFL.Frc_ext
+File.At.17.Type =	Float
+Quantity.DampFL.Frc_ext.Unit =	N
+
+File.At.18.Name =	DampFL.Frc_tot
+File.At.18.Type =	Float
+Quantity.DampFL.Frc_tot.Unit =	N
+
+File.At.19.Name =	BufferFL.l
+File.At.19.Type =	Float
+Quantity.BufferFL.l.Unit =	mm
+
+File.At.20.Name =	BufferFL.dldz
+File.At.20.Type =	Float
+Quantity.BufferFL.dldz.Unit =	mm/mm
+
+File.At.21.Name =	BufferFL.Frc
+File.At.21.Type =	Float
+Quantity.BufferFL.Frc.Unit =	N
+
+File.At.22.Name =	BufferFL.Frc_ext
+File.At.22.Type =	Float
+Quantity.BufferFL.Frc_ext.Unit =	N
+
+File.At.23.Name =	BufferFL.Frc_tot
+File.At.23.Type =	Float
+Quantity.BufferFL.Frc_tot.Unit =	N
+
+File.At.24.Name =	StabiFL.l
+File.At.24.Type =	Float
+Quantity.StabiFL.l.Unit =	mm
+
+File.At.25.Name =	StabiFL.dldz
+File.At.25.Type =	Float
+Quantity.StabiFL.dldz.Unit =	mm/mm
+
+File.At.26.Name =	StabiFL.Frc
+File.At.26.Type =	Float
+Quantity.StabiFL.Frc.Unit =	N
+
+File.At.27.Name =	StabiFL.Frc_ext
+File.At.27.Type =	Float
+Quantity.StabiFL.Frc_ext.Unit =	N
+
+File.At.28.Name =	StabiFL.Frc_tot
+File.At.28.Type =	Float
+Quantity.StabiFL.Frc_tot.Unit =	N
+
+File.At.29.Name =	SuspFR.q0
+File.At.29.Type =	Float
+Quantity.SuspFR.q0.Unit =	mm
+
+File.At.30.Name =	SuspFR.q0p
+File.At.30.Type =	Float
+Quantity.SuspFR.q0p.Unit =	m/s
+
+File.At.31.Name =	SuspFR.GenFrc0
+File.At.31.Type =	Float
+Quantity.SuspFR.GenFrc0.Unit =	N
+
+File.At.32.Name =	SuspFR.GenFrc1
+File.At.32.Type =	Float
+Quantity.SuspFR.GenFrc1.Unit =	N
+
+File.At.33.Name =	AxleFrcFR
+File.At.33.Type =	Float
+Quantity.AxleFrcFR.Unit =	N
+
+File.At.34.Name =	SuspFR.ParasiticStiffFrc0
+File.At.34.Type =	Float
+Quantity.SuspFR.ParasiticStiffFrc0.Unit =	N
+
+File.At.35.Name =	SpringFR.l
+File.At.35.Type =	Float
+Quantity.SpringFR.l.Unit =	mm
+
+File.At.36.Name =	SpringFR.dldz
+File.At.36.Type =	Float
+Quantity.SpringFR.dldz.Unit =	mm/mm
+
+File.At.37.Name =	SpringFR.Frc
+File.At.37.Type =	Float
+Quantity.SpringFR.Frc.Unit =	N
+
+File.At.38.Name =	SpringFR.Frc_ext
+File.At.38.Type =	Float
+Quantity.SpringFR.Frc_ext.Unit =	N
+
+File.At.39.Name =	SpringFR.Frc_tot
+File.At.39.Type =	Float
+Quantity.SpringFR.Frc_tot.Unit =	N
+
+File.At.40.Name =	DampFR.l
+File.At.40.Type =	Float
+Quantity.DampFR.l.Unit =	mm
+
+File.At.41.Name =	DampFR.dldz
+File.At.41.Type =	Float
+Quantity.DampFR.dldz.Unit =	mm/mm
+
+File.At.42.Name =	DampFR.v
+File.At.42.Type =	Float
+Quantity.DampFR.v.Unit =	m/s
+
+File.At.43.Name =	DampFR.Frc
+File.At.43.Type =	Float
+Quantity.DampFR.Frc.Unit =	N
+
+File.At.44.Name =	DampFR.Frc_ext
+File.At.44.Type =	Float
+Quantity.DampFR.Frc_ext.Unit =	N
+
+File.At.45.Name =	DampFR.Frc_tot
+File.At.45.Type =	Float
+Quantity.DampFR.Frc_tot.Unit =	N
+
+File.At.46.Name =	BufferFR.l
+File.At.46.Type =	Float
+Quantity.BufferFR.l.Unit =	mm
+
+File.At.47.Name =	BufferFR.dldz
+File.At.47.Type =	Float
+Quantity.BufferFR.dldz.Unit =	mm/mm
+
+File.At.48.Name =	BufferFR.Frc
+File.At.48.Type =	Float
+Quantity.BufferFR.Frc.Unit =	N
+
+File.At.49.Name =	BufferFR.Frc_ext
+File.At.49.Type =	Float
+Quantity.BufferFR.Frc_ext.Unit =	N
+
+File.At.50.Name =	BufferFR.Frc_tot
+File.At.50.Type =	Float
+Quantity.BufferFR.Frc_tot.Unit =	N
+
+File.At.51.Name =	StabiFR.l
+File.At.51.Type =	Float
+Quantity.StabiFR.l.Unit =	mm
+
+File.At.52.Name =	StabiFR.dldz
+File.At.52.Type =	Float
+Quantity.StabiFR.dldz.Unit =	mm/mm
+
+File.At.53.Name =	StabiFR.Frc
+File.At.53.Type =	Float
+Quantity.StabiFR.Frc.Unit =	N
+
+File.At.54.Name =	StabiFR.Frc_ext
+File.At.54.Type =	Float
+Quantity.StabiFR.Frc_ext.Unit =	N
+
+File.At.55.Name =	StabiFR.Frc_tot
+File.At.55.Type =	Float
+Quantity.StabiFR.Frc_tot.Unit =	N
+
+File.At.56.Name =	SuspRL.q0
+File.At.56.Type =	Float
+Quantity.SuspRL.q0.Unit =	mm
+
+File.At.57.Name =	SuspRL.q0p
+File.At.57.Type =	Float
+Quantity.SuspRL.q0p.Unit =	m/s
+
+File.At.58.Name =	SuspRL.GenFrc0
+File.At.58.Type =	Float
+Quantity.SuspRL.GenFrc0.Unit =	N
+
+File.At.59.Name =	SuspRL.GenFrc1
+File.At.59.Type =	Float
+Quantity.SuspRL.GenFrc1.Unit =	N
+
+File.At.60.Name =	AxleFrcRL
+File.At.60.Type =	Float
+Quantity.AxleFrcRL.Unit =	N
+
+File.At.61.Name =	SuspRL.ParasiticStiffFrc0
+File.At.61.Type =	Float
+Quantity.SuspRL.ParasiticStiffFrc0.Unit =	N
+
+File.At.62.Name =	SpringRL.l
+File.At.62.Type =	Float
+Quantity.SpringRL.l.Unit =	mm
+
+File.At.63.Name =	SpringRL.dldz
+File.At.63.Type =	Float
+Quantity.SpringRL.dldz.Unit =	mm/mm
+
+File.At.64.Name =	SpringRL.Frc
+File.At.64.Type =	Float
+Quantity.SpringRL.Frc.Unit =	N
+
+File.At.65.Name =	SpringRL.Frc_ext
+File.At.65.Type =	Float
+Quantity.SpringRL.Frc_ext.Unit =	N
+
+File.At.66.Name =	SpringRL.Frc_tot
+File.At.66.Type =	Float
+Quantity.SpringRL.Frc_tot.Unit =	N
+
+File.At.67.Name =	DampRL.l
+File.At.67.Type =	Float
+Quantity.DampRL.l.Unit =	mm
+
+File.At.68.Name =	DampRL.dldz
+File.At.68.Type =	Float
+Quantity.DampRL.dldz.Unit =	mm/mm
+
+File.At.69.Name =	DampRL.v
+File.At.69.Type =	Float
+Quantity.DampRL.v.Unit =	m/s
+
+File.At.70.Name =	DampRL.Frc
+File.At.70.Type =	Float
+Quantity.DampRL.Frc.Unit =	N
+
+File.At.71.Name =	DampRL.Frc_ext
+File.At.71.Type =	Float
+Quantity.DampRL.Frc_ext.Unit =	N
+
+File.At.72.Name =	DampRL.Frc_tot
+File.At.72.Type =	Float
+Quantity.DampRL.Frc_tot.Unit =	N
+
+File.At.73.Name =	BufferRL.l
+File.At.73.Type =	Float
+Quantity.BufferRL.l.Unit =	mm
+
+File.At.74.Name =	BufferRL.dldz
+File.At.74.Type =	Float
+Quantity.BufferRL.dldz.Unit =	mm/mm
+
+File.At.75.Name =	BufferRL.Frc
+File.At.75.Type =	Float
+Quantity.BufferRL.Frc.Unit =	N
+
+File.At.76.Name =	BufferRL.Frc_ext
+File.At.76.Type =	Float
+Quantity.BufferRL.Frc_ext.Unit =	N
+
+File.At.77.Name =	BufferRL.Frc_tot
+File.At.77.Type =	Float
+Quantity.BufferRL.Frc_tot.Unit =	N
+
+File.At.78.Name =	StabiRL.l
+File.At.78.Type =	Float
+Quantity.StabiRL.l.Unit =	mm
+
+File.At.79.Name =	StabiRL.dldz
+File.At.79.Type =	Float
+Quantity.StabiRL.dldz.Unit =	mm/mm
+
+File.At.80.Name =	StabiRL.Frc
+File.At.80.Type =	Float
+Quantity.StabiRL.Frc.Unit =	N
+
+File.At.81.Name =	StabiRL.Frc_ext
+File.At.81.Type =	Float
+Quantity.StabiRL.Frc_ext.Unit =	N
+
+File.At.82.Name =	StabiRL.Frc_tot
+File.At.82.Type =	Float
+Quantity.StabiRL.Frc_tot.Unit =	N
+
+File.At.83.Name =	SuspRR.q0
+File.At.83.Type =	Float
+Quantity.SuspRR.q0.Unit =	mm
+
+File.At.84.Name =	SuspRR.q0p
+File.At.84.Type =	Float
+Quantity.SuspRR.q0p.Unit =	m/s
+
+File.At.85.Name =	SuspRR.GenFrc0
+File.At.85.Type =	Float
+Quantity.SuspRR.GenFrc0.Unit =	N
+
+File.At.86.Name =	SuspRR.GenFrc1
+File.At.86.Type =	Float
+Quantity.SuspRR.GenFrc1.Unit =	N
+
+File.At.87.Name =	AxleFrcRR
+File.At.87.Type =	Float
+Quantity.AxleFrcRR.Unit =	N
+
+File.At.88.Name =	SuspRR.ParasiticStiffFrc0
+File.At.88.Type =	Float
+Quantity.SuspRR.ParasiticStiffFrc0.Unit =	N
+
+File.At.89.Name =	SpringRR.l
+File.At.89.Type =	Float
+Quantity.SpringRR.l.Unit =	mm
+
+File.At.90.Name =	SpringRR.dldz
+File.At.90.Type =	Float
+Quantity.SpringRR.dldz.Unit =	mm/mm
+
+File.At.91.Name =	SpringRR.Frc
+File.At.91.Type =	Float
+Quantity.SpringRR.Frc.Unit =	N
+
+File.At.92.Name =	SpringRR.Frc_ext
+File.At.92.Type =	Float
+Quantity.SpringRR.Frc_ext.Unit =	N
+
+File.At.93.Name =	SpringRR.Frc_tot
+File.At.93.Type =	Float
+Quantity.SpringRR.Frc_tot.Unit =	N
+
+File.At.94.Name =	DampRR.l
+File.At.94.Type =	Float
+Quantity.DampRR.l.Unit =	mm
+
+File.At.95.Name =	DampRR.dldz
+File.At.95.Type =	Float
+Quantity.DampRR.dldz.Unit =	mm/mm
+
+File.At.96.Name =	DampRR.v
+File.At.96.Type =	Float
+Quantity.DampRR.v.Unit =	m/s
+
+File.At.97.Name =	DampRR.Frc
+File.At.97.Type =	Float
+Quantity.DampRR.Frc.Unit =	N
+
+File.At.98.Name =	DampRR.Frc_ext
+File.At.98.Type =	Float
+Quantity.DampRR.Frc_ext.Unit =	N
+
+File.At.99.Name =	DampRR.Frc_tot
+File.At.99.Type =	Float
+Quantity.DampRR.Frc_tot.Unit =	N
+
+File.At.100.Name =	BufferRR.l
+File.At.100.Type =	Float
+Quantity.BufferRR.l.Unit =	mm
+
+File.At.101.Name =	BufferRR.dldz
+File.At.101.Type =	Float
+Quantity.BufferRR.dldz.Unit =	mm/mm
+
+File.At.102.Name =	BufferRR.Frc
+File.At.102.Type =	Float
+Quantity.BufferRR.Frc.Unit =	N
+
+File.At.103.Name =	BufferRR.Frc_ext
+File.At.103.Type =	Float
+Quantity.BufferRR.Frc_ext.Unit =	N
+
+File.At.104.Name =	BufferRR.Frc_tot
+File.At.104.Type =	Float
+Quantity.BufferRR.Frc_tot.Unit =	N
+
+File.At.105.Name =	StabiRR.l
+File.At.105.Type =	Float
+Quantity.StabiRR.l.Unit =	mm
+
+File.At.106.Name =	StabiRR.dldz
+File.At.106.Type =	Float
+Quantity.StabiRR.dldz.Unit =	mm/mm
+
+File.At.107.Name =	StabiRR.Frc
+File.At.107.Type =	Float
+Quantity.StabiRR.Frc.Unit =	N
+
+File.At.108.Name =	StabiRR.Frc_ext
+File.At.108.Type =	Float
+Quantity.StabiRR.Frc_ext.Unit =	N
+
+File.At.109.Name =	StabiRR.Frc_tot
+File.At.109.Type =	Float
+Quantity.StabiRR.Frc_tot.Unit =	N
+
+File.At.110.Name =	SuspFL.tx
+File.At.110.Type =	Float
+Quantity.SuspFL.tx.Unit =	mm
+
+File.At.111.Name =	SuspFL.tx_kin
+File.At.111.Type =	Float
+Quantity.SuspFL.tx_kin.Unit =	mm
+
+File.At.112.Name =	SuspFL.tx_com
+File.At.112.Type =	Float
+Quantity.SuspFL.tx_com.Unit =	mm
+
+File.At.113.Name =	SuspFL.tx_ext
+File.At.113.Type =	Float
+Quantity.SuspFL.tx_ext.Unit =	mm
+
+File.At.114.Name =	SuspFL.ty
+File.At.114.Type =	Float
+Quantity.SuspFL.ty.Unit =	mm
+
+File.At.115.Name =	SuspFL.ty_kin
+File.At.115.Type =	Float
+Quantity.SuspFL.ty_kin.Unit =	mm
+
+File.At.116.Name =	SuspFL.ty_com
+File.At.116.Type =	Float
+Quantity.SuspFL.ty_com.Unit =	mm
+
+File.At.117.Name =	SuspFL.ty_ext
+File.At.117.Type =	Float
+Quantity.SuspFL.ty_ext.Unit =	mm
+
+File.At.118.Name =	SuspFL.tz
+File.At.118.Type =	Float
+Quantity.SuspFL.tz.Unit =	mm
+
+File.At.119.Name =	SuspFL.tz_kin
+File.At.119.Type =	Float
+Quantity.SuspFL.tz_kin.Unit =	mm
+
+File.At.120.Name =	SuspFL.tz_com
+File.At.120.Type =	Float
+Quantity.SuspFL.tz_com.Unit =	mm
+
+File.At.121.Name =	SuspFL.tz_ext
+File.At.121.Type =	Float
+Quantity.SuspFL.tz_ext.Unit =	mm
+
+File.At.122.Name =	SuspFL.rx
+File.At.122.Type =	Float
+Quantity.SuspFL.rx.Unit =	deg
+
+File.At.123.Name =	SuspFL.rx_kin
+File.At.123.Type =	Float
+Quantity.SuspFL.rx_kin.Unit =	deg
+
+File.At.124.Name =	SuspFL.rx_com
+File.At.124.Type =	Float
+Quantity.SuspFL.rx_com.Unit =	deg
+
+File.At.125.Name =	SuspFL.rx_ext
+File.At.125.Type =	Float
+Quantity.SuspFL.rx_ext.Unit =	deg
+
+File.At.126.Name =	SuspFL.ry
+File.At.126.Type =	Float
+Quantity.SuspFL.ry.Unit =	deg
+
+File.At.127.Name =	SuspFL.ry_kin
+File.At.127.Type =	Float
+Quantity.SuspFL.ry_kin.Unit =	deg
+
+File.At.128.Name =	SuspFL.ry_com
+File.At.128.Type =	Float
+Quantity.SuspFL.ry_com.Unit =	deg
+
+File.At.129.Name =	SuspFL.ry_ext
+File.At.129.Type =	Float
+Quantity.SuspFL.ry_ext.Unit =	deg
+
+File.At.130.Name =	SuspFL.rz
+File.At.130.Type =	Float
+Quantity.SuspFL.rz.Unit =	deg
+
+File.At.131.Name =	SuspFL.rz_kin
+File.At.131.Type =	Float
+Quantity.SuspFL.rz_kin.Unit =	deg
+
+File.At.132.Name =	SuspFL.rz_com
+File.At.132.Type =	Float
+Quantity.SuspFL.rz_com.Unit =	deg
+
+File.At.133.Name =	SuspFL.rz_ext
+File.At.133.Type =	Float
+Quantity.SuspFL.rz_ext.Unit =	deg
+
+File.At.134.Name =	SuspFR.tx
+File.At.134.Type =	Float
+Quantity.SuspFR.tx.Unit =	mm
+
+File.At.135.Name =	SuspFR.tx_kin
+File.At.135.Type =	Float
+Quantity.SuspFR.tx_kin.Unit =	mm
+
+File.At.136.Name =	SuspFR.tx_com
+File.At.136.Type =	Float
+Quantity.SuspFR.tx_com.Unit =	mm
+
+File.At.137.Name =	SuspFR.tx_ext
+File.At.137.Type =	Float
+Quantity.SuspFR.tx_ext.Unit =	mm
+
+File.At.138.Name =	SuspFR.ty
+File.At.138.Type =	Float
+Quantity.SuspFR.ty.Unit =	mm
+
+File.At.139.Name =	SuspFR.ty_kin
+File.At.139.Type =	Float
+Quantity.SuspFR.ty_kin.Unit =	mm
+
+File.At.140.Name =	SuspFR.ty_com
+File.At.140.Type =	Float
+Quantity.SuspFR.ty_com.Unit =	mm
+
+File.At.141.Name =	SuspFR.ty_ext
+File.At.141.Type =	Float
+Quantity.SuspFR.ty_ext.Unit =	mm
+
+File.At.142.Name =	SuspFR.tz
+File.At.142.Type =	Float
+Quantity.SuspFR.tz.Unit =	mm
+
+File.At.143.Name =	SuspFR.tz_kin
+File.At.143.Type =	Float
+Quantity.SuspFR.tz_kin.Unit =	mm
+
+File.At.144.Name =	SuspFR.tz_com
+File.At.144.Type =	Float
+Quantity.SuspFR.tz_com.Unit =	mm
+
+File.At.145.Name =	SuspFR.tz_ext
+File.At.145.Type =	Float
+Quantity.SuspFR.tz_ext.Unit =	mm
+
+File.At.146.Name =	SuspFR.rx
+File.At.146.Type =	Float
+Quantity.SuspFR.rx.Unit =	deg
+
+File.At.147.Name =	SuspFR.rx_kin
+File.At.147.Type =	Float
+Quantity.SuspFR.rx_kin.Unit =	deg
+
+File.At.148.Name =	SuspFR.rx_com
+File.At.148.Type =	Float
+Quantity.SuspFR.rx_com.Unit =	deg
+
+File.At.149.Name =	SuspFR.rx_ext
+File.At.149.Type =	Float
+Quantity.SuspFR.rx_ext.Unit =	deg
+
+File.At.150.Name =	SuspFR.ry
+File.At.150.Type =	Float
+Quantity.SuspFR.ry.Unit =	deg
+
+File.At.151.Name =	SuspFR.ry_kin
+File.At.151.Type =	Float
+Quantity.SuspFR.ry_kin.Unit =	deg
+
+File.At.152.Name =	SuspFR.ry_com
+File.At.152.Type =	Float
+Quantity.SuspFR.ry_com.Unit =	deg
+
+File.At.153.Name =	SuspFR.ry_ext
+File.At.153.Type =	Float
+Quantity.SuspFR.ry_ext.Unit =	deg
+
+File.At.154.Name =	SuspFR.rz
+File.At.154.Type =	Float
+Quantity.SuspFR.rz.Unit =	deg
+
+File.At.155.Name =	SuspFR.rz_kin
+File.At.155.Type =	Float
+Quantity.SuspFR.rz_kin.Unit =	deg
+
+File.At.156.Name =	SuspFR.rz_com
+File.At.156.Type =	Float
+Quantity.SuspFR.rz_com.Unit =	deg
+
+File.At.157.Name =	SuspFR.rz_ext
+File.At.157.Type =	Float
+Quantity.SuspFR.rz_ext.Unit =	deg
+
+File.At.158.Name =	SuspRL.tx
+File.At.158.Type =	Float
+Quantity.SuspRL.tx.Unit =	mm
+
+File.At.159.Name =	SuspRL.tx_kin
+File.At.159.Type =	Float
+Quantity.SuspRL.tx_kin.Unit =	mm
+
+File.At.160.Name =	SuspRL.tx_com
+File.At.160.Type =	Float
+Quantity.SuspRL.tx_com.Unit =	mm
+
+File.At.161.Name =	SuspRL.tx_ext
+File.At.161.Type =	Float
+Quantity.SuspRL.tx_ext.Unit =	mm
+
+File.At.162.Name =	SuspRL.ty
+File.At.162.Type =	Float
+Quantity.SuspRL.ty.Unit =	mm
+
+File.At.163.Name =	SuspRL.ty_kin
+File.At.163.Type =	Float
+Quantity.SuspRL.ty_kin.Unit =	mm
+
+File.At.164.Name =	SuspRL.ty_com
+File.At.164.Type =	Float
+Quantity.SuspRL.ty_com.Unit =	mm
+
+File.At.165.Name =	SuspRL.ty_ext
+File.At.165.Type =	Float
+Quantity.SuspRL.ty_ext.Unit =	mm
+
+File.At.166.Name =	SuspRL.tz
+File.At.166.Type =	Float
+Quantity.SuspRL.tz.Unit =	mm
+
+File.At.167.Name =	SuspRL.tz_kin
+File.At.167.Type =	Float
+Quantity.SuspRL.tz_kin.Unit =	mm
+
+File.At.168.Name =	SuspRL.tz_com
+File.At.168.Type =	Float
+Quantity.SuspRL.tz_com.Unit =	mm
+
+File.At.169.Name =	SuspRL.tz_ext
+File.At.169.Type =	Float
+Quantity.SuspRL.tz_ext.Unit =	mm
+
+File.At.170.Name =	SuspRL.rx
+File.At.170.Type =	Float
+Quantity.SuspRL.rx.Unit =	deg
+
+File.At.171.Name =	SuspRL.rx_kin
+File.At.171.Type =	Float
+Quantity.SuspRL.rx_kin.Unit =	deg
+
+File.At.172.Name =	SuspRL.rx_com
+File.At.172.Type =	Float
+Quantity.SuspRL.rx_com.Unit =	deg
+
+File.At.173.Name =	SuspRL.rx_ext
+File.At.173.Type =	Float
+Quantity.SuspRL.rx_ext.Unit =	deg
+
+File.At.174.Name =	SuspRL.ry
+File.At.174.Type =	Float
+Quantity.SuspRL.ry.Unit =	deg
+
+File.At.175.Name =	SuspRL.ry_kin
+File.At.175.Type =	Float
+Quantity.SuspRL.ry_kin.Unit =	deg
+
+File.At.176.Name =	SuspRL.ry_com
+File.At.176.Type =	Float
+Quantity.SuspRL.ry_com.Unit =	deg
+
+File.At.177.Name =	SuspRL.ry_ext
+File.At.177.Type =	Float
+Quantity.SuspRL.ry_ext.Unit =	deg
+
+File.At.178.Name =	SuspRL.rz
+File.At.178.Type =	Float
+Quantity.SuspRL.rz.Unit =	deg
+
+File.At.179.Name =	SuspRL.rz_kin
+File.At.179.Type =	Float
+Quantity.SuspRL.rz_kin.Unit =	deg
+
+File.At.180.Name =	SuspRL.rz_com
+File.At.180.Type =	Float
+Quantity.SuspRL.rz_com.Unit =	deg
+
+File.At.181.Name =	SuspRL.rz_ext
+File.At.181.Type =	Float
+Quantity.SuspRL.rz_ext.Unit =	deg
+
+File.At.182.Name =	SuspRR.tx
+File.At.182.Type =	Float
+Quantity.SuspRR.tx.Unit =	mm
+
+File.At.183.Name =	SuspRR.tx_kin
+File.At.183.Type =	Float
+Quantity.SuspRR.tx_kin.Unit =	mm
+
+File.At.184.Name =	SuspRR.tx_com
+File.At.184.Type =	Float
+Quantity.SuspRR.tx_com.Unit =	mm
+
+File.At.185.Name =	SuspRR.tx_ext
+File.At.185.Type =	Float
+Quantity.SuspRR.tx_ext.Unit =	mm
+
+File.At.186.Name =	SuspRR.ty
+File.At.186.Type =	Float
+Quantity.SuspRR.ty.Unit =	mm
+
+File.At.187.Name =	SuspRR.ty_kin
+File.At.187.Type =	Float
+Quantity.SuspRR.ty_kin.Unit =	mm
+
+File.At.188.Name =	SuspRR.ty_com
+File.At.188.Type =	Float
+Quantity.SuspRR.ty_com.Unit =	mm
+
+File.At.189.Name =	SuspRR.ty_ext
+File.At.189.Type =	Float
+Quantity.SuspRR.ty_ext.Unit =	mm
+
+File.At.190.Name =	SuspRR.tz
+File.At.190.Type =	Float
+Quantity.SuspRR.tz.Unit =	mm
+
+File.At.191.Name =	SuspRR.tz_kin
+File.At.191.Type =	Float
+Quantity.SuspRR.tz_kin.Unit =	mm
+
+File.At.192.Name =	SuspRR.tz_com
+File.At.192.Type =	Float
+Quantity.SuspRR.tz_com.Unit =	mm
+
+File.At.193.Name =	SuspRR.tz_ext
+File.At.193.Type =	Float
+Quantity.SuspRR.tz_ext.Unit =	mm
+
+File.At.194.Name =	SuspRR.rx
+File.At.194.Type =	Float
+Quantity.SuspRR.rx.Unit =	deg
+
+File.At.195.Name =	SuspRR.rx_kin
+File.At.195.Type =	Float
+Quantity.SuspRR.rx_kin.Unit =	deg
+
+File.At.196.Name =	SuspRR.rx_com
+File.At.196.Type =	Float
+Quantity.SuspRR.rx_com.Unit =	deg
+
+File.At.197.Name =	SuspRR.rx_ext
+File.At.197.Type =	Float
+Quantity.SuspRR.rx_ext.Unit =	deg
+
+File.At.198.Name =	SuspRR.ry
+File.At.198.Type =	Float
+Quantity.SuspRR.ry.Unit =	deg
+
+File.At.199.Name =	SuspRR.ry_kin
+File.At.199.Type =	Float
+Quantity.SuspRR.ry_kin.Unit =	deg
+
+File.At.200.Name =	SuspRR.ry_com
+File.At.200.Type =	Float
+Quantity.SuspRR.ry_com.Unit =	deg
+
+File.At.201.Name =	SuspRR.ry_ext
+File.At.201.Type =	Float
+Quantity.SuspRR.ry_ext.Unit =	deg
+
+File.At.202.Name =	SuspRR.rz
+File.At.202.Type =	Float
+Quantity.SuspRR.rz.Unit =	deg
+
+File.At.203.Name =	SuspRR.rz_kin
+File.At.203.Type =	Float
+Quantity.SuspRR.rz_kin.Unit =	deg
+
+File.At.204.Name =	SuspRR.rz_com
+File.At.204.Type =	Float
+Quantity.SuspRR.rz_com.Unit =	deg
+
+File.At.205.Name =	SuspRR.rz_ext
+File.At.205.Type =	Float
+Quantity.SuspRR.rz_ext.Unit =	deg
+
+File.At.206.Name =	SuspFL.Frc2CExt_1.x
+File.At.206.Type =	Float
+Quantity.SuspFL.Frc2CExt_1.x.Unit =	N
+
+File.At.207.Name =	SuspFL.Frc2CExt_1.y
+File.At.207.Type =	Float
+Quantity.SuspFL.Frc2CExt_1.y.Unit =	N
+
+File.At.208.Name =	SuspFL.Frc2CExt_1.z
+File.At.208.Type =	Float
+Quantity.SuspFL.Frc2CExt_1.z.Unit =	N
+
+File.At.209.Name =	SuspFL.Trq2CExt_1.x
+File.At.209.Type =	Float
+Quantity.SuspFL.Trq2CExt_1.x.Unit =	Nm
+
+File.At.210.Name =	SuspFL.Trq2CExt_1.y
+File.At.210.Type =	Float
+Quantity.SuspFL.Trq2CExt_1.y.Unit =	Nm
+
+File.At.211.Name =	SuspFL.Trq2CExt_1.z
+File.At.211.Type =	Float
+Quantity.SuspFL.Trq2CExt_1.z.Unit =	Nm
+
+File.At.212.Name =	SuspFL.C_1.x
+File.At.212.Type =	Float
+Quantity.SuspFL.C_1.x.Unit =	m
+
+File.At.213.Name =	SuspFL.C_1.y
+File.At.213.Type =	Float
+Quantity.SuspFL.C_1.y.Unit =	m
+
+File.At.214.Name =	SuspFL.C_1.z
+File.At.214.Type =	Float
+Quantity.SuspFL.C_1.z.Unit =	m
+
+File.At.215.Name =	SuspFL.P_1.x
+File.At.215.Type =	Float
+Quantity.SuspFL.P_1.x.Unit =	m
+
+File.At.216.Name =	SuspFL.P_1.y
+File.At.216.Type =	Float
+Quantity.SuspFL.P_1.y.Unit =	m
+
+File.At.217.Name =	SuspFL.P_1.z
+File.At.217.Type =	Float
+Quantity.SuspFL.P_1.z.Unit =	m
+
+File.At.218.Name =	SuspFL.Mount2P_1.x
+File.At.218.Type =	Float
+Quantity.SuspFL.Mount2P_1.x.Unit =	mm
+
+File.At.219.Name =	SuspFL.Mount2P_1.y
+File.At.219.Type =	Float
+Quantity.SuspFL.Mount2P_1.y.Unit =	mm
+
+File.At.220.Name =	SuspFL.Mount2P_1.z
+File.At.220.Type =	Float
+Quantity.SuspFL.Mount2P_1.z.Unit =	mm
+
+File.At.221.Name =	SuspFL.CastorAng
+File.At.221.Type =	Float
+Quantity.SuspFL.CastorAng.Unit =	deg
+
+File.At.222.Name =	SuspFL.KingpinAng
+File.At.222.Type =	Float
+Quantity.SuspFL.KingpinAng.Unit =	deg
+
+File.At.223.Name =	SuspFL.CastorOffset
+File.At.223.Type =	Float
+Quantity.SuspFL.CastorOffset.Unit =	mm
+
+File.At.224.Name =	SuspFL.KingpinOffset
+File.At.224.Type =	Float
+Quantity.SuspFL.KingpinOffset.Unit =	mm
+
+File.At.225.Name =	SuspFR.Frc2CExt_1.x
+File.At.225.Type =	Float
+Quantity.SuspFR.Frc2CExt_1.x.Unit =	N
+
+File.At.226.Name =	SuspFR.Frc2CExt_1.y
+File.At.226.Type =	Float
+Quantity.SuspFR.Frc2CExt_1.y.Unit =	N
+
+File.At.227.Name =	SuspFR.Frc2CExt_1.z
+File.At.227.Type =	Float
+Quantity.SuspFR.Frc2CExt_1.z.Unit =	N
+
+File.At.228.Name =	SuspFR.Trq2CExt_1.x
+File.At.228.Type =	Float
+Quantity.SuspFR.Trq2CExt_1.x.Unit =	Nm
+
+File.At.229.Name =	SuspFR.Trq2CExt_1.y
+File.At.229.Type =	Float
+Quantity.SuspFR.Trq2CExt_1.y.Unit =	Nm
+
+File.At.230.Name =	SuspFR.Trq2CExt_1.z
+File.At.230.Type =	Float
+Quantity.SuspFR.Trq2CExt_1.z.Unit =	Nm
+
+File.At.231.Name =	SuspFR.C_1.x
+File.At.231.Type =	Float
+Quantity.SuspFR.C_1.x.Unit =	m
+
+File.At.232.Name =	SuspFR.C_1.y
+File.At.232.Type =	Float
+Quantity.SuspFR.C_1.y.Unit =	m
+
+File.At.233.Name =	SuspFR.C_1.z
+File.At.233.Type =	Float
+Quantity.SuspFR.C_1.z.Unit =	m
+
+File.At.234.Name =	SuspFR.P_1.x
+File.At.234.Type =	Float
+Quantity.SuspFR.P_1.x.Unit =	m
+
+File.At.235.Name =	SuspFR.P_1.y
+File.At.235.Type =	Float
+Quantity.SuspFR.P_1.y.Unit =	m
+
+File.At.236.Name =	SuspFR.P_1.z
+File.At.236.Type =	Float
+Quantity.SuspFR.P_1.z.Unit =	m
+
+File.At.237.Name =	SuspFR.Mount2P_1.x
+File.At.237.Type =	Float
+Quantity.SuspFR.Mount2P_1.x.Unit =	mm
+
+File.At.238.Name =	SuspFR.Mount2P_1.y
+File.At.238.Type =	Float
+Quantity.SuspFR.Mount2P_1.y.Unit =	mm
+
+File.At.239.Name =	SuspFR.Mount2P_1.z
+File.At.239.Type =	Float
+Quantity.SuspFR.Mount2P_1.z.Unit =	mm
+
+File.At.240.Name =	SuspFR.CastorAng
+File.At.240.Type =	Float
+Quantity.SuspFR.CastorAng.Unit =	deg
+
+File.At.241.Name =	SuspFR.KingpinAng
+File.At.241.Type =	Float
+Quantity.SuspFR.KingpinAng.Unit =	deg
+
+File.At.242.Name =	SuspFR.CastorOffset
+File.At.242.Type =	Float
+Quantity.SuspFR.CastorOffset.Unit =	mm
+
+File.At.243.Name =	SuspFR.KingpinOffset
+File.At.243.Type =	Float
+Quantity.SuspFR.KingpinOffset.Unit =	mm
+
+File.At.244.Name =	SuspRL.Frc2CExt_1.x
+File.At.244.Type =	Float
+Quantity.SuspRL.Frc2CExt_1.x.Unit =	N
+
+File.At.245.Name =	SuspRL.Frc2CExt_1.y
+File.At.245.Type =	Float
+Quantity.SuspRL.Frc2CExt_1.y.Unit =	N
+
+File.At.246.Name =	SuspRL.Frc2CExt_1.z
+File.At.246.Type =	Float
+Quantity.SuspRL.Frc2CExt_1.z.Unit =	N
+
+File.At.247.Name =	SuspRL.Trq2CExt_1.x
+File.At.247.Type =	Float
+Quantity.SuspRL.Trq2CExt_1.x.Unit =	Nm
+
+File.At.248.Name =	SuspRL.Trq2CExt_1.y
+File.At.248.Type =	Float
+Quantity.SuspRL.Trq2CExt_1.y.Unit =	Nm
+
+File.At.249.Name =	SuspRL.Trq2CExt_1.z
+File.At.249.Type =	Float
+Quantity.SuspRL.Trq2CExt_1.z.Unit =	Nm
+
+File.At.250.Name =	SuspRL.C_1.x
+File.At.250.Type =	Float
+Quantity.SuspRL.C_1.x.Unit =	m
+
+File.At.251.Name =	SuspRL.C_1.y
+File.At.251.Type =	Float
+Quantity.SuspRL.C_1.y.Unit =	m
+
+File.At.252.Name =	SuspRL.C_1.z
+File.At.252.Type =	Float
+Quantity.SuspRL.C_1.z.Unit =	m
+
+File.At.253.Name =	SuspRL.P_1.x
+File.At.253.Type =	Float
+Quantity.SuspRL.P_1.x.Unit =	m
+
+File.At.254.Name =	SuspRL.P_1.y
+File.At.254.Type =	Float
+Quantity.SuspRL.P_1.y.Unit =	m
+
+File.At.255.Name =	SuspRL.P_1.z
+File.At.255.Type =	Float
+Quantity.SuspRL.P_1.z.Unit =	m
+
+File.At.256.Name =	SuspRL.Mount2P_1.x
+File.At.256.Type =	Float
+Quantity.SuspRL.Mount2P_1.x.Unit =	mm
+
+File.At.257.Name =	SuspRL.Mount2P_1.y
+File.At.257.Type =	Float
+Quantity.SuspRL.Mount2P_1.y.Unit =	mm
+
+File.At.258.Name =	SuspRL.Mount2P_1.z
+File.At.258.Type =	Float
+Quantity.SuspRL.Mount2P_1.z.Unit =	mm
+
+File.At.259.Name =	SuspRR.Frc2CExt_1.x
+File.At.259.Type =	Float
+Quantity.SuspRR.Frc2CExt_1.x.Unit =	N
+
+File.At.260.Name =	SuspRR.Frc2CExt_1.y
+File.At.260.Type =	Float
+Quantity.SuspRR.Frc2CExt_1.y.Unit =	N
+
+File.At.261.Name =	SuspRR.Frc2CExt_1.z
+File.At.261.Type =	Float
+Quantity.SuspRR.Frc2CExt_1.z.Unit =	N
+
+File.At.262.Name =	SuspRR.Trq2CExt_1.x
+File.At.262.Type =	Float
+Quantity.SuspRR.Trq2CExt_1.x.Unit =	Nm
+
+File.At.263.Name =	SuspRR.Trq2CExt_1.y
+File.At.263.Type =	Float
+Quantity.SuspRR.Trq2CExt_1.y.Unit =	Nm
+
+File.At.264.Name =	SuspRR.Trq2CExt_1.z
+File.At.264.Type =	Float
+Quantity.SuspRR.Trq2CExt_1.z.Unit =	Nm
+
+File.At.265.Name =	SuspRR.C_1.x
+File.At.265.Type =	Float
+Quantity.SuspRR.C_1.x.Unit =	m
+
+File.At.266.Name =	SuspRR.C_1.y
+File.At.266.Type =	Float
+Quantity.SuspRR.C_1.y.Unit =	m
+
+File.At.267.Name =	SuspRR.C_1.z
+File.At.267.Type =	Float
+Quantity.SuspRR.C_1.z.Unit =	m
+
+File.At.268.Name =	SuspRR.P_1.x
+File.At.268.Type =	Float
+Quantity.SuspRR.P_1.x.Unit =	m
+
+File.At.269.Name =	SuspRR.P_1.y
+File.At.269.Type =	Float
+Quantity.SuspRR.P_1.y.Unit =	m
+
+File.At.270.Name =	SuspRR.P_1.z
+File.At.270.Type =	Float
+Quantity.SuspRR.P_1.z.Unit =	m
+
+File.At.271.Name =	SuspRR.Mount2P_1.x
+File.At.271.Type =	Float
+Quantity.SuspRR.Mount2P_1.x.Unit =	mm
+
+File.At.272.Name =	SuspRR.Mount2P_1.y
+File.At.272.Type =	Float
+Quantity.SuspRR.Mount2P_1.y.Unit =	mm
+
+File.At.273.Name =	SuspRR.Mount2P_1.z
+File.At.273.Type =	Float
+Quantity.SuspRR.Mount2P_1.z.Unit =	mm
+
+File.At.274.Name =	KinRollCenter_F.y
+File.At.274.Type =	Float
+Quantity.KinRollCenter_F.y.Unit =	mm
+
+File.At.275.Name =	KinRollCenter_F.z
+File.At.275.Type =	Float
+Quantity.KinRollCenter_F.z.Unit =	mm
+
+File.At.276.Name =	KinRollCenter_R.y
+File.At.276.Type =	Float
+Quantity.KinRollCenter_R.y.Unit =	mm
+
+File.At.277.Name =	KinRollCenter_R.z
+File.At.277.Type =	Float
+Quantity.KinRollCenter_R.z.Unit =	mm
+
+File.At.278.Name =	SuspF.TrackWidth
+File.At.278.Type =	Float
+Quantity.SuspF.TrackWidth.Unit =	m
+
+File.At.279.Name =	SuspR.TrackWidth
+File.At.279.Type =	Float
+Quantity.SuspR.TrackWidth.Unit =	m
+
+File.At.280.Name =	SuspF.WheelBase
+File.At.280.Type =	Float
+Quantity.SuspF.WheelBase.Unit =	m
+
+File.At.281.Name =	SuspR.WheelBase
+File.At.281.Type =	Float
+Quantity.SuspR.WheelBase.Unit =	m
+
+File.At.282.Name =	TrackCircleDiam
+File.At.282.Type =	Float
+Quantity.TrackCircleDiam.Unit =	m
+
+
+CarMaker.Version =	12.0.1
+App.Version =		CarMaker 12.0.1 - Car_Generic
+App.BuildVersion =	3
+TestRun.Vehicle =	Examples_FS/FSE_AllWheelDrive
+TestRun.Tire.0 =	
+TestRun.Tire.1 =	
+TestRun.Tire.2 =	
+TestRun.Tire.3 =	
+Vehicle.SuspF.KnCName = FS_RaceCar_8.0_front.skc
+Vehicle.SuspR.KnCName = FS_RaceCar_8.0_rear.skc
+Vehicle.nAxle = 2

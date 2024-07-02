@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<material version="2.15.0.1" guid="52be5bf743dd08ea9f0fa3417c9f23ac74864b1b" parent="1aad984ba140912e540ca6b5d32c88900a2b42af" base_material="4dfec30f491f753f6e89094db6d3d695e89f9d6f">
+	<texture name="albedo">core/textures/common/white.dds</texture>
+	<parameter name="albedo_color" expression="0">0.188235313 0.188235313 0.188235313 1</parameter>
+	<parameter name="metalness" expression="0">1</parameter>
+	<parameter name="roughness" expression="0">0.585770011</parameter>
+</material>

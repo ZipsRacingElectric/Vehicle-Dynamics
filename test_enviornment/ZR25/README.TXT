@@ -1,0 +1,1 @@
+30 Nov 2020, ELH: FS_race folder is named as such to include both the traditional internal combustion engine derivative and the electric powertrain vehicles. FS_Classic was felt to refer only to the ICE variants

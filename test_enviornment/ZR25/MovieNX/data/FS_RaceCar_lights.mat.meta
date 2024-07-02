@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<asset version="2.15.0.1">
+	<guid>b736d6bb5c095cdeb5971ea5a96e3fc0fe2eb01f</guid>
+	<type>material</type>
+	<hash>5cacd436</hash>
+	<runtimes>
+		<runtime id="b736d6bb5c095cdeb5971ea5a96e3fc0fe2eb01f" name="FS_RaceCar_lights" link="0" type="5"/>
+	</runtimes>
+	<parameters>
+		<parameter type="bool" name="unchanged">1</parameter>
+	</parameters>
+</asset>

@@ -1,0 +1,327 @@
+#INFOFILE1.1 (UTF-8) - Do not remove this line!
+FileIdent = CarMaker-TestRun 12
+FileCreator = CarMaker 12.0.1
+Description:
+	This TestRun aims to check vehicle’s response to steering input by following continuous left-right turns which are spaced at a distance of 18 m at varying speeds. In order to increase the cornering efficiency students can alter suspension and steering parameters so as to optimize body roll. For analysis, students can opt for body roll, lateral acceleration and steering wheel angle of the car.
+Vehicle = Examples_FS/FSC_TestAutomation
+Trailer =
+Tire.0 =
+Tire.1 =
+Tire.2 =
+Tire.3 =
+Snapshot.TimeLimit =
+Snapshot.DistLimit =
+VehicleLoad.0.mass = 0.0
+VehicleLoad.0.pos = 0.0 0.0 0.0
+VehicleLoad.1.mass = 0.0
+VehicleLoad.1.pos = 0.0 0.0 0.0
+VehicleLoad.2.mass = 0.0
+VehicleLoad.2.pos = 0.0 0.0 0.0
+VehicleLoad.3.mass = 0
+VehicleLoad.3.pos = 0 0 0
+TrailerLoad.0.mass = 0.0
+TrailerLoad.0.pos = 0.0 0.0 0.0
+TrailerLoad.1.mass = 0.0
+TrailerLoad.1.pos = 0.0 0.0 0.0
+TrailerLoad.2.mass = 0.0
+TrailerLoad.2.pos = 0.0 0.0 0.0
+Road.FName = Slalom18.rd5
+Vehicle.Routing.Type = Route
+Vehicle.Routing.ObjId = 61
+Vehicle.StartPos.Type = Route
+Vehicle.StartPos.ObjId = 61
+Vehicle.StartPos = 5.0 0
+Vehicle.StartPos.Orientation = 0
+DrivMan.nMan = 1
+DrivMan.Man.Start.Velocity = 0
+DrivMan.Man.Start.GearNo = 0
+DrivMan.Man.Start.SteerAng = 0
+DrivMan.Man.Start.LaneOffset = 0
+DrivMan.Man.Start.OperatorActive = 1
+DrivMan.Man.Start.OperatorState = drive
+DrivMan.VhclOperator.Kind = IPGOperator 1
+DrivMan.Man.0.nLongSteps = 1
+DrivMan.Man.0.nLatSteps = 1
+DrivMan.Man.0.CombinedSteps = 1
+DrivMan.Man.0.MaxExec = 1
+DrivMan.Man.0.ConsiderDomain = own
+DrivMan.Man.0.Transition.Interrupt = end
+DrivMan.Man.0.Transition.EndCond = end
+DrivMan.Man.0.Transition.SimultanStart = end
+DrivMan.Man.0.LongStep.0.Info = Slalom 18m
+DrivMan.Man.0.LongStep.0.Cmds:
+	Eval first() ? Qu::Rollmax=Qu::Rollmin=0
+	Eval Car.Roll<Rollmin ? Rollmin=Car.Roll
+	Eval Car.Roll>Rollmax ? Rollmax=Car.Roll
+DrivMan.Man.0.LongStep.0.TimeLimit = 100
+DrivMan.Man.0.LongStep.0.Dyn = Driver 1 0
+DrivMan.Man.0.LatStep.0.Info = Slalom 18m
+DrivMan.Man.0.LatStep.0.Cmds:
+	Eval first() ? Qu::Rollmax=Qu::Rollmin=0
+	Eval Car.Roll<Rollmin ? Rollmin=Car.Roll
+	Eval Car.Roll>Rollmax ? Rollmax=Car.Roll
+DrivMan.Man.0.LatStep.0.TimeLimit = 100
+DrivMan.Man.0.LatStep.0.Dyn = Driver {}
+Traffic.SpeedUnit = ms
+Traffic.IFF.FName =
+Traffic.IFF.Time.Name =
+Traffic.GenDriverBehavior.FName = Default
+Traffic.N = 0
+Traffic.SourceSink.Active = 0
+Traffic.SourceSink.Mode = LocalDens
+Traffic.SourceSink.Density = -1
+Traffic.SourceSink.CarRatio = 80
+Traffic.SourceSink.CovRange.nObjsMax = 300
+Traffic.SourceSink.CovRange.Range = 100 500
+Traffic.SourceSink.GenerateAtStart = 1
+Traffic.SourceSink.OLR.Mode = AlongPath
+Traffic.SourceSink.OLR.TimePreview = 4
+Traffic.SourceSink.OLR.DistPreview = 150
+Traffic.SourceSink.OLR.OffRoute = 1
+Traffic.SourceSink.OLR.OffRouteMaxLinks = 3
+Traffic.SourceSink.OLR.OffRouteMaxPreview = 400
+Traffic.SourceSink.nObjsMax = 1000
+Traffic.SourceSink.ConsiderManObjs = 0
+Traffic.SourceSink.dtMovieLatency = 0.2
+Traffic.SourceSink.MultiThread = 1
+Traffic.SourceSink.BlockSim = 1
+Traffic.SourceSink.tSync = 200 50
+Traffic.SourceSink.Template.N = 0
+Traffic.SourceSink.AutoDriver.N = 0
+DrivMan.OW.Active = 0
+DrivMan.OW.Quantities =
+DrivMan.OW.StartGearNo =
+DrivMan.OW.StartVelocity =
+DrivMan.OW.GasMax =
+DrivMan.OW.RefCh = Time
+DrivMan.OW.ConsiderRoadSigns = 0
+DrivMan.OW.sRoute.Offset = 0
+ErrorClass.0.Action = abort
+ErrorClass.0.Save =
+ErrorClass.0.WarningLimit = 3 5.0
+ErrorClass.1.Action = abort
+ErrorClass.1.Save =
+ErrorClass.1.WarningLimit = 3 5.0
+ErrorClass.2.Action = abort
+ErrorClass.2.Save =
+ErrorClass.2.WarningLimit = 3 5.0
+ErrorClass.3.Action = abort
+ErrorClass.3.Save =
+ErrorClass.3.WarningLimit = 3 5.0
+ErrorClass.4.Action = abort
+ErrorClass.4.Save =
+ErrorClass.4.WarningLimit = 3 5.0
+ErrorClass.5.Action = abort
+ErrorClass.5.Save =
+ErrorClass.5.WarningLimit = 3 5.0
+ErrorClass.6.Action = abort
+ErrorClass.6.Save = 0
+ErrorClass.6.WarningLimit = 10 5
+ErrorClass.7.Action = abort
+ErrorClass.7.Save = 0
+ErrorClass.7.WarningLimit = 3 5
+ErrorClass.10.Action = ignore
+ErrorClass.10.Save =
+ErrorClass.10.WarningLimit = 3 5.0
+ErrorClass.11.Action = abort
+ErrorClass.11.Save =
+ErrorClass.11.WarningLimit = 3 5.0
+Env.StartTime.Year = 2014
+Env.StartTime.Month = 1
+Env.StartTime.Day = 1
+Env.StartTime.Hour = 12
+Env.StartTime.Min = 0
+Env.StartTime.Sec = 0
+Env.StartTime.DeltaUTC = 0.0
+Env.GNav.Active = 0
+Env.Temperature = 20.0
+Env.AirDensity = 1.205
+Env.AirPressure = 1.013
+Env.AirHumidity = 60
+Env.SolarRadiation = 400.0
+Env.Sun.Position = angleDefinition
+Env.Sun.Azimuth = 45.0
+Env.Sun.Elevation = 45.0
+Env.Cloud.Kind = simple
+Env.Cloud.Height = 800
+Env.Cloud.Intensity = 0.2
+Env.Cloud.Velocity = 10
+Env.Cloud.Angle = 45
+Env.FogActive = 0
+Env.VisRangeInFog = 10000
+Env.FogUseSkyColor = 0
+Env.FogColor = 0.5 0.5 0.5
+Env.RainRate = 0.0
+Env.Wind.Kind = none
+Env.Wind.Velocity = 0.0
+Env.Wind.Angle = 0.0
+Env.Kind = Generic
+Env.Temp.Offset_Elev = -0.0065
+Env.Temp.Offset_sRoad.Amplify = 1.0
+Env.Temp.Offset_sRoad.On = 0
+Env.Temp.Offset_Time.Amplify = 1.0
+Env.Temp.Offset_Time.On = 1
+Env.Temp.Offset_Time:
+	0.0 -2.0
+	3.0 -2.5
+	6.0 -2.7
+	7.5 -2.7
+	9.0 -2.5
+	10.0 -2.3
+	11.0 -1.6
+	12.0 0.0
+	13.0 1.4
+	14.0 2.1
+	15.5 2.5
+	17.0 2.2
+	18.0 1.7
+	19.0 1.1
+	20.0 0.2
+	21.0 -0.6
+	22.0 -1.1
+	23.0 -1.6
+	24.0 -2.0
+Driver.ParamIdent = IPGDriver 5
+Driver.Mode = std
+Driver.Long.DrivMaxSpeed = 0
+Driver.Long.CruisingSpeed = $CSpeed=80
+Driver.CornerCutCoef = 0.1
+Driver.ConsiderTraffic = 0
+Driver.Traffic.TimeGapMin = 1.8
+Driver.Traffic.TimeGapMax = 5.0
+Driver.Traffic.DistMin = 6
+Driver.Traffic.DistMax = 250
+Driver.Traffic.EcoCoef = 0.75
+Driver.Traffic.Overtake = 0
+Driver.Traffic.Overtake_Rate = 1
+Driver.Traffic.Overtake_dSpeedMin = 10
+Driver.Long.dtAccBrake = 0.1
+Driver.Long.axMax = 4.0
+Driver.Long.axMin = -6.0
+Driver.Long.ayMax = 20
+Driver.Long.GGExp:
+	50 1.5 1.5
+Driver.Long.DevMax = 0.0
+Driver.Long.tReact = 0.0
+Driver.Long.TractionControl = 1
+Driver.DecShift.UseBrakePark = 0
+Driver.DecShift.tSwitchGear = 0.1
+Driver.DecShift.nEngine.Limits:
+	3000 8500
+Driver.DecShift.nEngine.Shift:
+	99999 4000
+Driver.Lat.DevMax = 0.0
+Driver.Lat.tReact = 0.0
+Driver.Knowl.Long.tActionMin = 0.01
+Driver.Knowl.Lat.StWhlAngleMax = 630
+Driver.Knowl.Lat.StWhlAngleVelMax = 1500
+Driver.Knowl.Lat.StWhlAngleAccMax = 10000
+Driver.Learn.VehicleLimits.TestRun = Examples/CarMakerFunctions/ExternalInputs/SpeedInput_Hockenheim_redrive
+Driver.Learn.VehicleLimits.Date = 1302784513
+Driver.Learn.ControllerDyn.TestRun = Examples/CarMakerFunctions/ExternalInputs/SpeedInput_Hockenheim_redrive
+Driver.Learn.ControllerDyn.Date = 1302784513
+Driver.Learn.MaxSpeed.TestRun =
+Driver.Learn.MaxSpeed.Date =
+Driver.Learn.Remember = 1
+Driver.Learn.Friction = 1.0
+Driver.Learn.G2GearNo = 0
+Driver.Learn.G3GearNo = 0
+Driver.Knowl.Info =
+Driver.Knowl.Vehicle.iDiff = 4.10000
+Driver.Knowl.Vehicle.rWheel = 0.33004
+Driver.Knowl.Vehicle.iFGear = 3.61582	2.01685	1.43294	1.11467	0.84952
+Driver.Knowl.Vehicle.iBGear = -4.00000
+Driver.Knowl.Vehicle.Aero.Factor_axAccel = 1.100
+Driver.Knowl.Vehicle.Aero.Factor_axDecel = 0.800
+Driver.Knowl.Vehicle.Aero.Factor_ay = 0.950
+Driver.Knowl.Vehicle.Aero:
+	20.00 4.38 -9.72 8.27
+	30.00 4.42 -9.72 8.35
+	40.00 4.39 -9.72 8.44
+	50.00 4.06 -9.72 8.52
+	60.00 3.38 -9.72 8.61
+	70.00 2.96 -9.73 8.69
+	80.00 2.74 -9.74 8.75
+	90.00 2.50 -9.76 8.77
+	100.00 2.18 -9.77 8.75
+	110.00 1.95 -9.79 8.74
+	120.00 1.78 -9.81 8.73
+	130.00 1.60 -9.83 8.72
+	140.00 1.41 -9.86 8.71
+	150.00 1.28 -9.88 8.69
+	160.00 1.15 -9.91 8.67
+	170.00 1.04 -9.95 8.65
+	180.00 1.00 -9.97 8.65
+	190.00 0.99 -9.98 8.67
+	200.00 1.00 -10.03 8.72
+	210.00 1.00 -10.13 8.76
+	220.00 1.00 -10.27 8.81
+	230.00 1.00 -10.37 8.85
+	240.00 1.00 -10.40 8.90
+Driver.Knowl.Lat.tPreview = 0.572
+Driver.Knowl.Lat.tYawPro = 0.040
+Driver.Knowl.Lat.tPreDyn = 0.096
+Driver.Knowl.Lat.LimitSideSlip = 11.959
+Driver.Knowl.Lat.StWhlTorqueAmplify = 0.800
+Driver.Knowl.Lat.StWhlTorqueAmplifyC = 1.000
+Driver.Knowl.Lat.StWhlTorqueAmplifyV = 1.000
+Driver.Knowl.Long.tPreviewAcc = 1.275
+Driver.Knowl.Long.tPreviewBra = 0.774
+Driver.Knowl.Long.tPreEngDyn = 0.025
+Driver.Knowl.Long.tPreBraDyn = 0.040
+Driver.Knowl.Long.tPreEngDead = 0.001
+Driver.Knowl.Long.tPreBraDead = 0.019
+Driver.Knowl.Long.ThrottlePfP = 0.0
+Driver.Knowl.Long.BrakePfP = 0.0
+Driver.Knowl.Long.SlipMax:
+	41.46 9.26 5.32
+	76.31 9.78 5.61
+	109.29 9.54 5.47
+	143.04 9.42 5.41
+	182.02 9.02 5.18
+Driver.Learn.Engine.TrqMax:
+	6603 134.68
+	4569 163.07
+	4446 159.76
+	4442 150.77
+	3933 131.21
+Driver.Learn.Engine.PwrMax:
+	6605 93.1480
+	5978 91.5564
+	5969 86.8606
+	5741 77.1216
+	4950 61.3414
+Driver.Learn.nEngineIdle = 800
+Driver.Learn.nEngineMax = 7959
+Driver.Learn.nEngine.MaxSpeed:
+	800 7137
+	2960 6792
+	3674 6593
+	3917 6677
+	3215 7959
+Driver.Learn.nEngine.Standard:
+	0 0
+	0 0
+	0 0
+	0 0
+	0 0
+Driver.Learn.vIdle = 6.337
+Driver.Learn.vMax = 239.301
+Driver.Learn.vG2nEng025 = 37.284
+Driver.Learn.vG2nEng075 = 88.816
+Driver.Learn.axBra_vG2nEng05 = -9.714
+Driver.Learn.axAccG2 = 2.541
+Driver.Learn.axDragG1 = 0.5
+Driver.Learn.tYawPro_YawAcc = 32.627
+Driver.Learn.tYawPro_StWhlA = 11.215
+Driver.Learn.vnEng05 = 35	63	88	114	146
+Driver.Learn.axAccMax = 4.38	2.96	2.06	1.51	1.00
+Driver.Learn.ayMax = 0.00	8.69	8.77	8.74	8.71
+Driver.Learn.StWhlA_ayMax = 0.00	192.15	95.50	71.56	60.91
+Driver.Learn.DrivelineKind = 0
+Driver.Learn.PT_h_COG = 0.598
+Driver.Learn.PT_SlipMax = 24.840	24.840	0.000	0.000
+Driver.Learn.NEng_S = 1
+Driver.Consider.SpeedLimit = 1
+Driver.Consider.StopMarker = 1
+Driver.Consider.TrfLight = 1
