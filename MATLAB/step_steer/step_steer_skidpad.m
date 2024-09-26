@@ -8,14 +8,18 @@ response.
 %}
 
 clear; close all; clc;
+Simulink.sdi.clear; % clear old simulink runs
+
+% load vehicle simulink parameters
+run("../vehicle_data/zr25.m");
+
+% open simulink model
+open_system('linear_bicycle_model');
 
 % steering angle min max sweep values in radians
 steering_angle_min = deg2rad(1);
 steering_angle_max = deg2rad(15);
 num_sweeps = 20;
-
-% open simulink model
-open_system('linear_bicycle_model');
 
 % parameter sweep of steering angle
 for k = 1:num_sweeps
@@ -30,8 +34,8 @@ end
 for k = 1:num_sweeps
     logsout = simOut(k).logsout;
     Output = logsout.getElement('YawRate');
-    y_out = YawRate.Values.Data;
-    x_out = YawRate.Values.Time;
+    y_out = Output.Values.Data;
+    x_out = Output.Values.Time;
     plot(x_out, y_out);
     hold on;
 end
@@ -39,4 +43,4 @@ grid on;
 xlabel('Seconds');
 ylabel('Yaw-Rate (rad/s)');
 legend('Steer Angles 1-15 deg, 20 increments',location = 'northwest');
-title('Step Response');
+title('Yaw-rate Step Response');
