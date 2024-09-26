@@ -1,78 +1,21 @@
 ![ZRE Logo](./images/Logo_with_zippy_subtext_white.png "Zips Racing Electric Logo")
-# Table of Contents
-
-- [Table of Contents](#table-of-contents)
-- [4WD Control Algorithms](#4wd-control-algorithms)
-  - [Getting Started](#getting-started)
-    - [Prerequisite Tools](#prerequisite-tools)
-    - [OneDrive Documentation](#onedrive-documentation)
-    - [Installing](#installing)
-  - [Model Structure](#model-structure)
-  - [Testing models with recorded data](#testing-models-with-recorded-data)
-  - [Software-in-the-Loop testing](#software-in-the-loop-testing)
-    - [Open Loop Tests](#open-loop-tests)
-    - [Closed Loop Tests](#closed-loop-tests)
-    - [Notes](#notes)
-  - [Deployment](#deployment)
-  - [Versioning](#versioning)
-  - [License](#license)
-  - [Acknowledgments](#acknowledgments)
-
-
-# 4WD Control Algorithms
-This repository contains multiple control algorithm blocks for developing independent 4WD control algorithms for the vehicle control unit.
 
 ## Getting Started
+This repository contains a collection of scripts and models used for vehidle dyanmics analysis. Refer to the documentation for each folder. Some scripts may make use of a vehicle parameter model which reflects the latest vehicle design.
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
-   
-1. If you haven't already, please install the pre-requesite software below.
+### Using tire data with this repository
+Commiting tire data to this repository may violate confidentiality agreements. On your cloned repository, use the following directory only to store this information:
+
+/MATLAB/tire_model/
+
+All contents of this directory get ignored when your commit your changes. For some of the MATLAB scripts you may need to grab the required tire model from the OneDrive and place it in this directory.
+
+### Using vehicle data across multiple scripts
+The vehicle model scripts under /MATLAB/vehicle_data/ allow you to use consistent vehicle parameters across multiple VD scripts.
 
 ### Prerequisite Tools
 
 - [MATLAB](https://www.mathworks.com/products/matlab.html)
-
-
-### OneDrive Documentation
-- Additional hardware and system documentation for the AMS can be found on the OneDrive at **TBD****
-
-### Installing
-
-## Model Structure
-All control algorithm models have a parent model .slx files located in the root folder **/models**. A template model is provided at **/models/model_template.slc** which gives each control algorithm a standardized interface of all the signals available, comptaible with signal test interfaces as well as the SIL MBD simulation project that is used for algorithm validation. Subfolders contain subsystem model blocks which are referenced in the parent models.
-
-All torque-vectoring control systems typically follow this high-level cascade layout:
-
-[image]
-
-## Testing models with recorded data
-[todo]
-
-## Software-in-the-Loop testing
-Control algorithm models can be validated using a software-in-the-loop process using the Simulink interfaces provided by MBD simulations such as Vi-Grade or IPG Carmaker. Currently we are waiting on IPG Carmaker licenses before evaluating each option and building a test interface. Algorithms should be validated for their preformance in a variety of ways:
-
-### Open Loop Tests
-- ISO 4128 constant speed steering pad
-- ISO 7401 step steer manuever
-- ISO 388 double lane change
-- Decreasing turn radius slalom based on FSAE track layout rules
-
-### Closed Loop Tests
-- Hairpin corner test
-- FSAE Skidpad
-- Goodyear autocross test track
-- FSAE endurance tracks (Michigan, F H+E, etc)
-
-### Notes
-- Test setups should reflect courses that can be tested in real life
-- algorithms should be tested on varying tire-road mu levels (raining vs dry running)
-
-## Deployment
-[todo]
-
-## Versioning
-
-At the end of each vehicle season, the repository is copied and renamed for the new vehicle. The old repository is then archived.
 
 ## License
 
