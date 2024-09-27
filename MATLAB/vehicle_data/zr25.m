@@ -3,8 +3,8 @@
 
 % Dimensions
 wheelbase = Simulink.Parameter(1.530);                              % m
-front_track_width = Simulink.Parameter(1.230);                      % m
-rear_track_width = Simulink.Parameter(1.2);                         % m
+track_width_front = Simulink.Parameter(1.230);                      % m
+track_width_rear = Simulink.Parameter(1.2);                         % m
 
 % Mass
 vehicle_mass = Simulink.Parameter(205);                             % kg
@@ -24,15 +24,17 @@ tire_width = Simulink.Parameter(0.19);                              % m
 
 % Aerodyamics
 frontal_area = Simulink.Parameter(1.5);                             % m^2
-Cd = Simulink.Parameter(0.2);                                      % unitless
-Cl = Simulink.Parameter(2);                                       % unitless. Certain models may require it to be negative or positive based on implementation
-center_of_pressure = Simulink.Parameter(0.45);                      % percentage from front axle
+Cd = Simulink.Parameter(0.2);                                       % unitless
+Cl = Simulink.Parameter(2);                                         % unitless. Certain models may require it to be negative or positive based on implementation
+center_of_pressure_distribution = Simulink.Parameter(0.45);         % ratio 0(at rear axle) to 1(at front axle)
 
 % Kinematics
 static_toe_front = Simulink.Parameter(0.5);                         % degrees (per wheel), + is toe out
 static_toe_rear = Simulink.Parameter(0);                            % degrees (per wheel), + is toe out
 static_camber_front = Simulink.Parameter(-2.5);                     % degrees, - is leaning torwards car
 static_camber_rear = Simulink.Parameter(-2.5);                      % degrees, - is leaning torwards car
+steering_ratio = Simulink.Parameter(7.02);                          % ratio, steering wheel angle / ackerman steering angle (aka average of L and R angles)
+ackerman_percentage = Simulink.Parameter(70);                      % percentage
 
 % Springs and Dampers
 spring_rate_front = Simulink.Parameter(35000);                      % N/m
