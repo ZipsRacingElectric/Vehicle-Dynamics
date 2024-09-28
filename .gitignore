@@ -32,3 +32,9 @@ codegen/
 
 # Octave session info
 octave-workspace
+
+# exclude all tire data
+/MATLAB/tire_data/*
+
+# exception to the rule
+!MATLAB/tire_data/.gitkeep

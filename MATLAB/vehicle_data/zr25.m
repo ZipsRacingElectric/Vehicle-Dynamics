@@ -9,8 +9,8 @@ track_width_rear = Simulink.Parameter(1.2);                         % m
 % Mass
 vehicle_mass = Simulink.Parameter(205);                             % kg
 driver_mass = Simulink.Parameter(72);                               % kg
-corner_mass_front = Simulink.Parameter(15);                         % kg, unsprun corner mass. Include half of the control arm masses.
-corner_mass_rear = Simulink.Parameter(15);                          % kg, unsprun corner mass. Include half of the control arm masses.
+corner_mass_front = Simulink.Parameter(15.16);                      % kg, unsprun corner mass. Include half of the control arm masses.
+corner_mass_rear = Simulink.Parameter(15.16);                       % kg, unsprun corner mass. Include half of the control arm masses.
 front_mass_distribution = Simulink.Parameter(0.48);                 % percentage on front axle
 cg_height = Simulink.Parameter(0.255);                              % m
 yaw_polar_inertia = Simulink.Parameter(80);                         % kg * m^2
@@ -19,7 +19,7 @@ yaw_polar_inertia = Simulink.Parameter(80);                         % kg * m^2
 tire_loaded_radius = Simulink.Parameter(0.25);                      % m
 gear_ratio = Simulink.Parameter(13);                                % (# input rotations / # output rotations)
 tire_mu = Simulink.Parameter(2);                                    % use only if tire model not availible                           
-tire_stiffness = Simulink.Parameter(76000);                         % N/m
+tire_stiffness = Simulink.Parameter(87563.5);                       % N/m
 tire_width = Simulink.Parameter(0.19);                              % m
 
 % Aerodyamics

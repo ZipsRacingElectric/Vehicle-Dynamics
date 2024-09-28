@@ -6,7 +6,9 @@ This repository contains a collection of scripts and models used for vehidle dya
 ### Using tire data with this repository
 Commiting tire data to this repository may violate confidentiality agreements. On your cloned repository, use the following directory only to store this information:
 
+```
 /MATLAB/tire_model/
+```
 
 All contents of this directory get ignored when your commit your changes. For some of the MATLAB scripts you may need to grab the required tire model from the OneDrive and place it in this directory.
 
