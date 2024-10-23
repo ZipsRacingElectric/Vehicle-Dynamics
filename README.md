@@ -7,7 +7,7 @@ This repository contains a collection of scripts and models used for vehidle dya
 Commiting tire data to this repository may violate confidentiality agreements. On your cloned repository, use the following directory only to store this information:
 
 ```
-/MATLAB/tire_model/
+/MATLAB/tire_data/
 ```
 
 All contents of this directory get ignored when your commit your changes. For some of the MATLAB scripts you may need to grab the required tire model from the OneDrive and place it in this directory.
@@ -15,7 +15,7 @@ All contents of this directory get ignored when your commit your changes. For so
 ### Using vehicle data across multiple scripts
 The vehicle model scripts under /MATLAB/vehicle_data/ allow you to use consistent vehicle parameters across all of the Simulink models.
 
-To use the vehicle model, first load the file from your MATLAB .m script:
+To write a VD sim that uses the vehicle parameters, first load the file in your MATLAB .m script:
 
 ```
 % load vehicle simulink parameters
