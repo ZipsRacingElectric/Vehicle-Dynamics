@@ -25,7 +25,7 @@ clear; close all; clc;
 Simulink.sdi.clear; % clear old simulink runs
 
 % load tire data
-run("../tire_data/d2704/d2704_csaps.mat");
+load("../tire_data/d2704/d2704_7in_csaps.mat");
 
 % open simulink model
 % add an interpreted matlab function block that calls the following:
