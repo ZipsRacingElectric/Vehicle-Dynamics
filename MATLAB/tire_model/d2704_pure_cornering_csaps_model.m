@@ -26,6 +26,9 @@ MATLAB directory of the local Vehicle-Dynamics-ZR25 repository
 script in this same directory
 - formatted_data expected columns(in order): SA, IA, Fz, Fy, Mz, Mx, P
 
+%% TODO:
+- Create CSAPS for Mx
+
 %% Data and units:
 FX: longituidinal force, N
 FY: lateral force, N

@@ -16,6 +16,10 @@ MATLAB directory of the local Vehicle-Dynamics-ZR25 repository
 - each TTC round uses a different test procedure, so this script needs
 modified for anything that isn't round 9
 
+%% TODO:
+- add relaxation length estimates from slip angle sweep hysterisis to data
+set
+
 %% Data and units:
 AMBTMP: Ambient room temp, deg C
 ET: elapsed time, seconds
