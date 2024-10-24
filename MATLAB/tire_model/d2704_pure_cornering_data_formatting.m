@@ -15,6 +15,10 @@ MATLAB directory of the local Vehicle-Dynamics-ZR25 repository
 - each TTC round uses a different test procedure, so this script needs
 modified for anything that isn't round 9
 
+%% TODO:
+- eliminate hysterisis in slip angle sweeps
+- fix CSAPS accuracy error (apparent in Mz final plot)
+
 %% Data and units:
 AMBTMP: Ambient room temp, deg C
 ET: elapsed time, seconds
@@ -318,8 +322,12 @@ for n=1:2:(length(z)-2) % every 3 zero crossings represents a full SA sweep
     rl=RL(z(n):z(n+2));
     ia=IA(z(n):z(n+2));
     pressure=P(z(n):z(n+2));
-
     % Now we have collected the tire channels for each full slip sweep.
+
+    %% normalize the Fy channel to account for Fz noise
+    % for each transient sweep, Fz is held constant, so we normalize Fy
+    % by multiplying it by the ratio between the Fz mean and the isntantaneous Fz.
+    fy = (fy * mean(fz)) ./ fz; % element-wise divide
     
     %% Filter MZ data
     % Next step is to capture the rational data between the max and minimum
