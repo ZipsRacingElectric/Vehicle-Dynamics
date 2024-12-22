@@ -12,22 +12,32 @@ Commiting tire data to this repository may violate confidentiality agreements. O
 
 All contents of this directory get ignored when your commit your changes. For some of the MATLAB scripts you may need to grab the required tire model from the OneDrive and place it in this directory.
 
-### Using vehicle data across multiple scripts
-The vehicle model scripts under /MATLAB/vehicle_data/ allow you to use consistent vehicle parameters across all of the Simulink models.
+### Using common vehicle data across multiple scripts
+The vehicle model script at /MATLAB/vehicle_data/vehicle.m allows you to use consistent vehicle parameters across all of the Simulink models by loading data from a spreadsheet containing vehicle parameters.
 
-To write a VD sim that uses the vehicle parameters, first load the file in your MATLAB .m script:
+To write a MATLAB script that uses the vehicle parameters, first load the file in your MATLAB .m script:
 
 ```
-% load vehicle simulink parameters
-run("../vehicle_data/zr25.m");
+% create vehicle object from vehicle data
+zr25 = vehicle('../vehicle_data/zr25_data.xlsx');
+```
+This will create a vehicle object 'zr25' in the MATLAB workspace.
+
+If your using Simulink, you need to generate Simulink parameters from the vehicle object:
+
+```
+zr25.create_simulink_parameters();
 ```
 
-In Simulink, block parameters can be replaced with the variable names defined in the vehicle model. After you load the vehicle model, you can call your script to run the Simulink model:
+Once the Simulink parameters are loaded into the workspace, you can then load the simulink model:
 
 ```
 % open simulink model
 open_system('my_sim');
 ```
+
+Within Simulink, you can change block parameters to reference the Simulink parameters.
+
 
 ### Prerequisite Tools
 
