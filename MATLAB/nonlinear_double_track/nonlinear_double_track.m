@@ -33,4 +33,4 @@ zr25.create_simulink_parameters();
 load("../tire_data/d2704/d2704_7in_csaps.mat");
 
 % open simulink model
-open_system('nonlinear_bicycle_model');
+open_system('nonlinear_double_track_model');
