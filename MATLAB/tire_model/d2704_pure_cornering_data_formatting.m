@@ -1,4 +1,5 @@
 %{
+
 %% Overview:
 This script generates formatted data sets from the raw TTC files. This data
 can then be used with other scripts to generate tire models from. 
@@ -42,6 +43,7 @@ TSTC: tire surface temp center, deg C
 TSTI: tire surface temp inboard, deg C
 TSTO: tire surface temp outboard, deg C
 V: road speed, kph
+
 %}
 
 clear; close all; clc;
@@ -53,6 +55,8 @@ clear; close all; clc;
 % contains a 12 psi sweep at a more broken in tire
 file1 = load("../tire_data/d2704/data/B2356run23.mat");
 file2 = load("../tire_data/d2704/data/B2356run24.mat");
+
+time_step = 1 / 100; % time step between data points
 
 % concatenate the data into single channels
 AMBTMP = [file1.AMBTMP; file2.AMBTMP];
@@ -280,6 +284,7 @@ figure;
 plot(ET, IA)
 %}
 
+%% Subset the data into individual SA sweeps:
 % create a spline equation to locate zero crossing points in data
 m = 1:length(SA);
 sp = spline(m,SA);
@@ -309,7 +314,6 @@ plot(m, IA);
 hold off;
 %}
 
-% Subset the data into individual SA sweeps:
 q = 0;
 for n=1:2:(length(z)-2) % every 3 zero crossings represents a full SA sweep
 
@@ -362,6 +366,23 @@ for n=1:2:(length(z)-2) % every 3 zero crossings represents a full SA sweep
     ind=find(abs(mzf-mz(rng)') > 7);
     mz(rng(ind))=mzf(ind);
 
+    %% Remove hysterisis from SA sweep and calculate a 1st order time constant
+    % we want to compare the hysterisis in Fy values between the increasing
+    % SA sweep and the decreasing SA sweep
+    % each SA sweep does this: 0 deg -> +12 deg -> -12 deg -> 0 deg
+
+    % organize the data into two arrays representing increasing and
+    % decreasing slip angle sweeps
+    [~, n_at_sa_max] = max(sa); % find index of maximum sa
+    [~, n_at_sa_min] = min(sa); % find index of minimum sa
+
+    fy_increasing_sa = cat(1, fy(n_at_sa_min:end), fy(1:n_at_sa_max));
+    fy_decreasing_sa = flip(fy(n_at_sa_max:n_at_sa_min)); % Fy must be "moving" in the same direction as the other array for xcorr to work
+    [cross_corr, lags] = xcorr(fy_increasing_sa, fy_decreasing_sa, 'none');
+    [~, max_index] = max(cross_corr);
+    time_lag = lags(max_index) * time_step;
+
+
     %% Spline fitting the continuous data to subset it with 1 Degree slip angle increments
     % with some tighter tension:
     sp_fy=csaps(sa,fy,.1);
@@ -401,6 +422,13 @@ for n=1:2:(length(z)-2) % every 3 zero crossings represents a full SA sweep
         ylabel('Overturning Moment') 
         line([min(sa) max(sa)],[0 0],'color','k') 
         line([0 0],[min(mz) max(mz)],'color','k')
+
+        % plot cross correlation stuff
+        figure;
+        plot(lags, cross_corr);
+        xlabel("Lag");
+        ylabel("Correlation");
+        title("Cross correlation for Fy, increasing and decreasing SA sweeps")
     end
     
 
@@ -419,8 +447,8 @@ for n=1:2:(length(z)-2) % every 3 zero crossings represents a full SA sweep
 end
 
 %% Add Fz = 0N condition to data
-% We know that is Fz = 0, there cannot be any Fy, Mz, Mx, because there is
-% no load on the tire. By adding this known fact into our data, any models 
+% We know that at Fz = 0, there cannot be any Fy, Mz, Mx, because there is
+% no load on the tire (tire is essentially off the ground). By adding this known fact into our data, any models 
 % we fit to this data will be accurate at extreme load transfer, or when
 % the car is on two wheels.
 
@@ -479,6 +507,9 @@ mx0ip = reshape(fmdata0ip(:,6),nloads,nslips)';
 nfy0ip = fy0ip./fz0ip;
 
 %{
+
+%% View formatted data
+
 %% FY Surface Fit (0 IA, 8 psi)
 LATE_SLIP_VERT = csaps({slips,loads},fy0ip)
 figure('Name','Lateral Force vs. Slip Angle & Vertical Load')
