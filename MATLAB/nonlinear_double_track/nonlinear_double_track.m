@@ -12,6 +12,7 @@ vectoring control.
 CSAPS based nonlinear tire model.
 Fy as function of SA, FZ, IA, P = 8 PSI, SR = 0 (pure cornering)
 Mz as a function of SA, FZ, IA, P = 8 PSI, SR = 0 (pure cornering)
+- Positive steering wheel input is turning the wheel to the right.
 
 %% TODO:
 - go through tire model and verify coordinate systems
