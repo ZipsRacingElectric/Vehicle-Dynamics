@@ -32,7 +32,9 @@ The second column must have the parameter value in the proper unit listed
 below.
 
 %% TODO:
-- create a function to build Simulink parameters in the workspace
+- update aero force calculation and parameters for a more complete picture
+- load transfer due to aero forces
+- setParameters() should be automated
 
 %% Units:
 - distance: m
@@ -87,6 +89,11 @@ classdef vehicle < handle
         static_camber_rear                                                  % degrees, - is leaning torwards car
         steering_ratio                                                      % ratio, steering wheel angle / ackerman steering angle (aka average of L and R angles)
         ackermann_percentage                                                % percentage
+        steering_arm_length                                                 % m, perpendicular length between tire rod point and kingpin axis
+        steering_rack_length                                                % m, eye to eye length of steering rack
+        tie_rod_length_front                                               % m, perpendicular length between tire rod point and kingpin axis
+        steering_rack_to_axis_distance                                      % m, distance between kingpin axis and steering rack, parallel to the longitudinal plane of the vehicle
+        steering_pinion_radius                                              % m, radius of the steering rack pinion gear (reference for gear ratio calculation)
         roll_center_front                                                   % m, height of front roll center at static ride height
         roll_center_rear                                                    % m, height of rear roll center at static ride height
         
@@ -112,8 +119,6 @@ classdef vehicle < handle
         motion_ratio_rear                                                   % unitless, Damper / wheel (assumes we use coil-overs)
         bar_motion_ratio_front                                              % unitless, Roll bar / wheel (assumes we use coil-overs)
         bar_motion_ratio_rear                                               % unitless, Roll bar / wheel (assumes we use coil-overs)
-
-        % these are sorta references
         ride_frequency_front                                                % Hz, target front ride frequency (compare to calculated)
         ride_frequency_rear                                                 % Hz, target rear ride frequency (compare to calculated)
 
@@ -217,62 +222,65 @@ classdef vehicle < handle
 
             %% Set Static Parameters
             % Dimensions
-            obj.wheelbase = obj.parameters('wheelbase');                              % m
-            obj.track_width_front = obj.parameters('track_width_front');              % m
-            obj.track_width_rear = obj.parameters('track_width_rear');                % m
+            obj.wheelbase = obj.parameters('wheelbase');                  
+            obj.track_width_front = obj.parameters('track_width_front');   
+            obj.track_width_rear = obj.parameters('track_width_rear');      
         
             % Mass
-            obj.vehicle_mass = obj.parameters('vehicle_mass');                        % kg
-            obj.driver_mass = obj.parameters('driver_mass');                          % kg
-            obj.corner_mass_front = obj.parameters('corner_mass_front');              % kg
-            obj.corner_mass_rear = obj.parameters('corner_mass_rear');                % kg
-            obj.front_mass_distribution = obj.parameters('front_mass_distribution');  % percentage
-            obj.cg_height = obj.parameters('cg_height');                              % m
-            obj.yaw_polar_inertia = obj.parameters('yaw_polar_inertia');              % kg·m²
+            obj.vehicle_mass = obj.parameters('vehicle_mass');          
+            obj.driver_mass = obj.parameters('driver_mass');                   
+            obj.corner_mass_front = obj.parameters('corner_mass_front');          
+            obj.corner_mass_rear = obj.parameters('corner_mass_rear');            
+            obj.front_mass_distribution = obj.parameters('front_mass_distribution'); 
+            obj.cg_height = obj.parameters('cg_height');                    
+            obj.yaw_polar_inertia = obj.parameters('yaw_polar_inertia');    
         
             % Tires
-            obj.tire_loaded_radius = obj.parameters('tire_loaded_radius');            % m
-            obj.gear_ratio = obj.parameters('gear_ratio');                            % unitless
-            obj.tire_mu = obj.parameters('tire_mu');                                  % unitless
-            obj.tire_stiffness = obj.parameters('tire_stiffness');                    % N/m
-            obj.tire_width = obj.parameters('tire_width');                            % m
+            obj.tire_loaded_radius = obj.parameters('tire_loaded_radius');     
+            obj.gear_ratio = obj.parameters('gear_ratio');                 
+            obj.tire_mu = obj.parameters('tire_mu');                      
+            obj.tire_stiffness = obj.parameters('tire_stiffness');        
+            obj.tire_width = obj.parameters('tire_width');                    
         
             % Kinematics
-            obj.static_toe_front = obj.parameters('static_toe_front');                % degrees
-            obj.static_toe_rear = obj.parameters('static_toe_rear');                  % degrees
-            obj.static_camber_front = obj.parameters('static_camber_front');          % degrees
-            obj.static_camber_rear = obj.parameters('static_camber_rear');            % degrees
-            obj.steering_ratio = obj.parameters('steering_ratio');                    % unitless
-            obj.ackermann_percentage = obj.parameters('ackermann_percentage');          % percentage
-            obj.roll_center_front = obj.parameters('roll_center_front');              % m
-            obj.roll_center_rear = obj.parameters('roll_center_rear');                % m
+            obj.static_toe_front = obj.parameters('static_toe_front');         
+            obj.static_toe_rear = obj.parameters('static_toe_rear');             
+            obj.static_camber_front = obj.parameters('static_camber_front');      
+            obj.static_camber_rear = obj.parameters('static_camber_rear');        
+            obj.steering_ratio = obj.parameters('steering_ratio');                
+            obj.ackermann_percentage = obj.parameters('ackermann_percentage');      
+            obj.steering_arm_length = obj.parameters('steering_arm_length');      
+            obj.steering_rack_length = obj.parameters('steering_rack_length');     
+            obj.tie_rod_length_front = obj.parameters('tie_rod_length_front');  
+            obj.steering_rack_to_axis_distance = obj.parameters('steering_rack_to_axis_distance');
+            obj.steering_pinion_radius = obj.parameters('steering_pinion_radius');  
+            obj.roll_center_front = obj.parameters('roll_center_front');        
+            obj.roll_center_rear = obj.parameters('roll_center_rear');        
         
             % Aerodynamics
-            obj.frontal_area = obj.parameters('frontal_area');                        % m²
-            obj.Cd = obj.parameters('Cd');                                            % unitless
-            obj.Cl = obj.parameters('Cl');                                            % unitless
-            obj.center_of_pressure_distribution = obj.parameters('center_of_pressure_distribution'); % unitless
-            obj.velocity_skidpad = obj.parameters('velocity_skidpad');                % m/s
-            obj.cla_at_skidpad = obj.parameters('cla_at_skidpad');                    % unitless
-            obj.cop_at_skidpad = obj.parameters('cop_at_skidpad');                    % unitless
-            obj.velocity_max = obj.parameters('velocity_max');                        % m/s
-            obj.cla_at_max_velocity = obj.parameters('cla_at_max_velocity');          % unitless
-            obj.cop_at_max_velocity = obj.parameters('cop_at_max_velocity');          % unitless
+            obj.frontal_area = obj.parameters('frontal_area');                 
+            obj.Cd = obj.parameters('Cd');                                    
+            obj.Cl = obj.parameters('Cl');                                     
+            obj.center_of_pressure_distribution = obj.parameters('center_of_pressure_distribution'); 
+            obj.velocity_skidpad = obj.parameters('velocity_skidpad');            
+            obj.cla_at_skidpad = obj.parameters('cla_at_skidpad');               
+            obj.cop_at_skidpad = obj.parameters('cop_at_skidpad');                  
+            obj.velocity_max = obj.parameters('velocity_max');                     
+            obj.cla_at_max_velocity = obj.parameters('cla_at_max_velocity');       
+            obj.cop_at_max_velocity = obj.parameters('cop_at_max_velocity');        
         
             % Springs and Dampers
-            obj.damper_travel = obj.parameters('damper_travel');                      % m
-            obj.spring_rate_front = obj.parameters('spring_rate_front');              % N/m
-            obj.spring_rate_rear = obj.parameters('spring_rate_rear');                % N/m
-            obj.bar_spring_rate_front = obj.parameters('bar_spring_rate_front');      % N/m
-            obj.bar_spring_rate_rear = obj.parameters('bar_spring_rate_rear');        % N/m
-            obj.motion_ratio_front = obj.parameters('motion_ratio_front');            % unitless
-            obj.motion_ratio_rear = obj.parameters('motion_ratio_rear');              % unitless
-            obj.bar_motion_ratio_front = obj.parameters('bar_motion_ratio_front');    % unitless
-            obj.bar_motion_ratio_rear = obj.parameters('bar_motion_ratio_rear');      % unitless
-        
-            % Ride Frequencies
-            obj.ride_frequency_front = obj.parameters('ride_frequency_front');        % Hz
-            obj.ride_frequency_rear = obj.parameters('ride_frequency_rear');          % Hz
+            obj.damper_travel = obj.parameters('damper_travel');             
+            obj.spring_rate_front = obj.parameters('spring_rate_front');          
+            obj.spring_rate_rear = obj.parameters('spring_rate_rear');            
+            obj.bar_spring_rate_front = obj.parameters('bar_spring_rate_front');    
+            obj.bar_spring_rate_rear = obj.parameters('bar_spring_rate_rear');     
+            obj.motion_ratio_front = obj.parameters('motion_ratio_front');       
+            obj.motion_ratio_rear = obj.parameters('motion_ratio_rear');            
+            obj.bar_motion_ratio_front = obj.parameters('bar_motion_ratio_front');  
+            obj.bar_motion_ratio_rear = obj.parameters('bar_motion_ratio_rear');    
+            obj.ride_frequency_front = obj.parameters('ride_frequency_front');    
+            obj.ride_frequency_rear = obj.parameters('ride_frequency_rear');      
         end
         
         %{
@@ -331,8 +339,7 @@ classdef vehicle < handle
             obj.kr = 0.5 * obj.total_roll_rate_rear * obj.track_width_rear^2;
             obj.kf_prime = obj.kf - (obj.wheelbase - obj.a_sprung) * obj.sprung_mass_total * obj.g * obj.height_nra_to_sm_center / obj.wheelbase;
             obj.kr_prime = obj.kr - obj.a_sprung * obj.sprung_mass_total * obj.height_nra_to_sm_center / obj.wheelbase;
-            obj.lltd_front = obj.calculate_lateral_load_transfer_front();
-            obj.lltd_rear = obj.calculate_lateral_load_transfer_rear();
+            [obj.lltd_front, obj.lltd_rear] = obj.calculate_lateral_load_transfer_front();
             obj.tlltd = obj.lltd_front / (obj.lltd_front + obj.lltd_rear);
 
             % Longitudinal Load Transfer Calculations
@@ -387,21 +394,21 @@ classdef vehicle < handle
         
         %% Helper Functions for vehicle analysis
 
-        function lltd_front = calculate_lateral_load_transfer_front(obj)
+        %{
+
+        Calculates lateral load transfers
+
+        %}
+        function [lltd_front, lltd_rear] = calculate_lateral_load_transfer_front(obj)
             % Calculate the lateral load transfer distribution for the front axle
             front_roll_center = obj.roll_center_front;
+            rear_roll_center = obj.roll_center_rear;
             height_sprung_mass_cg = obj.cg_sprung;
 
             lltd_front = (obj.sprung_mass_total * obj.g / obj.track_width_front) * ...
                 ((obj.height_nra_to_sm_center * obj.kf_prime) / (obj.kf + obj.kr - obj.sprung_mass_total * obj.g * obj.height_nra_to_sm_center) + ...
                 (obj.wheelbase - obj.a_sprung) / obj.wheelbase * front_roll_center) + ...
                 obj.unsprung_mass_front * obj.g / obj.track_width_front * height_sprung_mass_cg;
-        end
-        
-        function lltd_rear = calculate_lateral_load_transfer_rear(obj)
-            % Calculate the lateral load transfer distribution for the rear axle
-            rear_roll_center = obj.roll_center_rear;
-            height_sprung_mass_cg = obj.cg_sprung;
 
             lltd_rear = (obj.sprung_mass_total * obj.g / obj.track_width_rear) * ...
                 ((obj.height_nra_to_sm_center * obj.kr_prime) / (obj.kf + obj.kr - obj.sprung_mass_total * obj.g * obj.height_nra_to_sm_center) + ...
@@ -409,12 +416,14 @@ classdef vehicle < handle
                 obj.unsprung_mass_rear * obj.g / obj.track_width_rear * height_sprung_mass_cg;
         end
         
-        function drag_force = calculate_drag_force(obj, velocity)
+        %{
+        
+        Calculates aero forces in [N] at a given velocity
+        
+        %}
+        function [downforce, dragforce] = calculate_aero_forces(obj, velocity)
             % Calculate the drag force given a velocity
-            drag_force = 0.5 * obj.air_density * velocity^2 * obj.Cd * obj.frontal_area;
-        end
-
-        function downforce = calculate_downforce(obj, velocity)
+            dragforce = 0.5 * obj.air_density * velocity^2 * obj.Cd * obj.frontal_area;
             % Calculate the aerodynamic downforce given a velocity
             downforce = 0.5 * obj.air_density * velocity^2 * obj.Cl * obj.frontal_area;
         end

@@ -38,6 +38,7 @@ zr25 = vehicle("../vehicle_data/zr25_data.xlsx");
 zr25.create_simulink_parameters();
 
 %% Calculate some relevant suspension parameters
+%{
 ubj = [0.804805, 0.554950, 0.340000]; % upper ball joint X, Y, Z in [m]
 lbj = [0.817649, 0.577022, 0.130000]; % lower ball joint
 tie = [0.891342, 0.578549, 0.170000];
@@ -54,6 +55,7 @@ front_tie_rod_length = Simulink.Parameter(norm(tie - chassis_tie)); % length of 
 kingpin_center = (ubj + lbj) ./ 2;
 rack_to_axis_distance = Simulink.Parameter(abs(kingpin_center(1) - chassis_tie(1))); % kind of an estimate since the definition assumes a 2d steering system without 3d kingpin axis
 steering_pinon_radius = Simulink.Parameter(0.0229); % [m], from ZR20, I assume we havent changed it since
+%}
 
 % open simulink model
 open_system('kinematic_steering');
