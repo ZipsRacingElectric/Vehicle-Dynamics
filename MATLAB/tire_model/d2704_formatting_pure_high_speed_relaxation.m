@@ -17,8 +17,8 @@ MATLAB directory of the local Vehicle-Dynamics-ZR25 repository
 modified for anything that isn't round 9
 
 %% TODO:
+- Filter, interpolate, & shift Mz using FIR developed in data_cleaning_example.m
 - eliminate hysterisis in slip angle sweeps
-- fix CSAPS accuracy error (apparent in Mz final plot)
 
 %% Data and units:
 AMBTMP: Ambient room temp, deg C
@@ -55,6 +55,10 @@ clear; close all; clc;
 % contains a 12 psi sweep at a more broken in tire
 file1 = load("../tire_data/d2704/data/B2356run23.mat");
 file2 = load("../tire_data/d2704/data/B2356run24.mat");
+
+% Load low speed relaxation length data
+%% load pure cornering fitted data points
+load("../tire_data/d2704/d2704_7in_relaxation_low_speed.mat");
 
 time_step = 1 / 100; % time step between data points
 
@@ -235,34 +239,6 @@ figure;
 plot(ET, SA)
 %}
 
-% get rid of 15 and 45 mph slip angle sweeps (just build a model on the core
-% 25 mph data)
-
-p = 74760; % data point which we want to cut off to et = 3345.5
-AMBTMP(p:end,:)=[];
-ET(p:end,:)=[];
-FX(p:end,:)=[];
-FY(p:end,:)=[];
-FZ(p:end,:)=[];
-IA(p:end,:)=[];
-MX(p:end,:)=[];
-MZ(p:end,:)=[];
-N(p:end,:)=[];
-NFX(p:end,:)=[];
-NFY(p:end,:)=[];
-P(p:end,:)=[];
-RE(p:end,:)=[];
-RL(p:end,:)=[];
-RST(p:end,:)=[];
-RUN(p:end,:)=[];
-SA(p:end,:)=[];
-SL(p:end,:)=[];
-SR(p:end,:)=[];
-TSTC(p:end,:)=[];
-TSTI(p:end,:)=[];
-TSTO(p:end,:)=[];
-V(p:end,:)=[];
-
 % convert tire pressure data from kPa to PSI
 P = P * 0.14503773773020923;
 
@@ -304,16 +280,6 @@ xlabel('Point Count')
 ylabel('Slip Angle')
 legend('Test Data','Computed Slip Points of Interest'),legend Boxoff
 
-% Don't want to remember any data from apprevious processing session:
-clear fmdata;
-
-% plot inclination angle
-%{
-figure;
-plot(m, IA);
-hold off;
-%}
-
 q = 0;
 for n=1:2:(length(z)-2) % every 3 zero crossings represents a full SA sweep
 
@@ -326,12 +292,14 @@ for n=1:2:(length(z)-2) % every 3 zero crossings represents a full SA sweep
     rl=RL(z(n):z(n+2));
     ia=IA(z(n):z(n+2));
     pressure=P(z(n):z(n+2));
+    v=V(z(n):z(n+2));
     % Now we have collected the tire channels for each full slip sweep.
 
-    %% normalize the Fy channel to account for Fz noise
-    % for each transient sweep, Fz is held constant, so we normalize Fy
-    % by multiplying it by the ratio between the Fz mean and the isntantaneous Fz.
-    fy = (fy * mean(fz)) ./ fz; % element-wise divide
+    %% filter the Fy channel to account for Fz noise
+    % for each transient sweep, Fz is held constant, so we filter Fy for Fz
+    % noise contamination by multiplying it by the ratio between the Fz mean and the instantaneous Fz.
+    % fy = (fy * mean(fz)) ./ fz; % element-wise divide
+    %% Note: for certain sweeps this was not helpful, disabled for now
     
     %% Filter MZ data
     % Next step is to capture the rational data between the max and minimum
@@ -366,7 +334,7 @@ for n=1:2:(length(z)-2) % every 3 zero crossings represents a full SA sweep
     ind=find(abs(mzf-mz(rng)') > 7);
     mz(rng(ind))=mzf(ind);
 
-    %% Remove hysterisis from SA sweep and calculate a 1st order time constant
+    %% Calculate 1st order relaxation length time constant
     % we want to compare the hysterisis in Fy values between the increasing
     % SA sweep and the decreasing SA sweep
     % each SA sweep does this: 0 deg -> +12 deg -> -12 deg -> 0 deg
@@ -378,10 +346,14 @@ for n=1:2:(length(z)-2) % every 3 zero crossings represents a full SA sweep
 
     fy_increasing_sa = cat(1, fy(n_at_sa_min:end), fy(1:n_at_sa_max));
     fy_decreasing_sa = flip(fy(n_at_sa_max:n_at_sa_min)); % Fy must be "moving" in the same direction as the other array for xcorr to work
-    [cross_corr, lags] = xcorr(fy_increasing_sa, fy_decreasing_sa, 'none');
-    [~, max_index] = max(cross_corr);
-    time_lag = lags(max_index) * time_step;
 
+    [cross_corr, lags] = xcorr(fy_increasing_sa, fy_decreasing_sa, 'none');
+    [~, max_index] = max(cross_corr); % find index for best correlation
+    tau = lags(max_index) * time_step; % time lag associated with best correlation
+    % this time lag is a good approximation for 1st order relaxation length
+    % time constant
+    % Possibly better: fit a 1st order equation to the data using
+    % lsqcurvefit
 
     %% Spline fitting the continuous data to subset it with 1 Degree slip angle increments
     % with some tighter tension:
@@ -390,9 +362,13 @@ for n=1:2:(length(z)-2) % every 3 zero crossings represents a full SA sweep
     sp_mx=csaps(sa,mx,.1);
     sp_rl=csaps(sa,rl,.1);
 
-    %% Check out Segment 9
+    %% Check out Segment 17
     % Just out of curiosity, what kind of data are we dealing with?
-    if isequal(n,9)
+    if isequal(n,17)
+
+        % save raw data
+        save("../tire_data/d2704/pure_cornering_test_sweep.mat", "sa", "fz", "fy", "mz", "mx", "rl", "ia", "pressure", "v");
+
         fprintf("hit segment 9")
         figure;
         subplot(3,1,1)
@@ -430,154 +406,88 @@ for n=1:2:(length(z)-2) % every 3 zero crossings represents a full SA sweep
         ylabel("Correlation");
         title("Cross correlation for Fy, increasing and decreasing SA sweeps")
     end
-    
 
-    %% fmdata is the organized, fitted data
-    % columns: SA, IA, Fz, Fy, Mz, Mx, P
-    for sl=floor(min(sa)):1:ceil(max(sa)); % full sweep of slip angle spline in whole integers of degrees
-        q=q+1;
-        fmdata(q,1)=sl; 
-        fmdata(q,2)=round(mean(ia));
-        fmdata(q,3)=mean(fz);
-        fmdata(q,4)=fnval(sp_fy,sl);
-        fmdata(q,5)=fnval(sp_mz,sl);
-        fmdata(q,6)=fnval(sp_mx,sl);
-        fmdata(q,7)=round(mean(pressure));
-    end 
+    %% create formatted data
+    % Each column: time constant, velocity, normal force, pressure
+    q = q + 1;
+    relaxation_high_speed(q,1) = tau; % for fy only
+    relaxation_high_speed(q,2) = round(mean(v));
+    relaxation_high_speed(q,3) = mean(fz);
+
 end
 
-%% Add Fz = 0N condition to data
-% We know that at Fz = 0, there cannot be any Fy, Mz, Mx, because there is
-% no load on the tire (tire is essentially off the ground). By adding this known fact into our data, any models 
-% we fit to this data will be accurate at extreme load transfer, or when
-% the car is on two wheels.
+%% Combine Low Speed data and format
 
-incls = unique(round(fmdata(:,2)));
-nincls = length(incls); % number of distinct inclination angles
-slips = unique(round(fmdata(:,1)));
-nslips = length(slips); % number of distinct slip angles
-press = unique(round(fmdata(:,7)));
-npress = length(press); % number of distinct pressures
+% eliminate outliers in low speed data
+outlier_indexes = cat(1, find(relaxation_low_speed(:, 1) > 2), find(relaxation_low_speed(:, 1) < 0));
+relaxation_low_speed(outlier_indexes, :) = []; % remove row
 
-% Create an array of our Fz = 0 condition:
-% columns: SA, IA, Fz, Fy, Mz, Mx, P
+% Clean up low speed data
+% for simplicity assume equal relaxation coefficient across all normal
+% loads
+unique_fz = unique(round(relaxation_low_speed(:, 3)));
+low_speed_data = [mean(relaxation_low_speed(:,1)) + zeros(length(unique_fz), 1), 1 + zeros(length(unique_fz), 1), unique_fz];
 
-% for each distinct P, for each distinct IA, concatenate array of slip
-% angles
-zero_load = [];
-for n = 1:length(press)
-    for q = 1:length(incls)
-        zero_load = [zero_load; [slips, (zeros(length(slips), 1) + incls(q)), zeros(length(slips), 1), zeros(length(slips), 1), zeros(length(slips), 1), zeros(length(slips), 1), (zeros(length(slips), 1) + press(n))]];
-    end
-end
+% combine data
+relaxation_data = [low_speed_data; relaxation_high_speed];
 
-% concatenate array to existing data
-fmdata = [fmdata; zero_load];
+% Add a column for calculated relaxation length
+relaxation_length = relaxation_data(:, 1) .* relaxation_data(:, 2); % [m]
+relaxation_data = [relaxation_data(:, 1), relaxation_length, relaxation_data(:, 2), relaxation_data(:, 3)];
 
-%% Sort Formatted Data Array 1st by Pressure, Camber, Slip, and finally Fz
-% Use |sortrows| to preserve the array correspondence.
-fmdata = sortrows(fmdata,[7,2,1,3])
+% Add a zero speed condition
+% relaxation coefficient at Fz = 0 should be zero to avoid tire force delays
+% when the tire is in the air, ensure csaps interpolates correctly
+unique_v = unique(round(relaxation_data(:, 3)));
+zero_cond = [zeros(length(unique_v), 2), unique_v, zeros(length(unique_v), 1)];
 
-%% Save organized tire data
-save("../tire_data/d2704/d2704_7in_formatted_data.mat", "fmdata");
+relaxation_data = [relaxation_data; zero_cond];
 
-%% Data Sets (Slip, Load, Camber, Pressure):
-% transpose these into column arrays
-incls = incls';
-slips = slips';
-press = press';
+% Sort Data by velocity, fz
+relaxation_data = sortrows(relaxation_data,[3, 4, 1]);
 
-inx0 = find(fmdata(:,2) == 0); % array indexes with zero camber points
-fmdata0 = fmdata(inx0,:); % selects rest of data corresponding to 0 IA
-px0 = find(fmdata0(:,7) == 8); % array indexes for zero camber and 8 psi
-fmdata0ip = fmdata0(px0,:); % selects rest of 0 IA data corresponding to 8 psi
+% Save organized tire data
+% Columns are: time constant, relaxation length, velocity, normal load
+save("../tire_data/d2704/d2704_7in_relaxation_data.mat", "relaxation_data");
 
-% Next, we transpose the arrays to make our spline functions happy:
-reshaped_fmdata = reshape(fmdata0ip(:,3),[],nslips);
-loads = mean(reshape(fmdata0ip(:,3),[],nslips),2)'; % appears to just give us a list of unique loads
-nloads = length(loads);
+%% display relaxation length coefficients
+figure;
+scatter3(relaxation_data(:, 3), relaxation_data(:, 4), relaxation_data(:, 1));
 
-% Take a look at FZ:
-fz0ip = reshape(fmdata0ip(:,3),nloads,nslips)'; % create an array with nload rows x nslip columns
-fy0ip = reshape(fmdata0ip(:,4),nloads,nslips)';
-mz0ip = reshape(fmdata0ip(:,5),nloads,nslips)';
-mx0ip = reshape(fmdata0ip(:,6),nloads,nslips)';
+% Spline fit to coefficients
+% Extract columns
+relaxation_coeff = relaxation_data(:, 1);
+velocity = relaxation_data(:, 3);
+normal_force = relaxation_data(:, 4);
 
-% normalized lateral force (mu value)
-nfy0ip = fy0ip./fz0ip;
+% Create a grid for bivariate data
+[velocity_grid, force_grid] = ndgrid(unique(velocity), unique(normal_force));
 
-%{
+% Map relaxation_coeff onto the grid
+relaxation_coeff_grid = griddata(velocity, normal_force, relaxation_coeff, velocity_grid, force_grid, 'linear');
 
-%% View formatted data
+% Fit a csaps bivariate spline for relaxation coefficient
+smoothing_param = 0.01; % Adjust smoothing parameter as needed
+spline_bivariate = csaps({unique(velocity), unique(normal_force)}, relaxation_coeff_grid, smoothing_param);
 
-%% FY Surface Fit (0 IA, 8 psi)
-LATE_SLIP_VERT = csaps({slips,loads},fy0ip)
-figure('Name','Lateral Force vs. Slip Angle & Vertical Load')
-fnplt(LATE_SLIP_VERT)
-xlabel('Slip Angle (deg)')
-ylabel('Vertical Load (N)')
-zlabel('Lateral Force (N)')
-view(45,45)
+% Generate fine grids for plotting
+velocity_fine = linspace(min(velocity), max(velocity), 100);
+force_fine = linspace(min(normal_force), max(normal_force), 100);
+[velocity_fine_grid, force_fine_grid] = ndgrid(velocity_fine, force_fine);
 
-CS=fnder(LATE_SLIP_VERT,[1,0])
-figure('Name','Cornering Stiffness vs. Slip Angle & Vertical Load')
-fnplt(CS)
-xlabel('Slip Angle (deg)')
-ylabel('Vertical Load (N)')
-zlabel('Cornering Stiffness (N/deg)')
+% Evaluate the spline on the fine grid
+relaxation_fit = fnval(spline_bivariate, {velocity_fine, force_fine});
 
-%% Normalized Lateral Force Surface Fit (0 IA, 8 psi)
-NLATE_SLIP_VERT = csaps({slips,loads},nfy0ip)
-figure('Name','Load Normalized Lateral Force vs. Slip Angle & Vertical Load ')
-fnplt(NLATE_SLIP_VERT)
-xlabel('Slip Angle (deg)')
-ylabel('Vertical Load (N)')
-zlabel('Lateral Force mu value (Fy/Fz)')
-view(45,45)
-% Wow, look at the mu on that baby, good as a Sprint Cup Left Side Tire !!
-% Here's the traditional normalized cornering stiffness used in industry: 
-NCS=fnder(NLATE_SLIP_VERT,[1,0])
-figure('Name', 'Normalized Cornering Stiffness vs. Slip Angle & Vertical Load ')
-fnplt(NCS)
-xlabel('Slip Angle (deg)')
-ylabel('Vertical Load (N)')
-zlabel('Normalized Cornering Stiffness (N/deg/N)')
+% Plot the results
+figure;
 
-%% Mz Surface Fit (0 IA, 8 psi)
-ALNT_SLIP_VERT = csaps({slips,loads},mz0ip)
-figure('Name','Aligning Moment vs. Slip Angle & Vertical Load')
-fnplt(ALNT_SLIP_VERT)
-xlabel('Slip Angle (deg)')
-ylabel('Vertical Load (N)')
-zlabel('Aligning Moment Mz (Nm/deg)')
-
-%% Mx Surface Fit (0 IA, 8 psi)
-OVTM_SLIP_VERT = csaps({slips,loads},mx0ip)
-figure('Name','Overturning Moment vs. Slip Angle & Vertical Load')
-fnplt(OVTM_SLIP_VERT)
-view(30,45)
-xlabel('Slip Angle (deg)')
-ylabel('Vertical Load (N)')
-zlabel('Overturning Moment Mx (Nm)')
-
-%% Pneumatic Scrub
-PSCRUB_SLIP_VERT = csaps({slips,loads},1000*mx0ip./fz0ip) 
-figure('Name','Pneumatic Scrub vs. Slip Angle & Vertical Load')
-fnplt(PSCRUB_SLIP_VERT)
-view(30,45)
-xlabel('Slip Angle (deg)')
-ylabel('Vertical Load (N)')
-zlabel('Pneumatic Scrub (mm)')
-
-%% Pneumatic Trail Surface
-PTRAIL_SLIP_VERT = csaps({slips,loads},1000*mz0ip./fy0ip,.707)
-figure('Name','Pneumatic Trail vs. Slip Angle & Vertical Load')
-fnplt(PTRAIL_SLIP_VERT)
-view(30,45)
-title('Although I would not produce Pneumatic Trail this way, good guess, though ...' )
-xlabel('Slip Angle (deg)')
-ylabel('Vertical Load (N)')
-zlabel('Pneumatic Trail (mm)')
-
-%% for graphs on Fy = 0 surfaces, see Matlab Processing of FSAE TTC Tire Test Data.pdf
-%}
+% 3D Surface Plot
+surf(velocity_fine_grid, force_fine_grid, relaxation_fit, 'EdgeColor', 'none');
+hold on;
+scatter3(velocity, normal_force, relaxation_coeff, 'filled', 'r');
+xlabel('Velocity');
+ylabel('Normal Force');
+zlabel('Relaxation Coefficient');
+title('Bivariate Cubic Smoothing Spline');
+grid on;
+colorbar;

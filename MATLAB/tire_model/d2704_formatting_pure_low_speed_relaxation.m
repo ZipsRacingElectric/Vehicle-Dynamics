@@ -1,10 +1,20 @@
 %{
+
 %% Overview:
 This script takes a look at the transient cornering test plans to help 
 determing relaxation length effects. 
 It has been developed from Bill Cobb's information (availible on TTC forum)
 
 For use with round 9 data.
+
+The relaxation length data is stored as a 1st order time constant. Time
+constants are recorded for varying velocity, & normal load. I
+don't know what to do regarding the changing magnituides of slip angle
+(maybe in real-time calculate the slip angle derivative and adjust the
+time constant?) as it needs to align with how the high speed time constants
+are recorded (swept slip angle). Also pressure data is inconsistent between
+data sets (some are missing 8 psi), and it didn't make much difference, so
+pressure was left out.
 
 %% Notes:
 - You will need the tire_data folder from the OneDrive. Put it in the
@@ -99,7 +109,6 @@ P = P * 0.14503773773020923;
 % convert velocity from kph to m/s
 V = V * (1000/1) * (1/60 * 1/60);
 
-
 %% Plot raw data
 figure;
 
@@ -163,8 +172,7 @@ ylabel('Velocity')
 legend('Test Data','Computed Slip Points of Interest'),legend Boxoff
 
 % Don't want to remember any data from apprevious processing session:
-clear fmdata;
-
+clear relaxation_low_speed;
 
 q = 0;
 % Subset the data into individual transient sweeps:
@@ -184,10 +192,13 @@ for n=1:2:(length(z)-2) % every 3 zeros represents a transient sweep
     ia=IA(z(n):z(n+1));
     pressure=P(z(n):z(n+1));
 
-    %% normalize the Fy channel to account for Fz noise
-    % for each transient sweep, Fz is held constant, so we take the
+    %% filter the Fy channel to account for Fz noise
+    % for each transient sweep, Fz should held constant, so we take the
     % average:
-    fy = (fy * mean(fz)) ./ fz; % element-wise divide
+    %fy = (fy * mean(fz)) ./ fz; % element-wise divide
+    % note: there is large Fz variation (+/- 100 N), but this step still
+    % doesnt seem to help. Raw Fy does not seem to be too affected by the
+    % Fz noise. Maybe Fz variation is not real and just measurement noise.
 
     %% fit a 1st order curve to data
     % get initial value
@@ -237,7 +248,6 @@ for n=1:2:(length(z)-2) % every 3 zeros represents a transient sweep
     % Just out of curiosity, what kind of data are we dealing with?
     if isequal(n,19)
 
-
         fprintf(num2str(tau))
 
         figure;
@@ -247,7 +257,7 @@ for n=1:2:(length(z)-2) % every 3 zeros represents a transient sweep
         title({['Fz= ' num2str(round(mean(fz))) ' N'];['IA= ' num2str(round(mean(ia))) '°, ' num2str(round(mean(pressure))) ' psi']})
         xlabel('Elapsed Time, sec')
         ylabel('Norm Lateral Force Fy/Fz')
-        legend({['Test Data','tau = ' num2str(tau)]})
+        legend({['Test Data, tau = ' num2str(tau)]})
 
         subplot(4,1,2)
         hold on
@@ -275,134 +285,28 @@ for n=1:2:(length(z)-2) % every 3 zeros represents a transient sweep
         plot(et_shift, fy_norm, 'bo', 'DisplayName', 'Original Data'); hold on;
         plot(et_shift, first_order_fy, 'r-', 'DisplayName', ['Fitted Curve (Tau = ', num2str(tau), ')']);
         xlabel('Elapsed Time (s)');
-        ylabel('Normal Force (Fy)');
+        ylabel('Normal Force, normalized to initial value');
         title('First-Order System Fitting');
         legend show;
         grid on;
 
     end
     
-    
-    %% create a clean, fitted dataset called fmdata
-    % columns: SA, IA, Fz, Fy, Mz, Mx, P
-    for sl=floor(min(sa)):1:ceil(max(sa)); % full sweep of slip angle spline in whole integers of degrees
-        q=q+1;
-        fmdata(q,1)=sl; 
-        fmdata(q,2)=round(mean(ia));
-        fmdata(q,3)=mean(fz);
-        fmdata(q,4)=fnval(sp_fy,sl);
-        fmdata(q,5)=fnval(sp_mz,sl);
-        fmdata(q,6)=fnval(sp_mx,sl);
-        fmdata(q,7)=round(mean(pressure));
-    
-    end 
-    %}
+    %% create formatted data
+    % Each column: time constant, velocity, normal force, pressure
+    q = q + 1;
+    relaxation_low_speed(q,1) = tau; % for fy only
+    relaxation_low_speed(q,2) = round(mean(v));
+    relaxation_low_speed(q,3) = mean(fz);
+
 end
 
-%{
 %% Sort Data Array 1st by Pressure, Camber, Slip, and finally Fz
 % Use |sortrows| to preserve the array correspondence.
-fmdata = sortrows(fmdata,[7,2,1,3]);
-incls = unique(round(fmdata(:,2)))';
-nincls = length(incls); % number of distinct inclination angles
-slips = unique(round(fmdata(:,1)))';
-nslips = length(slips); % number of distinct slip angles
-press = unique(round(fmdata(:,7)))';
-npress = length(press); % number of distinct pressures
+relaxation_low_speed = sortrows(relaxation_low_speed, [2, 3, 1]);
+
+% TODO: averaging of duplicate rows and removal of outliers was done in
+% excel on output data. It would be nice to do that here first
 
 %% Save organized tire data
-save("d2704_7in_fmdata.mat", "fmdata");
-
-%% Data Sets (Slip, Load, Camber, Pressure):
-inx0 = find(fmdata(:,2) == 0); % array indexes with zero camber points
-fmdata0 = fmdata(inx0,:); % selects rest of data corresponding to 0 IA
-px0 = find(fmdata0(:,7) == 8); % array indexes for zero camber and 8 psi
-fmdata0ip = fmdata0(px0,:); % selects rest of 0 IA data corresponding to 8 psi
-
-% Next, we transpose the arrays to make our spline functions happy:
-reshaped_fmdata = reshape(fmdata0ip(:,3),[],nslips);
-loads = mean(reshape(fmdata0ip(:,3),[],nslips),2)'; % appears to just give us a list of unique loads
-nloads = length(loads);
-
-% Take a look at FZ:
-fz0ip = reshape(fmdata0ip(:,3),nloads,nslips)'; % create an array with nload rows x nslip columns
-fy0ip = reshape(fmdata0ip(:,4),nloads,nslips)'
-mz0ip = reshape(fmdata0ip(:,5),nloads,nslips)';
-mx0ip = reshape(fmdata0ip(:,6),nloads,nslips)';
-
-% normalized lateral force (mu value)
-nfy0ip = fy0ip./fz0ip;
-
-%{
-%% FY Surface Fit (0 IA, 8 psi)
-LATE_SLIP_VERT = csaps({slips,loads},fy0ip)
-figure('Name','Lateral Force vs. Slip Angle & Vertical Load')
-fnplt(LATE_SLIP_VERT)
-xlabel('Slip Angle (deg)')
-ylabel('Vertical Load (N)')
-zlabel('Lateral Force (N)')
-view(45,45)
-
-CS=fnder(LATE_SLIP_VERT,[1,0])
-figure('Name','Cornering Stiffness vs. Slip Angle & Vertical Load')
-fnplt(CS)
-xlabel('Slip Angle (deg)')
-ylabel('Vertical Load (N)')
-zlabel('Cornering Stiffness (N/deg)')
-
-%% Normalized Lateral Force Surface Fit (0 IA, 8 psi)
-NLATE_SLIP_VERT = csaps({slips,loads},nfy0ip)
-figure('Name','Load Normalized Lateral Force vs. Slip Angle & Vertical Load ')
-fnplt(NLATE_SLIP_VERT)
-xlabel('Slip Angle (deg)')
-ylabel('Vertical Load (N)')
-zlabel('Lateral Force mu value (Fy/Fz)')
-view(45,45)
-% Wow, look at the mu on that baby, good as a Sprint Cup Left Side Tire !!
-% Here's the traditional normalized cornering stiffness used in industry: 
-NCS=fnder(NLATE_SLIP_VERT,[1,0])
-figure('Name', 'Normalized Cornering Stiffness vs. Slip Angle & Vertical Load ')
-fnplt(NCS)
-xlabel('Slip Angle (deg)')
-ylabel('Vertical Load (N)')
-zlabel('Normalized Cornering Stiffness (N/deg/N)')
-
-%% Mz Surface Fit (0 IA, 8 psi)
-ALNT_SLIP_VERT = csaps({slips,loads},mz0ip)
-figure('Name','Aligning Moment vs. Slip Angle & Vertical Load')
-fnplt(ALNT_SLIP_VERT)
-xlabel('Slip Angle (deg)')
-ylabel('Vertical Load (N)')
-zlabel('Aligning Moment Mz (Nm/deg)')
-
-%% Mx Surface Fit (0 IA, 8 psi)
-OVTM_SLIP_VERT = csaps({slips,loads},mx0ip)
-figure('Name','Overturning Moment vs. Slip Angle & Vertical Load')
-fnplt(OVTM_SLIP_VERT)
-view(30,45)
-xlabel('Slip Angle (deg)')
-ylabel('Vertical Load (N)')
-zlabel('Overturning Moment Mx (Nm)')
-
-%% Pneumatic Scrub
-PSCRUB_SLIP_VERT = csaps({slips,loads},1000*mx0ip./fz0ip) 
-figure('Name','Pneumatic Scrub vs. Slip Angle & Vertical Load')
-fnplt(PSCRUB_SLIP_VERT)
-view(30,45)
-xlabel('Slip Angle (deg)')
-ylabel('Vertical Load (N)')
-zlabel('Pneumatic Scrub (mm)')
-
-%% Pneumatic Trail Surface
-PTRAIL_SLIP_VERT = csaps({slips,loads},1000*mz0ip./fy0ip,.707)
-figure('Name','Pneumatic Trail vs. Slip Angle & Vertical Load')
-fnplt(PTRAIL_SLIP_VERT)
-view(30,45)
-title('Although I would not produce Pneumatic Trail this way, good guess, though ...' )
-xlabel('Slip Angle (deg)')
-ylabel('Vertical Load (N)')
-zlabel('Pneumatic Trail (mm)')
-
-%% for graphs on Fy = 0 surfaces, see Matlab Processing of FSAE TTC Tire Test Data.pdf
-%}
-%}
+save("../tire_data/d2704/d2704_7in_relaxation_low_speed.mat", "relaxation_low_speed");

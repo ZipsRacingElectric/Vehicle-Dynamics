@@ -64,6 +64,8 @@ t = z * time_step; % create an array of time starting at the beginning of the sa
 % since this entire sweep is going to be data for only one Fz point in our
 % tire model, this is important
 
+%% Note: filtering this way was found not to be all that helpful
+
 %{
 filtering_ratio = mean(fz) ./ fz;
 fy_filtered = fy .* filtering_ratio; % element-wise divide
@@ -216,6 +218,8 @@ xlabel("f (Hz)");
 ylabel("|fft(Fy)|")
 xlim([0 10]);
 
+%% noise clearly identified in Mz at 4 & 7 Hz
+
 %% Low Pass Filter on Mz
 % 3rd order finite impulse response filter
 filtertype = 'FIR';
@@ -257,7 +261,7 @@ xlim([0, t(end)]);
 hold off;
 legend("Mz Raw", "Mz Filtered", "Mz Filtered and Shifted");
 
-%% Spline fitting the continuous data to subset it with 1 Degree slip angle increments
+%% Spline fitting the continuous data to subset it with 1 degree slip angle increments
 % with some tighter tension:
 sp_fy=csaps(sa,fy,.1);
 sp_mz=csaps(sa,mz,.1);
