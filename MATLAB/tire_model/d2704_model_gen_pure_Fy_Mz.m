@@ -27,7 +27,9 @@ script in this same directory
 - formatted_data expected columns(in order): SA, IA, Fz, Fy, Mz, Mx, P
 
 %% TODO:
-- Create CSAPS for Mx
+- The graphs overlay the CSAPS spline and the lookup table. They look like
+they deviate, however its probably because the CSAPS spline is being
+plotted for a different IA value. Need to debug plots
 
 %% Data and units:
 FX: longituidinal force, N
@@ -81,6 +83,7 @@ fy_p8 = permute(fy_p8, [2 1 3]);
 Fy_from_sa_fz_ia = csaps({slips,loads,incls},fy_p8);
 
 % note: when plotting the 4D function, it will give you a 3D surface at IA = 0
+%{
 figure('Name','Lateral Force vs. Slip Angle, Vertical Load, Inclination Angle')
 fnplt(Fy_from_sa_fz_ia)
 xlabel('Slip Angle (deg)')
@@ -88,12 +91,13 @@ ylabel('Vertical Load (N)')
 zlabel('Lateral Force (N)')
 title('Name','Lateral Force vs. Slip Angle, Vertical Load, IA = 0 deg')
 view(45,45)
+%}
 
 % evaluating the CSAPS tire model
 %keep in mind the SAE sign conventions, Fz is negative
 fnval(Fy_from_sa_fz_ia,{6.3, -1200, 1.4})
 
-% Generate higher resolution lookup table data
+%% Generate higher resolution lookup table data
 % evaluate the csaps function at the resolution we want in each dimension
 % store the data in a structure we can import into a Simulink n-D lookup block
 sa_min = -13;    % Min value for 'sa'
@@ -130,16 +134,19 @@ fy_fixed_ia = fy(:, :, ia_index)';  % Extract 2D matrix for fixed 'ia_value' and
 [SA_grid, FZ_grid] = meshgrid(sa, fz);
 
 % Using surf for a 3D surface plot
+%{
 figure;
 surf(SA_grid, FZ_grid, fy_fixed_ia);
 xlabel('sa');
 ylabel('fz');
 zlabel('fy');
 title(['fy for ia = ', num2str(ia_value)]);
+%}
 
 % save both spline and lookup data in .mat file for use in simulink
 save("../tire_data/d2704/d2704_7in_csaps.mat", 'Fy_from_sa_fz_ia', 'sa', 'fz', 'ia', 'fy');
 
+%{
 figure('Name','Lateral Force vs. Slip Angle, Vertical Load, Inclination Angle')
 fnplt(Fy_from_sa_fz_ia)
 hold on;
@@ -148,6 +155,7 @@ xlabel('Slip Angle (deg)')
 ylabel('Vertical Load (N)')
 zlabel('Lateral Force (N)')
 view(45,45)
+%}
 
 %% Mz Surface Fit (P = 8 psi)
 % reshape the data into 3D load, slip, and IA dimensions representive of the
@@ -176,7 +184,7 @@ view(45,45)
 % keep in mind the SAE sign conventions, Fz is negative
 fnval(Mz_from_sa_fz_ia,{6.3, -1200, 1.4})
 
-% Generate higher resolution lookup table data
+%% Generate higher resolution lookup table data
 % evaluate the csaps function at the resolution we want in each dimension
 % store the data in a structure we can import into a Simulink n-D lookup block
 sa_min = -13;    % Min value for 'sa'
@@ -218,15 +226,20 @@ surf(SA_grid, FZ_grid, mz_fixed_ia);
 xlabel('sa');
 ylabel('fz');
 zlabel('mz');
-title(['mz for ia = ', num2str(ia_value)]);
+title(['Hi Res Mz Lookup for ia = ', num2str(ia_value)]);
+
+% Validate by comparing values at a point:
+fprintf("Value of Csaps: %d\n", fnval(Mz_from_sa_fz_ia, {6, -1600, 0}));
+fprintf("Value of Lookup: %d\n", mz(77, 1, 1));
 
 % save both spline and lookup data in .mat file for use in simulink
 save("../tire_data/d2704/d2704_7in_csaps_mz.mat", 'Mz_from_sa_fz_ia', 'sa', 'fz', 'ia', 'mz');
 
-figure('Name','Overturning Moment (Mz) vs. Slip Angle, Vertical Load, Inclination Angle')
+% Note: need to debug why plots are not plotting the same (data is fine)
+figure('Name','Overturning Moment (Mz) vs. SA, Fz, IA; surf = csaps, dots = hi res lookup')
 fnplt(Mz_from_sa_fz_ia)
 hold on;
-plot3(SA_grid(:), FZ_grid(:), mz_fixed_ia(:), 'o');  % 'o' specifies dots
+surf(SA_grid, FZ_grid, mz_fixed_ia);
 xlabel('Slip Angle (deg)')
 ylabel('Vertical Load (N)')
 zlabel('Lateral Force (N)')
