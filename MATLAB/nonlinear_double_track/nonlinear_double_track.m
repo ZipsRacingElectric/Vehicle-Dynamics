@@ -19,8 +19,9 @@ Mz as a function of SA, FZ, IA, P = 8 PSI, SR = 0 (pure cornering)
 - validate and improve the vehicle parameters
 - velocity input for Mz should be the tire longitudinal velocity and not the
 longitudinal velocity for the vehicle
-- basic front compliance (Mz induced steer compliance)
-- basic rear compliance (Fy induced steer compliance (toe compliance))
+- adjust front compliance based on f/r rack placement
+- adjust rear compliance based on toe link location & trail (under or over steer
+induced compliance
 - investigate lateral load transfer distribution and see if it can be
 easilly improved using calculated values from spring, rollbar, & damper
 design (currently just 50:50)
