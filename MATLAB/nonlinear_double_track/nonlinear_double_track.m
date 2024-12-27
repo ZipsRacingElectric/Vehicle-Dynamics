@@ -17,13 +17,16 @@ Mz as a function of SA, FZ, IA, P = 8 PSI, SR = 0 (pure cornering)
 %% TODO:
 - go through tire model and verify coordinate systems
 - validate and improve the vehicle parameters
-- IA is modeled as static -2 degrees, this should be pulled from the vehicle parameters
-- ensure that inputs into the tire model are bounded (Fz should never go
-negative)
-- ackermann steering model
-- static toe
 - velocity input for Mz should be the tire longitudinal velocity and not the
 longitudinal velocity for the vehicle
+- basic front compliance (Mz induced steer compliance)
+- basic rear compliance (Fy induced steer compliance (toe compliance))
+- investigate lateral load transfer distribution and see if it can be
+easilly improved using calculated values from spring, rollbar, & damper
+design (currently just 50:50)
+- linear scaling factor for tire-road mu correction should be changed to a
+non-linear gain based on a constant radius test of the car (see tire
+correction document in the tire_data/tire model research/ folder)
 
 %}
 

@@ -9,6 +9,9 @@ to use the vehicle object.
 
 %% TODO
 - TW_to_SR function is missing from masters thesis, need to write function
+- static toe and camber
+- better aerodynamic forces
+- compliance (toe, camber, but mainly steering compliance)
 
 %}
 clear, clc;
