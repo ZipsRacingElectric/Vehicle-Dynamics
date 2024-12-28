@@ -122,6 +122,9 @@ classdef vehicle < handle
         ride_frequency_front                                                % Hz, target front ride frequency (compare to calculated)
         ride_frequency_rear                                                 % Hz, target rear ride frequency (compare to calculated)
 
+        % Compliance
+        toe_deflection_from_rear                                            % deg per 1kN, per wheel, toe deflection from Fy forces, from experimental testing
+
         %% Calculated parameters - call update method to calculate
         % Dimensions
         a                                                                   % m, distance from front axle to CG
@@ -280,7 +283,10 @@ classdef vehicle < handle
             obj.bar_motion_ratio_front = obj.parameters('bar_motion_ratio_front');  
             obj.bar_motion_ratio_rear = obj.parameters('bar_motion_ratio_rear');    
             obj.ride_frequency_front = obj.parameters('ride_frequency_front');    
-            obj.ride_frequency_rear = obj.parameters('ride_frequency_rear');      
+            obj.ride_frequency_rear = obj.parameters('ride_frequency_rear');
+
+            % Compliance
+            obj.toe_deflection_from_rear = obj.parameters('toe_deflection_from_rear');
         end
         
         %{
@@ -381,8 +387,6 @@ classdef vehicle < handle
                     warning(['Parameter ', param_name, ' is empty. Skipping creation of simulink parameter.']);
                     continue;
                 end
-
-                % Create a Simulink.Parameter object for each property
                 
                 % Create the simulink parameter in the base workspace
                 assignin('base', param_name, Simulink.Parameter(param_value));
