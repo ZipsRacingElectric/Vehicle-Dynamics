@@ -123,7 +123,7 @@ classdef vehicle < handle
         ride_frequency_rear                                                 % Hz, target rear ride frequency (compare to calculated)
 
         % Compliance
-        toe_deflection_from_rear                                            % deg per 1kN, per wheel, toe deflection from Fy forces, from experimental testing
+        toe_deflection_rear                                            % deg per 1kN, per wheel, linear toe deflection from Fy forces, from experimental testing
 
         %% Calculated parameters - call update method to calculate
         % Dimensions
@@ -183,8 +183,8 @@ classdef vehicle < handle
 
         %% Constants
         % Environment
+        air_temp = 20;                                                      % degrees C
         air_density = 1.225;                                                % kg / m^3, at 20 degrees C
-        air_density_30C = 1.164;                                            % kg / m^3, at 30 degrees C
         g = 9.81;                                                           % m/s^2, acceleration of gravity
     end
 
@@ -286,7 +286,7 @@ classdef vehicle < handle
             obj.ride_frequency_rear = obj.parameters('ride_frequency_rear');
 
             % Compliance
-            obj.toe_deflection_from_rear = obj.parameters('toe_deflection_from_rear');
+            obj.toe_deflection_rear = obj.parameters('toe_deflection_rear');
         end
         
         %{
