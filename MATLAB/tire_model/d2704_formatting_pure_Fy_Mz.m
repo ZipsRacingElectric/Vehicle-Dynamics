@@ -18,7 +18,8 @@ modified for anything that isn't round 9
 
 %% TODO:
 - Filter, interpolate, & shift Mz using FIR developed in data_cleaning_example.m
-- eliminate hysterisis in slip angle sweeps
+- eliminate hysterisis in slip angle sweeps (not too prevelant in this
+data)
 
 %% Data and units:
 AMBTMP: Ambient room temp, deg C
@@ -49,6 +50,11 @@ V: road speed, kph
 clear; close all; clc;
 
 %% Load tire data
+% ensure repository is part of MATLAB path
+directory = fileparts(which(mfilename)); 
+parentDirectory = fileparts(directory);
+addpath(genpath(parentDirectory));
+
 % pure slip 12,10, and 14 psi. This is run data so the
 % break in procedures, spring rates, have already been removed.
 % Note: the 12 psi sweep in this file is a new tire, the second file
@@ -443,15 +449,15 @@ for n=1:2:(length(z)-2) % every 3 zero crossings represents a full SA sweep
 
     %% fmdata is the organized, fitted data
     % columns: SA, IA, Fz, Fy, Mz, Mx, P
-    for sl=floor(min(sa)):1:ceil(max(sa)) % full sweep of slip angle spline in whole integers of degrees
-        q=q+1;
-        fmdata(q,1)=sl; 
-        fmdata(q,2)=round(mean(ia));
-        fmdata(q,3)=mean(fz);
-        fmdata(q,4)=fnval(sp_fy,sl);
-        fmdata(q,5)=fnval(sp_mz,sl);
-        fmdata(q,6)=fnval(sp_mx,sl);
-        fmdata(q,7)=round(mean(pressure));
+    for sl = floor(min(sa)):1:ceil(max(sa)) % full sweep of slip angle spline in whole integers of degrees
+        q = q+1;
+        fmdata(q,1) = sl; 
+        fmdata(q,2) = round(mean(ia));
+        fmdata(q,3) = mean(fz);
+        fmdata(q,4) = fnval(sp_fy,sl);
+        fmdata(q,5) = fnval(sp_mz,sl);
+        fmdata(q,6) = fnval(sp_mx,sl);
+        fmdata(q,7) = round(mean(pressure));
     end 
 end
 

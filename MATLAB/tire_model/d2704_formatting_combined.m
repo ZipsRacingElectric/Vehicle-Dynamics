@@ -1,4 +1,5 @@
 %{
+
 %% Overview:
 This script generates formatted data sets from the raw TTC files. This data
 can then be used with other scripts to generate tire models from. 
@@ -17,7 +18,6 @@ modified for anything that isn't round 9
 
 %% TODO:
 - eliminate hysterisis in slip angle sweeps
-- fix CSAPS accuracy error (apparent in Mz final plot)
 
 %% Data and units:
 AMBTMP: Ambient room temp, deg C
@@ -47,6 +47,11 @@ V: road speed, kph
 clear; close all; clc;
 
 %% Load tire data
+% ensure repository is part of MATLAB path
+directory = fileparts(which(mfilename)); 
+parentDirectory = fileparts(directory);
+addpath(genpath(parentDirectory));
+
 % combined slip 8,10,14, and 12 psi at hot temp. This is run data so the
 % break in procedures, spring rates, have already been removed.
 % Note: the first 12 psi sweep in this file is a new tire, the second file
@@ -120,7 +125,7 @@ V(1:p,:)=[];
 % get rid of the final speed test which occurs during the last 12 psi
 % tests. A little bit of the speed change is left to ensure the last slip
 % ratio peak is captured
-p = 92841; % data point which we want to cut off to
+p = 92461; % data point which we want to cut off to
 AMBTMP(p:end,:)=[];
 ET(p:end,:)=[];
 FX(p:end,:)=[];
@@ -173,65 +178,61 @@ TSTI(p:p2,:)=[];
 TSTO(p:p2,:)=[];
 V(p:p2,:)=[];
 
-%{
 % plot V, P, SA, SL, IA vs ET to verify the data is good before procceding
 figure;
-plot(ET, V)
-figure;
-plot(ET, P)
-figure;
-plot(ET, SA)
-figure;
-plot(ET, IA)
-figure;
-plot(ET, FZ)
-figure;
-plot(ET, SL)
-%}
+subplot(6,1,1)
+plot(ET,V,'.')
+title('Velocity vs ET')
+xlabel('ET (s)')
+ylabel('Velocity (m/s)')
+
+subplot(6,1,2)
+plot(ET,P,'.')
+title('Pressure vs ET')
+xlabel('ET (s)')
+ylabel('Pressue (PSI)')
+
+subplot(6,1,3)
+plot(ET,SA,'.')
+title('Slip Angle vs ET')
+xlabel('ET (s)')
+ylabel('Slip Angle (m/s)')
+
+subplot(6,1,4)
+plot(ET,IA,'.')
+title('Inclination Angle vs ET')
+xlabel('ET (s)')
+ylabel('Inclination Angle (deg)')
+
+subplot(6,1,5)
+plot(ET,FZ,'.')
+title('Normal Force vs ET')
+xlabel('ET (s)')
+ylabel('Normal Force (N)')
+
+subplot(6,1,6)
+plot(ET,SL,'.')
+title('Slip Ratio vs ET')
+xlabel('ET (s)')
+ylabel('Slip Ratio')
+
+
+% Note: You will find that some tests, at the most IA and highest Fz, the
+% slip angle sweep pretty much starts at zero, sweeps negative and back to 
+% zero, with not much positive SL data. Need to check these sweeps and make
+% sure that our csaps fit is acceptable to infer the positivie data
 
 %% Determine how to break up data in individual SL sweeps
 
 % Each SL sweep starts at positive max SL, goes to negative max SL, and
 % then back up to positive max SL, which makes the zero crossings hard to
 % use for isolating SL sweeps.
-% find the peaks of the SL channel to isolate SL sweeps
+% instead, find the peaks of the SL channel to isolate SL sweeps
+% these points will allow us to find the start / end indexes of the data
+% for each sweep
 m = 1:length(SL);
 [sl_peaks, z] = findpeaks(SL, MinPeakDistance=375);
 
-%{
-% plot raw slip angle data, plot the spline and zeros
-figure;
-subplot(5,1,1)
-hold on
-plot(m, SL)
-plot(z,sl_peaks,'o')
-hold off
-xlabel('Point Count')
-ylabel('Slip Ratio')
-legend('Test Data','Computed Slip Points of Interest'),legend Boxoff
-subplot(5,1,2)
-hold on
-plot(m, FZ)
-plot(peak_locations,FZ(peak_locations),'o')
-xlabel('Point Count')
-ylabel('Normal Load')
-subplot(5,1,3)
-hold on
-plot(m, IA)
-xlabel('Point Count')
-ylabel('IA')
-subplot(5,1,4)
-hold on
-plot(m, P)
-xlabel('Point Count')
-ylabel('P')
-subplot(5,1,5)
-hold on
-plot(m, V)
-xlabel('Point Count')
-ylabel('V')
-%} 
-
 figure;
 hold on
 plot(m, SL)
@@ -241,8 +242,8 @@ xlabel('Point Count')
 ylabel('Slip Ratio')
 legend('Test Data','Computed Slip Points of Interest'),legend Boxoff
 
-%{
 % Mz seems quite noisy, probably due to the tire not being round
+
 figure;
 subplot(2,1,1)
 hold on
@@ -256,81 +257,93 @@ plot(m, FZ)
 hold off
 xlabel('Point Count')
 ylabel('FZ')
-%}
+
 
 %% Capture individual SL sweep data:
 % Don't want to remember any data from apprevious processing session:
 clear fmdata;
-% Subset the data into individual SL sweeps:
+
 q = 0;
 for n=1:(length(z)-1) % every 2 peaks represents a full SL sweep
 
     % capture data
-    sl=SL(z(n):z(n+1)); % continuous n to n+1 represents going through an SL sweep
-    sa=SA(z(n):z(n+1)); % constant
-    fz=FZ(z(n):z(n+1)); % constant
-    fy=FY(z(n):z(n+1)); % continuous
-    fx=FX(z(n):z(n+1)); % continuous
-    mz=MZ(z(n):z(n+1)); % continuous
-    mx=MX(z(n):z(n+1)); % continuous
-    rl=RL(z(n):z(n+1)); % continuous
-    ia=IA(z(n):z(n+1)); % constant
-    pressure=P(z(n):z(n+1)); % constant
+    % alse we are eliminating the peak data points. Because the SL sweepss
+    % are discontinuous, we dont want to fit a curve to data that is part
+    % of another sweep
+    sl=SL((z(n)+1):(z(n+1)-1)); % continuous n to n+1 represents going through an SL sweep
+    sa=SA((z(n)+1):(z(n+1)-1)); % constant
+    fz=FZ((z(n)+1):(z(n+1)-1)); % constant
+    fy=FY((z(n)+1):(z(n+1)-1)); % continuous
+    fx=FX((z(n)+1):(z(n+1)-1)); % continuous
+    mz=MZ((z(n)+1):(z(n+1)-1)); % continuous
+    mx=MX((z(n)+1):(z(n+1)-1)); % continuous
+    rl=RL((z(n)+1):(z(n+1)-1)); % continuous
+    ia=IA((z(n)+1):(z(n+1)-1)); % constant
+    pressure=P(z(n):(z(n+1)-1)); % constant
     % Now we have collected the tire channels for each full slip ratio sweep.
 
+    %% Deal with SL sweeps missing data
+    % some sweeps never got the positive side of SR. Need enough data to
+    % ensure the spline will predict a resonable shape. We will simply copy
+    % the raw data about the SR = 0 axis and mirror it. Not ideal because
+    % the data isn't necessarily symmetric but good enough for now.
+    % This is okay because this only happens at low load, high IA where Fx
+    % is symmetrical and Mx, Mz seem constant
+    if (max(sl) < 0.1 )
+        % remove data with positive SL
+        positive_indexes = find(sl > 0);
+        sl(positive_indexes) = [];
+        sa(positive_indexes) = [];
+        fz(positive_indexes) = [];
+        fy(positive_indexes) = [];
+        fx(positive_indexes) = [];
+        mz(positive_indexes) = [];
+        mx(positive_indexes) = [];
+        rl(positive_indexes) = [];
+        ia(positive_indexes) = [];
+        pressure(positive_indexes) = [];
+
+        % mirror negative SL data and concatenate it
+        sl = [sl; -sl];
+        sa = [sa; sa];
+        fz = [fz; fz];
+        fy = [fy; fy];
+        fx = [fx; -fx];
+        mz = [mz; mz];
+        mx = [mx; mx];
+        rl = [rl; rl];
+        ia = [ia; ia];
+        pressure = [pressure; pressure];
+    end
+
+
     %% normalize the Fy & Fx channel to account for Fz noise
+    % Note: this was not helpful as Fz noise did not show in Fx/Fy channels
+    %{
     % for each transient sweep, Fz is held constant, so we normalize Fy
     % by multiplying it by the ratio between the Fz mean and the isntantaneous Fz.
     fy = (fy * mean(fz)) ./ fz; % element-wise divide
     fx = (fx * mean(fz)) ./ fz; % element-wise divide
-    
-    %{
-    %% Filter MZ data
-    % Next step is to capture the rational data between the max and minimum
-    % values, peek at the endpoints, fix up some problems at the MZ endpoints,
-    % and proceed with data fitting.
-
-    [~,imn]=min(sa); % capture slip angle minimum point
-    [~,imx]=max(sa); % capture slip angle maximum point
-    p=1:length(sa);
-    rng=imx-50:imx+50; % This is a range of our data at maximum MZ (used for MZ filtering)
-
-    % Being careful not to use a Matlab reserved word for a variable name.
-    warning off % Keep down the chatter over multiple observations
-
-    % fit this data to a polynomial. Crude but fair. We are only using it
-    % to look for outliers.
-    pp=polyfit(p(rng),mz(rng)',3);
-    warning on
-    mzf=polyval(pp,p(rng));
-
-    % This step spots data values for MZ that are greater than an arbitray
-    % level. I believe these spikes are related to the MZ transient response.
-    % A smarter approach would be to use normalized residuals, but who did
-    % I just hear volunteer for that task?
-    ind=find(abs(mzf-mz(rng)') > 7);
-    mz(rng(ind))=mzf(ind);
-    rng=imn-50:imn+50;% This is a range of our data at minimum MZ
-    warning off
-    pp=polyfit(p(rng),mz(rng)',3);
-    warning on
-    mzf=polyval(pp,p(rng));
-    ind=find(abs(mzf-mz(rng)') > 7);
-    mz(rng(ind))=mzf(ind);
     %}
 
+    %% Filtering Mz
+    % TODO
+
+    %% Filtering Mz
+    % TODO
+
     %% Spline fitting the continuous data to subset it with increments of slip ratio
-    % with some tighter tension:
-    sp_fy=csaps(sl,fy,.999);
-    sp_fx=csaps(sl,fx,.9999);
-    sp_mz=csaps(sl,mz,.99);
-    sp_mx=csaps(sl,mx,.99);
-    sp_rl=csaps(sl,rl,.99);
+    % the smoothing parameters are adjusted to get a quality fit
+    % without overfitting outliers
+    sp_fy = csaps(sl,fy,.9999);
+    sp_fx = csaps(sl,fx,.9999);
+    sp_mz = csaps(sl,mz,.9999);
+    sp_mx = csaps(sl,mx,.9999);
+    sp_rl = csaps(sl,rl,.99);
 
     %% Check out Segment 9
     % Just out of curiosity, what kind of data are we dealing with?
-    if isequal(n,23)
-        fprintf("hit segment 9")
+    if isequal(n,95)
 
         figure;
         subplot(4,1,1)
@@ -339,186 +352,99 @@ for n=1:(length(z)-1) % every 2 peaks represents a full SL sweep
         fnplt(sp_fx,'b')
         title({['Fz= ' num2str(round(mean(fz))) ' N' ' SA= ' num2str(round(mean(sa))) ' deg'];['IA= ' num2str(round(mean(ia))) '°, ' num2str(round(mean(pressure))) ' psi']})
         xlabel('Slip Ratio')
-        ylabel('Long. Force')
+        ylabel('Fx (N)')
         line([min(sl) max(sl)],[0 0],'color','k')
         line([0 0],[min(fx) max(fx)],'color','k')
         legend('Test Data','Fitted Data')
+        % set(gca,'XTick',[],'YTick',[]) % for public repository / reports
 
         subplot(4,1,2)
         hold on
         plot(sl,fy,'.','color',[.5 .5 .5])
         fnplt(sp_fy,'b')
         xlabel('Slip Ratio')
-        ylabel('Lateral Force')
+        ylabel('Fy (N)')
         line([min(sl) max(sl)],[0 0],'color','k')
         line([0 0],[min(fy) max(fy)],'color','k')
+        % set(gca,'XTick',[],'YTick',[])
         
         subplot(4,1,3)
         hold on
         plot(sl,mz,'.','color',[.5 .5 .5])
         fnplt(sp_mz,'b')
         xlabel('Slip Ratio')
-        ylabel('Aligning Moment')
+        ylabel('Aligning Moment Mz (N-m)')
         line([min(sl) max(sl)],[0 0],'color','k')
         line([0 0],[min(mz) max(mz)],'color','k')
+        % set(gca,'XTick',[],'YTick',[])
 
         subplot(4,1,4)
         hold on
         plot(sl,mx,'.','color',[.5 .5 .5])
         fnplt(sp_mx,'b')
         xlabel('Slip Ratio')
-        ylabel('Overturning Moment') 
+        ylabel('Overturning Moment Mx (N-m)') 
         line([min(sl) max(sl)],[0 0],'color','k') 
         line([0 0],[min(mz) max(mz)],'color','k')
+        % set(gca,'XTick',[],'YTick',[])
     end
     
-    %{
     %% fmdata is the organized, fitted data
-    % columns: SA, IA, Fz, Fy, Mz, Mx, P
-    for sl=floor(min(sa)):1:ceil(max(sa)); % full sweep of slip angle spline in whole integers of degrees
-        q=q+1;
-        fmdata(q,1)=sl; 
-        fmdata(q,2)=round(mean(ia));
-        fmdata(q,3)=mean(fz);
-        fmdata(q,4)=fnval(sp_fy,sl);
-        fmdata(q,5)=fnval(sp_mz,sl);
-        fmdata(q,6)=fnval(sp_mx,sl);
-        fmdata(q,7)=round(mean(pressure));
+    % columns: SL, SA IA, P, Fz, Fy, Mz, Mx
+
+    step_size = 0.02;
+    start_slip = floor(min(sl) / step_size) * step_size; % Smallest number <= min(sl) evenly divisible by step size
+    end_slip = ceil(max(sl) / step_size) * step_size; % Smallest number >= max(sl) evenly divisible by step size
+    for slip = start_slip:step_size:end_slip % evaluate data and fitted splines for slip ratios in small increments
+        q = q+1;
+        fmdata(q,1) = slip;
+        fmdata(q,2) = round(mean(sa)); 
+        fmdata(q,3) = round(mean(ia));
+        fmdata(q,4) = round(mean(pressure));
+        fmdata(q,5) = mean(fz);
+        fmdata(q,6) = fnval(sp_fy,slip);
+        fmdata(q,7) = fnval(sp_mz,slip);
+        fmdata(q,8) = fnval(sp_mx,slip);
     end 
-    %}
 end
 
-%{
 %% Add Fz = 0N condition to data
-% We know that is Fz = 0, there cannot be any Fy, Mz, Mx, because there is
+% We know that at Fz = 0, there cannot be any Fx, Fy, Mz, Mx, because there is
 % no load on the tire. By adding this known fact into our data, any models 
 % we fit to this data will be accurate at extreme load transfer, or when
 % the car is on two wheels.
 
-incls = unique(round(fmdata(:,2)));
+srs = unique(round(fmdata(:,1), 2));
+nsrs = length(srs); % number of distinct slip ratios
+sas = unique(round(fmdata(:,2)));
+nsas = length(sas); % number of distinct slip angles
+incls = unique(round(fmdata(:,3)));
 nincls = length(incls); % number of distinct inclination angles
-slips = unique(round(fmdata(:,1)));
-nslips = length(slips); % number of distinct slip angles
-press = unique(round(fmdata(:,7)));
+press = unique(round(fmdata(:,4)));
 npress = length(press); % number of distinct pressures
 
 % Create an array of our Fz = 0 condition:
-% columns: SA, IA, Fz, Fy, Mz, Mx, P
+% columns: SL, SA, IA, P, Fz, Fy, Mz, Mx
 
-% for each distinct P, for each distinct IA, concatenate array of slip
-% angles
+% for each distinct P, IA, and SA concatenate array of slip ratios
 zero_load = [];
 for n = 1:length(press)
     for q = 1:length(incls)
-        zero_load = [zero_load; [slips, (zeros(length(slips), 1) + incls(q)), zeros(length(slips), 1), zeros(length(slips), 1), zeros(length(slips), 1), zeros(length(slips), 1), (zeros(length(slips), 1) + press(n))]];
+        for i = 1:length(sas)
+            zero_load = [zero_load; [srs, (zeros(length(srs), 1) + sas(q)), (zeros(length(srs), 1) + incls(q)), (zeros(length(srs), 1) + press(n)), zeros(length(srs), 1), zeros(length(srs), 1), zeros(length(srs), 1), zeros(length(srs), 1)]];
+        end
     end
 end
 
 % concatenate array to existing data
 fmdata = [fmdata; zero_load];
 
-%% Sort Formatted Data Array 1st by Pressure, Camber, Slip, and finally Fz
+% remove any redundant rows in the data
+fmdata = unique(fmdata, 'rows');
+
+%% Sort Formatted Data Array by Pressure, Camber, Slip Angle, Slip Ratio, and finally Fz
 % Use |sortrows| to preserve the array correspondence.
-fmdata = sortrows(fmdata,[7,2,1,3])
+fmdata = sortrows(fmdata,[4,3,2,1, 5])
 
 %% Save organized tire data
-save("../tire_data/d2704/d2704_7in_formatted_data.mat", "fmdata");
-
-%% Data Sets (Slip, Load, Camber, Pressure):
-% transpose these into column arrays
-incls = incls';
-slips = slips';
-press = press';
-
-inx0 = find(fmdata(:,2) == 0); % array indexes with zero camber points
-fmdata0 = fmdata(inx0,:); % selects rest of data corresponding to 0 IA
-px0 = find(fmdata0(:,7) == 8); % array indexes for zero camber and 8 psi
-fmdata0ip = fmdata0(px0,:); % selects rest of 0 IA data corresponding to 8 psi
-
-% Next, we transpose the arrays to make our spline functions happy:
-reshaped_fmdata = reshape(fmdata0ip(:,3),[],nslips);
-loads = mean(reshape(fmdata0ip(:,3),[],nslips),2)'; % appears to just give us a list of unique loads
-nloads = length(loads);
-
-% Take a look at FZ:
-fz0ip = reshape(fmdata0ip(:,3),nloads,nslips)'; % create an array with nload rows x nslip columns
-fy0ip = reshape(fmdata0ip(:,4),nloads,nslips)';
-mz0ip = reshape(fmdata0ip(:,5),nloads,nslips)';
-mx0ip = reshape(fmdata0ip(:,6),nloads,nslips)';
-
-% normalized lateral force (mu value)
-nfy0ip = fy0ip./fz0ip;
-
-%{
-%% FY Surface Fit (0 IA, 8 psi)
-LATE_SLIP_VERT = csaps({slips,loads},fy0ip)
-figure('Name','Lateral Force vs. Slip Angle & Vertical Load')
-fnplt(LATE_SLIP_VERT)
-xlabel('Slip Angle (deg)')
-ylabel('Vertical Load (N)')
-zlabel('Lateral Force (N)')
-view(45,45)
-
-CS=fnder(LATE_SLIP_VERT,[1,0])
-figure('Name','Cornering Stiffness vs. Slip Angle & Vertical Load')
-fnplt(CS)
-xlabel('Slip Angle (deg)')
-ylabel('Vertical Load (N)')
-zlabel('Cornering Stiffness (N/deg)')
-
-%% Normalized Lateral Force Surface Fit (0 IA, 8 psi)
-NLATE_SLIP_VERT = csaps({slips,loads},nfy0ip)
-figure('Name','Load Normalized Lateral Force vs. Slip Angle & Vertical Load ')
-fnplt(NLATE_SLIP_VERT)
-xlabel('Slip Angle (deg)')
-ylabel('Vertical Load (N)')
-zlabel('Lateral Force mu value (Fy/Fz)')
-view(45,45)
-% Wow, look at the mu on that baby, good as a Sprint Cup Left Side Tire !!
-% Here's the traditional normalized cornering stiffness used in industry: 
-NCS=fnder(NLATE_SLIP_VERT,[1,0])
-figure('Name', 'Normalized Cornering Stiffness vs. Slip Angle & Vertical Load ')
-fnplt(NCS)
-xlabel('Slip Angle (deg)')
-ylabel('Vertical Load (N)')
-zlabel('Normalized Cornering Stiffness (N/deg/N)')
-
-%% Mz Surface Fit (0 IA, 8 psi)
-ALNT_SLIP_VERT = csaps({slips,loads},mz0ip)
-figure('Name','Aligning Moment vs. Slip Angle & Vertical Load')
-fnplt(ALNT_SLIP_VERT)
-xlabel('Slip Angle (deg)')
-ylabel('Vertical Load (N)')
-zlabel('Aligning Moment Mz (Nm/deg)')
-
-%% Mx Surface Fit (0 IA, 8 psi)
-OVTM_SLIP_VERT = csaps({slips,loads},mx0ip)
-figure('Name','Overturning Moment vs. Slip Angle & Vertical Load')
-fnplt(OVTM_SLIP_VERT)
-view(30,45)
-xlabel('Slip Angle (deg)')
-ylabel('Vertical Load (N)')
-zlabel('Overturning Moment Mx (Nm)')
-
-%% Pneumatic Scrub
-PSCRUB_SLIP_VERT = csaps({slips,loads},1000*mx0ip./fz0ip) 
-figure('Name','Pneumatic Scrub vs. Slip Angle & Vertical Load')
-fnplt(PSCRUB_SLIP_VERT)
-view(30,45)
-xlabel('Slip Angle (deg)')
-ylabel('Vertical Load (N)')
-zlabel('Pneumatic Scrub (mm)')
-
-%% Pneumatic Trail Surface
-PTRAIL_SLIP_VERT = csaps({slips,loads},1000*mz0ip./fy0ip,.707)
-figure('Name','Pneumatic Trail vs. Slip Angle & Vertical Load')
-fnplt(PTRAIL_SLIP_VERT)
-view(30,45)
-title('Although I would not produce Pneumatic Trail this way, good guess, though ...' )
-xlabel('Slip Angle (deg)')
-ylabel('Vertical Load (N)')
-zlabel('Pneumatic Trail (mm)')
-
-%% for graphs on Fy = 0 surfaces, see Matlab Processing of FSAE TTC Tire Test Data.pdf
-%}
-%}
+save("../tire_data/d2704/d2704_7in_formatted_combined_data.mat", "fmdata");
