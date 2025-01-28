@@ -15,16 +15,16 @@ Mz as a function of SA, FZ, IA, P = 8 PSI, SR = 0 (pure cornering)
 - Positive steering wheel input is turning the wheel to the right.
 
 %% TODO:
-- go through tire model and verify coordinate systems
-- validate and improve the vehicle parameters
+- Tire Fx force lookup table, also update Fy and Mz as functions of slip
+ratio
+- electric motor model (torque request input, inertia, wheel speed, and
+slip ratio output)
+- validate the vehicle parameters
 - velocity input for Mz should be the tire longitudinal velocity and not the
 longitudinal velocity for the vehicle
 - adjust front compliance based on f/r rack placement
 - adjust rear compliance based on toe link location & trail (under or over steer
 induced compliance
-- investigate lateral load transfer distribution and see if it can be
-easilly improved using calculated values from spring, rollbar, & damper
-design (currently just 50:50)
 - linear scaling factor for tire-road mu correction should be changed to a
 non-linear gain based on a constant radius test of the car (see tire
 correction document in the tire_data/tire model research/ folder)
