@@ -187,7 +187,7 @@ plot(sa, fy)
 [~, max_index] = max(cross_corr);
 time_lag = lags(max_index) * time_step; % this is approximately the time constant for 1st order relaxation length
 
-% plot cross correlation stuf
+% plot cross correlation stuff
 figure;
 plot(lags, cross_corr);
 xlabel("Lag");

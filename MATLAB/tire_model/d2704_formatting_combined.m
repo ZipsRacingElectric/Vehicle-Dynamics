@@ -18,6 +18,7 @@ modified for anything that isn't round 9
 
 %% TODO:
 - eliminate hysterisis in slip angle sweeps
+- missing Fz loads for high slip ratios. estimate data
 
 %% Data and units:
 AMBTMP: Ambient room temp, deg C
@@ -219,8 +220,12 @@ ylabel('Slip Ratio')
 
 % Note: You will find that some tests, at the most IA and highest Fz, the
 % slip angle sweep pretty much starts at zero, sweeps negative and back to 
-% zero, with not much positive SL data. Need to check these sweeps and make
-% sure that our csaps fit is acceptable to infer the positivie data
+% zero, with not much positive SL data. We need to check these sweeps and make
+% sure that our csaps fit is acceptable to infer the positive data all the
+% way out to the highest slip ratio we want in the data set
+
+% We need to do this because csaps models require transposing the maxtrix.
+% This means we need the same amount of data at all grid points
 
 %% Determine how to break up data in individual SL sweeps
 
@@ -262,6 +267,18 @@ ylabel('FZ')
 %% Capture individual SL sweep data:
 % Don't want to remember any data from apprevious processing session:
 clear fmdata;
+
+% Here we select our slip ratio increments that we will use to populate
+% fmdata with during each sweep.
+% Here we must choose the largest and smallest slip ratio to start our
+% increments at. We want data symmetric about zero. We will choose the
+% highest slip ratio in the recorded data, and then for each sweep, use
+% the fitted spline to estimate data up to that point (even if the 
+% recorded data ends sooner). This gives us an equally dispersed set 
+% of data.
+step_size = 0.02;
+start_slip = -0.26; % Smallest number <= min(SL) evenly divisible by step size. Using the whole SL dataset, not data specific to any sweep
+end_slip = -start_slip;
 
 q = 0;
 for n=1:(length(z)-1) % every 2 peaks represents a full SL sweep
@@ -327,33 +344,33 @@ for n=1:(length(z)-1) % every 2 peaks represents a full SL sweep
     %}
 
     %% Filtering Mz
-    % TODO
+    % TODO, not important right now
 
     %% Filtering Mz
-    % TODO
+    % TODO, not important right now
 
     %% Spline fitting the continuous data to subset it with increments of slip ratio
     % the smoothing parameters are adjusted to get a quality fit
     % without overfitting outliers
     sp_fy = csaps(sl,fy,.9999);
     sp_fx = csaps(sl,fx,.9999);
-    sp_mz = csaps(sl,mz,.9999);
-    sp_mx = csaps(sl,mx,.9999);
+    sp_mz = csaps(sl,mz,.995);
+    sp_mx = csaps(sl,mx,.995);
     sp_rl = csaps(sl,rl,.99);
 
     %% Check out Segment 9
     % Just out of curiosity, what kind of data are we dealing with?
-    if isequal(n,95)
+    if isequal(n,72)
 
         figure;
         subplot(4,1,1)
         hold on
         plot(sl,fx,'.','color',[.5 .5 .5])
-        fnplt(sp_fx,'b')
+        fnplt(sp_fx,'b', 2, [start_slip end_slip])
         title({['Fz= ' num2str(round(mean(fz))) ' N' ' SA= ' num2str(round(mean(sa))) ' deg'];['IA= ' num2str(round(mean(ia))) '°, ' num2str(round(mean(pressure))) ' psi']})
         xlabel('Slip Ratio')
         ylabel('Fx (N)')
-        line([min(sl) max(sl)],[0 0],'color','k')
+        line([start_slip end_slip],[0 0],'color','k')
         line([0 0],[min(fx) max(fx)],'color','k')
         legend('Test Data','Fitted Data')
         % set(gca,'XTick',[],'YTick',[]) % for public repository / reports
@@ -361,7 +378,7 @@ for n=1:(length(z)-1) % every 2 peaks represents a full SL sweep
         subplot(4,1,2)
         hold on
         plot(sl,fy,'.','color',[.5 .5 .5])
-        fnplt(sp_fy,'b')
+        fnplt(sp_fy,'b', 2, [start_slip end_slip])
         xlabel('Slip Ratio')
         ylabel('Fy (N)')
         line([min(sl) max(sl)],[0 0],'color','k')
@@ -371,7 +388,7 @@ for n=1:(length(z)-1) % every 2 peaks represents a full SL sweep
         subplot(4,1,3)
         hold on
         plot(sl,mz,'.','color',[.5 .5 .5])
-        fnplt(sp_mz,'b')
+        fnplt(sp_mz,'b', 2, [start_slip end_slip])
         xlabel('Slip Ratio')
         ylabel('Aligning Moment Mz (N-m)')
         line([min(sl) max(sl)],[0 0],'color','k')
@@ -381,7 +398,7 @@ for n=1:(length(z)-1) % every 2 peaks represents a full SL sweep
         subplot(4,1,4)
         hold on
         plot(sl,mx,'.','color',[.5 .5 .5])
-        fnplt(sp_mx,'b')
+        fnplt(sp_mx,'b', 2, [start_slip end_slip])
         xlabel('Slip Ratio')
         ylabel('Overturning Moment Mx (N-m)') 
         line([min(sl) max(sl)],[0 0],'color','k') 
@@ -390,11 +407,8 @@ for n=1:(length(z)-1) % every 2 peaks represents a full SL sweep
     end
     
     %% fmdata is the organized, fitted data
-    % columns: SL, SA IA, P, Fz, Fy, Mz, Mx
+    % columns: SL, SA, IA, P, Fz, Fy, Fx, Mz, Mx
 
-    step_size = 0.02;
-    start_slip = floor(min(sl) / step_size) * step_size; % Smallest number <= min(sl) evenly divisible by step size
-    end_slip = ceil(max(sl) / step_size) * step_size; % Smallest number >= max(sl) evenly divisible by step size
     for slip = start_slip:step_size:end_slip % evaluate data and fitted splines for slip ratios in small increments
         q = q+1;
         fmdata(q,1) = slip;
@@ -403,20 +417,21 @@ for n=1:(length(z)-1) % every 2 peaks represents a full SL sweep
         fmdata(q,4) = round(mean(pressure));
         fmdata(q,5) = mean(fz);
         fmdata(q,6) = fnval(sp_fy,slip);
-        fmdata(q,7) = fnval(sp_mz,slip);
-        fmdata(q,8) = fnval(sp_mx,slip);
+        fmdata(q,7) = fnval(sp_fx,slip);
+        fmdata(q,8) = fnval(sp_mz,slip);
+        fmdata(q,9) = fnval(sp_mx,slip);
     end 
 end
 
 %% Add Fz = 0N condition to data
 % We know that at Fz = 0, there cannot be any Fx, Fy, Mz, Mx, because there is
 % no load on the tire. By adding this known fact into our data, any models 
-% we fit to this data will be accurate at extreme load transfer, or when
+% we fit to this data will be accurate at extreme load transfer / when
 % the car is on two wheels.
 
 srs = unique(round(fmdata(:,1), 2));
 nsrs = length(srs); % number of distinct slip ratios
-sas = unique(round(fmdata(:,2)));
+sas = -13:0.25:13; % this ensures that extrapolated data in the full model at high slip angles is still 0 @ Fz = 0
 nsas = length(sas); % number of distinct slip angles
 incls = unique(round(fmdata(:,3)));
 nincls = length(incls); % number of distinct inclination angles
@@ -424,14 +439,14 @@ press = unique(round(fmdata(:,4)));
 npress = length(press); % number of distinct pressures
 
 % Create an array of our Fz = 0 condition:
-% columns: SL, SA, IA, P, Fz, Fy, Mz, Mx
+% columns: SL, SA, IA, P, Fz, Fy, Fx, Mz, Mx
 
 % for each distinct P, IA, and SA concatenate array of slip ratios
 zero_load = [];
-for n = 1:length(press)
-    for q = 1:length(incls)
-        for i = 1:length(sas)
-            zero_load = [zero_load; [srs, (zeros(length(srs), 1) + sas(q)), (zeros(length(srs), 1) + incls(q)), (zeros(length(srs), 1) + press(n)), zeros(length(srs), 1), zeros(length(srs), 1), zeros(length(srs), 1), zeros(length(srs), 1)]];
+for n = 1:npress
+    for q = 1:nincls
+        for i = 1:nsas
+            zero_load = [zero_load; [srs, (zeros(length(srs), 1) + sas(i)), (zeros(length(srs), 1) + incls(q)), (zeros(length(srs), 1) + press(n)), zeros(length(srs), 1), zeros(length(srs), 1), zeros(length(srs), 1), zeros(length(srs), 1), zeros(length(srs), 1)]];
         end
     end
 end
@@ -439,12 +454,19 @@ end
 % concatenate array to existing data
 fmdata = [fmdata; zero_load];
 
+% adjust precision to improve sorting capability
+fmdata(:,2:4) = round(fmdata(:,2:4)); % Adjust these to integers
+fmdata(:,5:9) = round(fmdata(:,5:9), 2);
+fmdata(:,1) = round(fmdata(:,1), 2);
+
 % remove any redundant rows in the data
 fmdata = unique(fmdata, 'rows');
 
-%% Sort Formatted Data Array by Pressure, Camber, Slip Angle, Slip Ratio, and finally Fz
+%% Sort Formatted Data Array by Pressure, IA, Slip Angle, Slip Ratio, and finally Fz
 % Use |sortrows| to preserve the array correspondence.
-fmdata = sortrows(fmdata,[4,3,2,1, 5])
+fmdata = sortrows(fmdata, [4,3,2,1,5]);
+
+fmdata_combined = fmdata;
 
 %% Save organized tire data
-save("../tire_data/d2704/d2704_7in_formatted_combined_data.mat", "fmdata");
+save("../tire_data/d2704/d2704_7in_formatted_combined_data.mat", "fmdata_combined");
