@@ -12,6 +12,7 @@ scripts.
 MATLAB directory of the local Vehicle-Dynamics-ZR25 repository
 - SAE sign convention 
 - formatted_data expected columns(in order): SL, SA, IA, P, Fz, Fy, Fx, Mz, Mx
+- The output matricies are in the following dimension order: SL, SA, Fz
 
 %% TODO:
 - sweep a local region of sigma value and graph the resulting error
