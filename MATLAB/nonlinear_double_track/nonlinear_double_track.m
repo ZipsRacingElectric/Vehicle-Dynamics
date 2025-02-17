@@ -24,10 +24,11 @@ slip ratio output)
 longitudinal velocity for the vehicle
 - adjust front compliance based on f/r rack placement
 - adjust rear compliance based on toe link location & trail (under or over steer
-induced compliance
+induced compliance, depends on design)
 - linear scaling factor for tire-road mu correction should be changed to a
 non-linear gain based on a constant radius test of the car (see tire
 correction document in the tire_data/tire model research/ folder)
+- add active aero force and CoP affects
 
 %}
 
@@ -46,8 +47,8 @@ zr25 = vehicle("../vehicle_data/zr25_data.xlsx");
 zr25.create_simulink_parameters();
 
 % load tire model
-tire_fy = load("../tire_data/d2704/d2704_7in_csaps.mat");
-tire_mz = load("../tire_data/d2704/d2704_7in_csaps_mz.mat");
+% Note: this data is fixed at P = 8 psi, IA = 2 deg
+load("../tire_data/d2704/d2704_7in_rbf_full_model.mat");
 
 % open simulink model
 open_system('nonlinear_double_track_model');
