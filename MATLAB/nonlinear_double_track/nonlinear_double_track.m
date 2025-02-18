@@ -15,8 +15,6 @@ Mz as a function of SA, FZ, IA, P = 8 PSI, SR = 0 (pure cornering)
 - Positive steering wheel input is turning the wheel to the right.
 
 %% TODO:
-- Tire Fx force lookup table, also update Fy and Mz as functions of slip
-ratio
 - electric motor model (torque request input, inertia, wheel speed, and
 slip ratio output)
 - validate the vehicle parameters
@@ -29,6 +27,7 @@ induced compliance, depends on design)
 non-linear gain based on a constant radius test of the car (see tire
 correction document in the tire_data/tire model research/ folder)
 - add active aero force and CoP affects
+- add Slip Ratio calculation
 
 %}
 
