@@ -21,7 +21,11 @@ To write a MATLAB script that uses the vehicle parameters, first load the file i
 % create vehicle object from vehicle data
 zr25 = vehicle('../vehicle_data/zr25_data.xlsx');
 ```
-This will create a vehicle object 'zr25' in the MATLAB workspace.
+This will create a vehicle object 'zr25' in the MATLAB workspace, where parameters can be accessed in this way:
+
+```
+ratio = zr25.wheelbase / ((zr25.track_width_front + zr25.track_width_front) / 2)
+```
 
 If your using Simulink, you need to generate Simulink parameters from the vehicle object:
 
@@ -37,7 +41,6 @@ open_system('my_sim');
 ```
 
 Within Simulink, you can change block parameters to reference the Simulink parameters.
-
 
 ### Prerequisite Tools
 

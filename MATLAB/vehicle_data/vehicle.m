@@ -145,10 +145,10 @@ classdef vehicle < handle
         unsprung_mass_rear                                                  % kg, rear axle unsprung mass
         average_corner_mass                                                 % kg, average mass at each corner
         
-        front_weight                                                        % kg, total front axle weight
-        rear_weight                                                         % kg, total rear axle weight
-        front_corner_weight                                                 % kg, average front corner weight
-        rear_corner_weight                                                  % kg, average rear corner weight
+        front_mass                                                        % kg, total front axle weight
+        rear_mass                                                         % kg, total rear axle weight
+        front_corner_mass                                                 % kg, average front corner weight
+        rear_corner_mass                                                  % kg, average rear corner weight
 
         % Springs and Dampers
         wheel_rate_front                                                    % N/m, effective front wheel rate
@@ -307,10 +307,10 @@ classdef vehicle < handle
             obj.sprung_mass_front = (obj.mass_total * obj.front_mass_distribution) - obj.unsprung_mass_front;
             obj.sprung_mass_rear = obj.sprung_mass_total - obj.sprung_mass_front;
             obj.average_corner_mass = obj.unsprung_mass_total / 4;
-            obj.front_weight = obj.mass_total * obj.front_mass_distribution;
-            obj.rear_weight = obj.mass_total * (1 - obj.front_mass_distribution);
-            obj.front_corner_weight = obj.front_weight / 2;
-            obj.rear_corner_weight = obj.rear_weight / 2;
+            obj.front_mass = obj.mass_total * obj.front_mass_distribution;
+            obj.rear_mass = obj.mass_total * (1 - obj.front_mass_distribution);
+            obj.front_corner_mass = obj.front_mass / 2;
+            obj.rear_corner_mass = obj.rear_mass / 2;
             
             % Dimensions
             obj.a = obj.wheelbase * (1 - obj.front_mass_distribution);

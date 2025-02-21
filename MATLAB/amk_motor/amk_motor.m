@@ -48,7 +48,6 @@ any math in simulink
 %}
 
 clear; close all; clc;
-Simulink.sdi.clear; % clear old simulink runs
 
 % load data from AMK
 amk_80C = load("./DD5 motor characteristic diagram/A2370DD_Matlab/A2370DD_T80C.mat");
