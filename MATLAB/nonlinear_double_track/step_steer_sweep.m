@@ -35,7 +35,7 @@ model = 'nonlinear_double_track_model';
 
 %% Batch Run simulations
 
-run_simulation = false; % warning, takes about 30 minutes
+run_simulation = true; % warning, takes about 30 minutes
 
 if (run_simulation)
     velocity_sweep = [1, 2, 5, 10, 15, 20, 25, 30, 35, 40, 45]; % m/s
@@ -89,10 +89,12 @@ for i = 1:numSims
 
     % Check if any yaw rate value exceeds 3 rad/s - we can safely consider
     % these to be cars that spin out and are not steady state
+    %{
     if any(values > 3)
         fprintf('Skipping Simulation %d (Yaw Rate exceeded 3 rad/s)\n', i);
         continue; % Skip this simulation
     end
+    %}
     
     % Choose line style based on simulation index
     lineStyle = lineStyles{mod(i-1, length(lineStyles)) + 1};
