@@ -26,7 +26,7 @@ induced compliance, depends on design)
 - linear scaling factor for tire-road mu correction should be changed to a
 non-linear gain based on a constant radius test of the car (see tire
 correction document in the tire_data/tire model research/ folder)
-- add active aero force and CoP affects
+- add active aero force and CoP movement affects
 - add Slip Ratio calculation
 
 %}
