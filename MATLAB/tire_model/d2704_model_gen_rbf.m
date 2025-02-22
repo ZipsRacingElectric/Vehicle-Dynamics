@@ -170,6 +170,10 @@ grid on;
 legend('Interpolated Surface', 'Original Sample Points');
 hold off;
 
+% Fix any badly fitted data
+zero_index = find(sl_vals == 0);
+Fx_grid(zero_index, :, :) = 0;
+
 %% Save the data
 save("../tire_data/d2704/d2704_7in_rbf_full_model.mat", "sl_vals", "sa_vals", "fz_vals", "Fy_grid", "Fx_grid", "Mz_grid");
 
