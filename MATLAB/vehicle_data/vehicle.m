@@ -78,7 +78,8 @@ classdef vehicle < handle
         % Tires
         tire_loaded_radius                                                  % m
         gear_ratio                                                          % (# input rotations / # output rotations)
-        tire_mu                                                             % use only if tire model not availible                           
+        tire_mu                                                             % the hot tire friction from TTC data                           
+        tire_mu_correction_factor                                           % this is a correction factor to account for reduced tire-road friction compared to TTC data. Typically 2/3 but should be tuned if raining or cold outside
         tire_stiffness                                                      % N/m
         tire_width                                                          % m
         
@@ -241,7 +242,8 @@ classdef vehicle < handle
             % Tires
             obj.tire_loaded_radius = obj.parameters('tire_loaded_radius');     
             obj.gear_ratio = obj.parameters('gear_ratio');                 
-            obj.tire_mu = obj.parameters('tire_mu');                      
+            obj.tire_mu = obj.parameters('tire_mu');     
+            obj.tire_mu_correction_factor = obj.parameters('tire_mu_correction_factor')
             obj.tire_stiffness = obj.parameters('tire_stiffness');        
             obj.tire_width = obj.parameters('tire_width');                    
         
