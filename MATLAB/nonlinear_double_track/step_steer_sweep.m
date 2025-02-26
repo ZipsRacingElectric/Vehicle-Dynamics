@@ -38,8 +38,8 @@ model = 'nonlinear_double_track_model';
 run_simulation = true; % warning, takes about 30 minutes
 
 if (run_simulation)
-    velocity_sweep = [1, 2, 5, 10, 15, 20, 25, 30, 35, 40, 45]; % m/s
-    steering_angle_sweep = linspace(10, 180, 10); % degress for steering wheel angle
+    velocity_sweep = [1, 2, 10, 20, 30, 40]; % m/s
+    steering_angle_sweep = linspace(10, 180, 5); % degress for steering wheel angle
     
     num_sims = length(velocity_sweep) * length(steering_angle_sweep);
     in(1:num_sims) = Simulink.SimulationInput(model);
