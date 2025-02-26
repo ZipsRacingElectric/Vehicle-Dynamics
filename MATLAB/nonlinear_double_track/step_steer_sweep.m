@@ -60,10 +60,12 @@ if (run_simulation)
     out = parsim(in, 'ShowSimulationManager', 'on');
 
     % Save the output results to a file
-    save('./results/step_steer_sweep.mat', 'out');
+    % NOTE: the data files are very large and should not be saved on the
+    % Github repository. This data directory is ignored when committing
+    save('./data/step_steer_sweep.mat', 'out');
 else
     % Load previously saved results for analysis
-    load('./results/step_steer_sweep.mat');
+    load('./data/step_steer_sweep.mat');
 end
 
 %% Plot Yaw Rate vs Time

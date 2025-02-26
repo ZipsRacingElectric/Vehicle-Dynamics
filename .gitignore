@@ -36,5 +36,10 @@ octave-workspace
 # exclude all tire data
 /MATLAB/tire_data/*
 
-# exception to the rule
+# keep the blank folder so directory structure is preserved
 !MATLAB/tire_data/.gitkeep
+
+# Do not upload model results which are very large
+/MATLAB/nonlinear_double_track/data/*
+
+
