@@ -1,7 +1,6 @@
 %{
-
 %% Overview
-Model: nonlinear_bicycle_model
+Model: nonlinear_double_track_model
 Test: Step-steer response of vehicle model. The vehicle travels at an
 initial velocity and a step impulse of steering angle is applied.
 
@@ -28,7 +27,6 @@ non-linear gain based on a constant radius test of the car (see tire
 correction document in the tire_data/tire model research/ folder)
 - add active aero force and CoP movement affects
 - add Slip Ratio calculation
-
 %}
 
 clear; close all; clc;
