@@ -65,7 +65,7 @@ for i = 1:length(v)
 
     for u = 1:length(delta)
 
-        rate = delta(u) / (zr25.wheelbase + K_u * v(i)); % Y = delta_dyn / (l + K_u * V)
+        rate = v(i) / (zr25.wheelbase + K_u * v(i)^2) * delta(u); % Y = V / (l + K_u * V^2) * delta
         if (rate < yaw_rate_max)
 
             yaw_rate(i, u) = rate;
@@ -73,7 +73,7 @@ for i = 1:length(v)
             yaw_rate(i, u) = yaw_rate_max;
         end
 
-        rate_ref = delta(u) / (zr25.wheelbase + K_u_ref * v(i)); % Y = delta_dyn / (l + K_u_ref * V)
+        rate_ref = v(i) / (zr25.wheelbase + K_u_ref * v(i)^2) * delta(u); % Y = V / (l + K_u_ref * V^2) * delta
         if (rate_ref < yaw_rate_max)
 
             yaw_rate_ref(i, u) = rate_ref;
