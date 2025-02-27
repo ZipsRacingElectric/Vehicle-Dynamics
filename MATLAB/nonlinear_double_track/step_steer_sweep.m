@@ -10,6 +10,11 @@ This uses the Simulation Manager to batch run multiple simulations to get
 an idea of the full response of the vehicle.
 
 %% TODO:
+- identify runs which the car is not stable
+- Plot the input conditions as inputs and view the region of stability of
+the car
+- in transient plot, label the legends as combinations of input states
+(instead of just run number which is not useful)
 
 %}
 
@@ -48,9 +53,9 @@ if (run_simulation)
     for i = 1:length(velocity_sweep)
         for u = 1:length(steering_angle_sweep)
             % run each input combination
-            in(sim_index) = setBlockParameter(in(sim_index), [model '/Velocity'], 'Value', num2str(velocity_sweep(i)));
+            in(sim_index) = setBlockParameter(in(sim_index), [model '/Vehicle Plant Model/Initial Velocity (m/s)'], 'Value', num2str(velocity_sweep(i)));
             
-            in(sim_index) = setBlockParameter(in(sim_index), [model '/Step Steer Input'], 'After', num2str(steering_angle_sweep(u)));
+            in(sim_index) = setBlockParameter(in(sim_index), [model '/Step Steer Input (deg)'], 'After', num2str(steering_angle_sweep(u)));
     
             sim_index = sim_index + 1;
         end
