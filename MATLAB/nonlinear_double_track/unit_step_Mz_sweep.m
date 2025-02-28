@@ -1,4 +1,4 @@
-%{
+ %{
 
 %% Overview
 Model: nonlinear_double_track_model
@@ -37,11 +37,13 @@ model = 'nonlinear_double_track_model';
 
 %% Batch Run simulations
 
-run_simulation = true; % warning, takes about 30 minutes
+run_simulation = false; % warning, takes about 30 minutes
+
+velocity_sweep = [1, 2, 10, 20, 30, 40, 45]; % m/s
+
+simTime = 5; % [s]
 
 if (run_simulation)
-    velocity_sweep = [1, 2, 10, 20, 30, 40, 45]; % m/s
-    
     num_sims = length(velocity_sweep);
     in(1:num_sims) = Simulink.SimulationInput(model);
     
@@ -53,6 +55,9 @@ if (run_simulation)
 
         % set a unit input step of 1 Nm
         in(sim_index) = setBlockParameter(in(sim_index), [model '/Vehicle Plant Model/M_TV Step Input'], 'After', num2str(1));
+        
+        in(sim_index) = setModelParameter(in(sim_index), 'StopTime', num2str(simTime));
+
 
         sim_index = sim_index + 1;
     end
@@ -102,7 +107,7 @@ for i = 1:numSims
     
     % Plot the signal with unique color and line style
     plot(time, values, 'Color', colors(i, :), 'LineWidth', 1.8, ...
-        'LineStyle', lineStyle, 'DisplayName', ['Sim ' num2str(i)]);
+        'LineStyle', lineStyle, 'DisplayName', [num2str(velocity_sweep(i)) ' m/s']);
 end
 
 % Formatting
