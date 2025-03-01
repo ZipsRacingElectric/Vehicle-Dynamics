@@ -1,5 +1,4 @@
 %{
-
 %% Vehicle Object
 Vehicle object to hold vehicle design parameters
 Ben Model
@@ -49,8 +48,8 @@ convert this to radians)
 - frequency: Hz
 - acceleration: m/s^2
 - density: kg/m^3
-
 %}
+
 classdef vehicle < handle
 
     properties (Access=private)
@@ -124,7 +123,23 @@ classdef vehicle < handle
         ride_frequency_rear                                                 % Hz, target rear ride frequency (compare to calculated)
 
         % Compliance
-        toe_deflection_rear                                            % deg per 1kN, per wheel, linear toe deflection from Fy forces, from experimental testing
+        toe_deflection_rear                                                 % deg per 1kN, per wheel, linear toe deflection from Fy forces, from experimental testing
+
+        % Brakes
+        piston_radius_front                                                 % m
+        piston_radius_rear                                                  % m
+        num_pistons_front                                                   % unitless
+        num_pistons_rear                                                    % unitless
+        pad_friction_front                                                  % unitless, dynamic and static friction are assumed to be the same
+        pad_friction_rear                                                   % unitless, dynamic and static friction are assumed to be the same
+        max_pedal_force                                                     % N
+        disc_radius_front                                                   % m
+        disc_radius_rear                                                    % m
+        pad_height_front                                                    % m
+        pad_height_rear                                                     % m
+        mc_diameter_front                                                   % m
+        mc_diameter_rear                                                    % m
+        balance_bar_ratio_front                                             % 0 to 1
 
         %% Calculated parameters - call update method to calculate
         % Dimensions
@@ -289,6 +304,22 @@ classdef vehicle < handle
 
             % Compliance
             obj.toe_deflection_rear = obj.parameters('toe_deflection_rear');
+
+            % Brakes
+            obj.piston_radius_front = obj.parameters('piston_radius_front');
+            obj.piston_radius_rear = obj.parameters('piston_radius_rear');
+            obj.num_pistons_front = obj.parameters('num_pistons_front');
+            obj.num_pistons_rear = obj.parameters('num_pistons_rear');
+            obj.pad_friction_front = obj.parameters('pad_friction_front');
+            obj.pad_friction_rear = obj.parameters('pad_friction_rear');
+            obj.max_pedal_force = obj.parameters('max_pedal_force');
+            obj.disc_radius_front = obj.parameters('disc_radius_front');
+            obj.disc_radius_rear = obj.parameters('disc_radius_rear');
+            obj.pad_height_front = obj.parameters('pad_height_front');
+            obj.pad_height_rear = obj.parameters('pad_height_rear');
+            obj.mc_diameter_front = obj.parameters('mc_diameter_front');
+            obj.mc_diameter_rear = obj.parameters('mc_diameter_rear');
+            obj.balance_bar_ratio_front = obj.parameters('balance_bar_ratio_front');
         end
         
         %{
