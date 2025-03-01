@@ -140,6 +140,7 @@ classdef vehicle < handle
         mc_diameter_front                                                   % m
         mc_diameter_rear                                                    % m
         balance_bar_ratio_front                                             % 0 to 1
+        brake_pedal_motion_ratio                                            % unitless
 
         %% Calculated parameters - call update method to calculate
         % Dimensions
@@ -320,6 +321,7 @@ classdef vehicle < handle
             obj.mc_diameter_front = obj.parameters('mc_diameter_front');
             obj.mc_diameter_rear = obj.parameters('mc_diameter_rear');
             obj.balance_bar_ratio_front = obj.parameters('balance_bar_ratio_front');
+            obj.brake_pedal_motion_ratio = obj.parameters('brake_pedal_motion_ratio');
         end
         
         %{
