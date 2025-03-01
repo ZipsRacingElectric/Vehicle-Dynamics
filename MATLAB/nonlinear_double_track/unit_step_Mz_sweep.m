@@ -37,11 +37,11 @@ model = 'nonlinear_double_track_model';
 
 %% Batch Run simulations
 
-run_simulation = false; % warning, takes about 30 minutes
+run_simulation = true; % warning, takes about 30 minutes
 
 velocity_sweep = [1, 2, 10, 20, 30, 40, 45]; % m/s
 
-simTime = 5; % [s]
+simTime = 10; % [s]
 
 if (run_simulation)
     num_sims = length(velocity_sweep);
@@ -85,22 +85,14 @@ lineStyles = {'-', '--', ':', '-.'}; % Different line styles
 
 % Loop through each simulation run
 for i = 1:numSims
-    % Extract logged data (assuming logsout is used for data logging)
+    % Extract logged data
     logs = out(i).logsout;
     
-    % Get the yaw rate signal (update the exact name)
-    signal = logs.get('Yaw Rate (rad/s)'); % Replace with actual signal name
-    time = signal.Values.Time;
-    values = signal.Values.Data;
-
-    % Check if any yaw rate value exceeds 3 rad/s - we can safely consider
-    % these to be cars that spin out and are not steady state
-    %{
-    if any(values > 3)
-        fprintf('Skipping Simulation %d (Yaw Rate exceeded 3 rad/s)\n', i);
-        continue; % Skip this simulation
-    end
-    %}
+    % Get the yaw rate signal
+    vehicle_sensors = logs.get('vehicle_sensors');
+    signal = vehicle_sensors.Values.yaw_rate;
+    time = signal.Time;
+    values = signal.Data;
     
     % Choose line style based on simulation index
     lineStyle = lineStyles{mod(i-1, length(lineStyles)) + 1};
