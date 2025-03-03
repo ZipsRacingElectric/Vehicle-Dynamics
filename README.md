@@ -24,10 +24,10 @@ zr25 = vehicle('../vehicle_data/zr25_data.xlsx');
 This will create a vehicle object 'zr25' in the MATLAB workspace, where parameters can be accessed in this way:
 
 ```
-ratio = zr25.wheelbase / ((zr25.track_width_front + zr25.track_width_front) / 2)
+ratio = zr25.wheelbase / ((zr25.track_width_front + zr25.track_width_front) / 2);
 ```
 
-If your using Simulink, you need to generate Simulink parameters from the vehicle object:
+If you're using Simulink, you need to generate Simulink parameters from the vehicle object:
 
 ```
 zr25.create_simulink_parameters();
@@ -41,6 +41,9 @@ open_system('my_sim');
 ```
 
 Within Simulink, you can change block parameters to reference the Simulink parameters.
+
+### Storing Simulation Data
+Generally it is not reccomended to store simulation ouput data (.mat, .mldatx), especially if from a simulation batch run. These files are large and can cause the repository to hit the storage limit. Save them in a folder and update the .gitignore to ingore the folder contents.
 
 ### Prerequisite Tools
 

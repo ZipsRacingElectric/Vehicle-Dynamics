@@ -18,6 +18,7 @@ function of fixed phase voltage and save as matrix so we don't need to do
 any math in simulink
 
 %% Data Description:
+Note: all of these tables are functions of current and speed
 - Speed: motor shaft speed [RPM]
 - Shaft_Torque: motor shaft torque [Nm]
 - Stator_Current_Phase_Peak: Amplituide of phase current [A]
@@ -76,7 +77,11 @@ voltage_phase_rms_interp = griddedInterpolant({motor_speeds, motor_currents, mot
 
 %% Save data for simulink lookup table
 
-%% Calculate torque-speed curve for different DC bus voltages, no field weakening, fixed motor temp
+%% Calculate torque-speed curve for different DC bus voltages, fixed motor temp
+
+% Do you want to plot with or without field weakening?
+use_field_weakening = true;
+
 v_batt = [300, 400, 500, 600];
 motor_temperature = 80;
 
@@ -96,12 +101,15 @@ for i = 1:length(v_batt)
         speed = motor_speeds(u);
 
         % Extract the 1D row of voltage vs. current at a fixed temperature
+        % and given motor speed
         voltage_slice = squeeze(voltage_phase_rms_interp((zeros(1, length(motor_currents)) + speed), motor_currents, (zeros(1, length(motor_currents)) + motor_temperature))); 
         
-        % Identify where the voltage matches the fixed voltage within tolerance
+        % Identify where the voltage slice matches the fixed DC bus voltage,
+        % within a reasonable tolerance
         tolerance = 0.1; % Small tolerance for floating-point comparisons
         valid_idx = abs(voltage_slice - phase_voltage) < tolerance;
 
+        % determine motor current at this voltage
         if any(valid_idx)
             % this handles edge case where the voltage flat-lines for
             % increasing current and interpolation gets funky
@@ -187,3 +195,6 @@ ax.FontSize = 12;
 ax.GridAlpha = 0.2;  % Adjust transparency (lower = lighter)
 ax.MinorGridAlpha = 0.1; % Even lighter minor grid
 hold off;
+
+%% Calculate torque-speed curve for different DC bus voltages, with field-weakening, fixed motor temp
+
