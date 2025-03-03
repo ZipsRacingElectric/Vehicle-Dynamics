@@ -81,6 +81,20 @@ classdef vehicle < handle
         tire_mu_correction_factor                                           % this is a correction factor to account for reduced tire-road friction compared to TTC data. Typically 2/3 but should be tuned if raining or cold outside
         tire_stiffness                                                      % N/m
         tire_width                                                          % m
+
+        % Gearbox / Drivetrain
+        Jm
+        Js1
+        J1
+        J2
+        Js2
+        Jw
+        Dm
+        D1
+        D2
+        Dw
+        Ks1
+        Ks2
         
         % Kinematics
         static_toe_front                                                    % degrees (per wheel), + is toe out
@@ -198,6 +212,11 @@ classdef vehicle < handle
         % Longitudinal Load Transfer
         long_load_transfer                                                  % N, longitudinal load transfer force
 
+        % Gearbox Dynamics
+        Jeq
+        Deq
+        Keq
+
         %% Constants
         % Environment
         air_temp = 20;                                                      % degrees C
@@ -261,7 +280,21 @@ classdef vehicle < handle
             obj.tire_mu = obj.parameters('tire_mu');     
             obj.tire_mu_correction_factor = obj.parameters('tire_mu_correction_factor')
             obj.tire_stiffness = obj.parameters('tire_stiffness');        
-            obj.tire_width = obj.parameters('tire_width');                    
+            obj.tire_width = obj.parameters('tire_width');
+
+            % Gearbox / Drivetrain
+            obj.Jm = obj.parameters('Jm');
+            obj.Js1 = obj.parameters('Js1');
+            obj.J1 = obj.parameters('J1');
+            obj.J2 = obj.parameters('J2');
+            obj.Js2 = obj.parameters('Js2');
+            obj.Jw = obj.parameters('Jw');
+            obj.Dm = obj.parameters('Dm');
+            obj.D1 = obj.parameters('D1');
+            obj.D2 = obj.parameters('D2');
+            obj.Dw = obj.parameters('Dw');
+            obj.Ks1 = obj.parameters('Ks1');
+            obj.Ks2 = obj.parameters('Ks2');
         
             % Kinematics
             obj.static_toe_front = obj.parameters('static_toe_front');         
@@ -385,6 +418,11 @@ classdef vehicle < handle
 
             % Longitudinal Load Transfer Calculations
             obj.long_load_transfer = obj.cg_height / obj.wheelbase * obj.mass_total * obj.g;
+
+            % Gearbox Dynamics
+            obj.Jeq = (obj.J1 + obj.Js1 + obj.Jm) + (obj.J2 + obj.Js2 + obj.Jw) * (1 / obj.gear_ratio)^2;
+            obj.Deq = (obj.D1 + obj.Dm) + (obj.D2 + obj.Dw) * (1 / obj.gear_ratio)^2;
+            obj.Keq = obj.Ks1 + obj.Ks2 * (1 / obj.gear_ratio)^2;
         end
 
         %{
