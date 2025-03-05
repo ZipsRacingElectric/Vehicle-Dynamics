@@ -47,5 +47,8 @@ zr25.create_simulink_parameters();
 % Note: this data is fixed at P = 8 psi, IA = 2 deg
 load("../tire_data/d2704/d2704_7in_rbf_full_model.mat");
 
+% load aero data
+load("../vehicle_data/zr25_aero_data.mat");
+
 % open simulink model
 open_system('nonlinear_double_track_model');
