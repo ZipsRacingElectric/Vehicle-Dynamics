@@ -8,7 +8,7 @@ This model will serve as the basis for the LPV plant model used for torque
 vectoring control.
 
 %% Details:
-CSAPS based nonlinear tire model.
+RBF-based nonlinear tire model.
 Fy as function of SA, FZ, IA, P = 8 PSI, SR = 0 (pure cornering)
 Mz as a function of SA, FZ, IA, P = 8 PSI, SR = 0 (pure cornering)
 - Positive steering wheel input is turning the wheel to the right.
@@ -19,13 +19,11 @@ slip ratio output)
 - validate the vehicle parameters
 - velocity input for Mz should be the tire longitudinal velocity and not the
 longitudinal velocity for the vehicle
-- adjust front compliance based on f/r rack placement
-- adjust rear compliance based on toe link location & trail (under or over steer
+- adjust rear Fy steer compliance based on toe link location & trail (under or over steer
 induced compliance, depends on design)
 - linear scaling factor for tire-road mu correction should be changed to a
 non-linear gain based on a constant radius test of the car (see tire
 correction document in the tire_data/tire model research/ folder)
-- add active aero force and CoP movement affects
 - add Slip Ratio calculation
 %}
 
