@@ -84,7 +84,7 @@ Id_interp = griddedInterpolant({motor_speeds, motor_currents, motor_temps}, Id_P
 max_id = max(Iq_Peak(:));
 
 %% Field Weakening Implementation
-v_batt = [300];
+v_batt = [100, 200, 300, 400, 500, 600];
 motor_temperature = 80;
 torque = zeros(length(v_batt), length(motor_speeds));
 power = zeros(length(v_batt), length(motor_speeds));
