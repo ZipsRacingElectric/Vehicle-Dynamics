@@ -42,5 +42,3 @@ octave-workspace
 # Do not upload model results which are very large
 /MATLAB/nonlinear_double_track/data/*
 
-
-.DS_Store
