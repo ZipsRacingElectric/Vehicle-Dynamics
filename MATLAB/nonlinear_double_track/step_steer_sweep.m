@@ -1,5 +1,4 @@
 %{
-
 %% Overview
 Model: nonlinear_bicycle_model
 Test: Sweep step-steer test at various operating conditions of the vehicle.
@@ -15,7 +14,6 @@ an idea of the full response of the vehicle.
 the car
 - in transient plot, label the legends as combinations of input states
 (instead of just run number which is not useful)
-
 %}
 
 clear; close all; clc;
@@ -43,8 +41,8 @@ model = 'nonlinear_double_track_model';
 run_simulation = true; % warning, takes about 30 minutes
 
 if (run_simulation)
-    velocity_sweep = [1, 2, 10, 20, 30, 40]; % m/s
-    steering_angle_sweep = linspace(10, 180, 5); % degress for steering wheel angle
+    velocity_sweep = [1, 2, 5, 10, 15, 20, 25, 30, 40, 50]; % m/s
+    steering_angle_sweep = linspace(-90, 90, 9); % degress for steering wheel angle
     
     num_sims = length(velocity_sweep) * length(steering_angle_sweep);
     in(1:num_sims) = Simulink.SimulationInput(model);
@@ -52,11 +50,16 @@ if (run_simulation)
     sim_index = 1;
     for i = 1:length(velocity_sweep)
         for u = 1:length(steering_angle_sweep)
+            % ensure model is setup correctly
+            in(sim_index) = setBlockParameter(in(sim_index), [model '/Closed Loop Control'], 'Value', '1');
+            in(sim_index) = setBlockParameter(in(sim_index), [model '/Zero Long Force'], 'Value', '1');
+            in(sim_index) = setBlockParameter(in(sim_index), [model '/DRS Enable'], 'Value', '1');
+            in(sim_index) = setBlockParameter(in(sim_index), [model '/Toggle Aero Forces'], 'Value', '1');
+
             % run each input combination
-            in(sim_index) = setBlockParameter(in(sim_index), [model '/Vehicle Plant Model/Initial Velocity (m/s)'], 'Value', num2str(velocity_sweep(i)));
+            in(sim_index) = setBlockParameter(in(sim_index), [model '/Vehicle Plant Model/Initial Velocity'], 'Value', num2str(velocity_sweep(i)));
+            in(sim_index) = setBlockParameter(in(sim_index), [model '/Steering Wheel Angle'], 'After', num2str(steering_angle_sweep(u)));
             
-            in(sim_index) = setBlockParameter(in(sim_index), [model '/Step Steer Input (deg)'], 'After', num2str(steering_angle_sweep(u)));
-    
             sim_index = sim_index + 1;
         end
     end
