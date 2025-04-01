@@ -48,5 +48,8 @@ load("../tire_data/d2704/d2704_7in_rbf_full_model.mat");
 % load aero data
 load("../vehicle_data/zr25_aero_data.mat");
 
+% load steering data
+load("../vehicle_data/zr25_steering_data.mat");
+
 % open simulink model
 open_system('nonlinear_double_track_model');

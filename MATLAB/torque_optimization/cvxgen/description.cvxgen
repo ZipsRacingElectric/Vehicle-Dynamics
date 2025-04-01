@@ -1,0 +1,34 @@
+# Produced by CVXGEN, 2025-03-31 14:19:24 -0400.
+# CVXGEN is Copyright (C) 2006-2017 Jacob Mattingley, jem@cvxgen.com.
+# The code in this file is Copyright (C) 2006-2017 Jacob Mattingley.
+# CVXGEN, or solvers produced by CVXGEN, cannot be used for commercial
+# applications without prior written permission from Jacob Mattingley.
+
+# Filename: description.cvxgen.
+# Description: A description of the CVXGEN problem.
+
+dimensions
+  # aka size of arrays to represent problem with
+  n = 4 # number of decision variables
+  m = 4 # number of constraints
+end
+
+parameters
+  # placeholders for problem data to be filled in with the generated solver
+  P(n, n) symmetric psd # matrix which defines the quadratic part of the objective functions
+  q(n) # vector defining the linear part of the objective functions
+  A(m, n) # matrix representing the linear constraints. Each row represents one constraint
+  l(m, 1) # column vector representing the lower bound for each constraint
+  u(m, 1) # column vector representing the upper bound for each constraint
+end
+
+variables
+  x(n) # vector of decision variables
+
+end
+
+minimize
+  (1/2) * quad(x, P) + q'*x # typical QP form, also identical to OSQP if we want to switch / compare solvers
+subject to
+  l <= A*x <= u
+end
