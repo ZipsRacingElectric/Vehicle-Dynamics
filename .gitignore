@@ -14,6 +14,9 @@
 *.mlappinstall
 *.mltbx
 
+% Python cache files
+*.pyc
+
 # Generated helpsearch folders
 helpsearch*/
 
@@ -41,4 +44,7 @@ octave-workspace
 
 # Do not upload model results which are very large
 /MATLAB/nonlinear_double_track/data/*
+
+# Remove the python virtual enviornment used in the HIL test
+/MATLAB/hardware_in_the_loop_simulation/venv/*
 
