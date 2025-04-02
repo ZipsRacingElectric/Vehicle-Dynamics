@@ -2,15 +2,16 @@
 %% Overview
 This script runs a simulink model of a simple PID system used to verify the
 hardware-in-the-loop (HIL) system with the VCU is functional and works as
-expected, before testing torque vectoring control algorithms.
+expected, before testing torque vectoring control algorithms. It interfaced
+with the hardware during simulation by sending and recieving CAN messages
+with the device under test.
 
 %% Details:
-- MATLAB must be setup to work with a python enviornment. See more at
-https://www.mathworks.com/help/matlab/matlab_external/install-supported-python-implementation.html
-- Note that MATLAB does not have support for the latest python 3 version. I
-am running the latest python version supported by R2023b (pytohn 3.11) in a
-virtual enviornment in the repository directory /venv/ - set up your virtual
-python enviornment as necessay for your system
+- Not real-time HIL
+- am running python in a virtual enviornment in the repository directory
+/venv/ - set up your virtual python enviornment as necessay for your system
+- you may need to make the script executable with additional system
+commands for your given system
 
 %% TODO:
 %}
@@ -18,37 +19,35 @@ python enviornment as necessay for your system
 clear; close all; clc;
 Simulink.sdi.clear; % clear old simulink runs
 
-% Setup the python interpreter to use the python venv:
-pyenv('Version', './venv/bin/python')
+test = true;
 
-% Add the current MATLAB working directory to Python's sys.path
-currentDir = pwd;
-if count(py.sys.path, currentDir) == 0
-    insert(py.sys.path, int32(0), currentDir);
+%% Test that the python can interface is working
+if (test)
+    input_data = int32(10);
+    plant_data = int32(20);
+    time_step  = int32(30);
+    
+    % Construct the command string.
+    % Make sure to use the correct path to your Python interpreter in the virtual env.
+    command = sprintf('./venv/bin/python can_module.py %d %d %d', input_data, plant_data, time_step);
+    
+    % Call the Python script using system()
+    [status, cmdout] = system(command);
+    
+    % Check if the command executed successfully.
+    if status == 0
+        % Assume the final line of output contains the actuating signal.
+        % Split the output by newline and take the last non-empty line.
+        lines = strsplit(strtrim(cmdout), '\n');
+        actuating_signal_str = lines{end};
+        actuating_signal = str2double(actuating_signal_str);
+        disp(cmdout);
+        fprintf('Actuating Signal: %f\n', actuating_signal);
+    else
+        disp('Error running Python script:');
+        disp(cmdout);
+    end
+
+else
+    open_system('hil_simulink');
 end
-
-try
-    py.importlib.import_module('can');
-    disp('python-can imported successfully');
-catch ME
-    disp(ME.message);
-end
-
-% Attempt to import the module
-try
-    py.importlib.import_module('can_module')
-catch e
-    disp('Error importing the module:');
-    disp(e.message);
-end
-
-py.print('Hello from Python!')
-
-input_data = int32(10);
-plant_data = int32(20);
-time_step  = int32(30);
-
-actuating_signal = pyrunfile('can_module.py', 'actuating_signal', ...
-    'input_data', input_data, 'plant_data', plant_data, 'time_step', time_step);
-disp(actuating_signal);
-%open_system('hil_simulink');
