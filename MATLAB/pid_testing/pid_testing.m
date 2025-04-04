@@ -86,7 +86,7 @@ title('Logged Input-Output Data')
 
 subplot(2,1,2);
 plot(t,Z.u), ylabel('Input (rad)')
-axis([0 50 -1.2 1.2])
+% axis([0 50 -1.2 1.2])
 xlabel('Time (seconds)')
 
 opt = ssestOptions('Focus','simulation');
