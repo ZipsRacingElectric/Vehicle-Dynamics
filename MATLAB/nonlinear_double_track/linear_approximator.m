@@ -79,6 +79,7 @@ Z.OutputUnit = {'rad/s'};
 
 t = Z.SamplingInstants;
 
+figure;
 subplot(2,1,1);
 plot(t,Z.y), ylabel('Yaw Rate (rad/s)')
 title('Logged Input-Output Data')
@@ -96,6 +97,7 @@ syslin4 = ssest(Z, 4, 'DisturbanceModel', 'none', opt);
 syslin5 = ssest(Z, 5, 'DisturbanceModel', 'none', opt);
 syslin6 = ssest(Z, 6, 'DisturbanceModel', 'none', opt);
 
+figure;
 syslin.InputName = Z.InputName;
 syslin.OutputName = Z.OutputName; % reconcile names to facilitate comparison
 clf
