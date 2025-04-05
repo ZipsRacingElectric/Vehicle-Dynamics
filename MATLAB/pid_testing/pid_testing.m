@@ -54,58 +54,58 @@ addpath(genpath(parentDirectory));      % Add the parent directory and all its s
 % open simulink model
 open_system('pid_testing_model');
 
-% Set simulation parameters
-sim('pid_testing_model');  % Runs the simulation
-
-load('inputData.mat');
-load('outputData.mat');
-
-inData=inputData.'; %transpose
-outData=outputData.';
-
-inData(:,1)=[];
-outData(:,1)=[];
-
-% Now save the workspace variables
-save('dataFile.mat', 'inData', 'outData');
-
-load dataFile
-Z = iddata(outData,inData,0.05);
-Z.InputName = 'step input';
-Z.InputUnit = 'rad';
-
-Z.OutputName = {'ouput'};
-Z.OutputUnit = {'rad'};
-
-t = Z.SamplingInstants;
-
-subplot(2,1,1);
-plot(t,Z.y), ylabel('Output (rad)')
-title('Logged Input-Output Data')
-% axis([0 50 -1.2 1.2])
-
-subplot(2,1,2);
-plot(t,Z.u), ylabel('Input (rad)')
-% axis([0 50 -1.2 1.2])
-xlabel('Time (seconds)')
-
-opt = ssestOptions('Focus','simulation');
-syslin2 = ssest(Z, 2, 'DisturbanceModel', 'none', opt);
-syslin3 = ssest(Z, 3, 'DisturbanceModel', 'none', opt);
-syslin4 = ssest(Z, 4, 'DisturbanceModel', 'none', opt);
-syslin5 = ssest(Z, 5, 'DisturbanceModel', 'none', opt);
-% choose the best option
-
-syslin.InputName = Z.InputName;
-syslin.OutputName = Z.OutputName; % reconcile names to facilitate comparison
-clf
-compare(Z, syslin2, syslin3, syslin4, syslin5)
-
-% Extract state-space matrices from the idss object
-A = syslin5.A;  % Extract state matrix
-B = syslin5.B;  % Extract input matrix
-C = syslin5.C;  % Extract output matrix
-D = syslin5.D;  % Extract direct transmission matrix
-
-% create the transfer function from the state-space representation
-[num, den] = ss2tf(A, B, C, D)
+% % Set simulation parameters
+% sim('pid_testing_model');  % Runs the simulation
+% 
+% load('inputData.mat');
+% load('outputData.mat');
+% 
+% inData=inputData.'; %transpose
+% outData=outputData.';
+% 
+% inData(:,1)=[];
+% outData(:,1)=[];
+% 
+% % Now save the workspace variables
+% save('dataFile.mat', 'inData', 'outData');
+% 
+% load dataFile
+% Z = iddata(outData,inData,0.05);
+% Z.InputName = 'step input';
+% Z.InputUnit = 'rad';
+% 
+% Z.OutputName = {'ouput'};
+% Z.OutputUnit = {'rad'};
+% 
+% t = Z.SamplingInstants;
+% 
+% subplot(2,1,1);
+% plot(t,Z.y), ylabel('Output (rad)')
+% title('Logged Input-Output Data')
+% % axis([0 50 -1.2 1.2])
+% 
+% subplot(2,1,2);
+% plot(t,Z.u), ylabel('Input (rad)')
+% % axis([0 50 -1.2 1.2])
+% xlabel('Time (seconds)')
+% 
+% opt = ssestOptions('Focus','simulation');
+% syslin2 = ssest(Z, 2, 'DisturbanceModel', 'none', opt);
+% syslin3 = ssest(Z, 3, 'DisturbanceModel', 'none', opt);
+% syslin4 = ssest(Z, 4, 'DisturbanceModel', 'none', opt);
+% syslin5 = ssest(Z, 5, 'DisturbanceModel', 'none', opt);
+% % choose the best option
+% 
+% syslin.InputName = Z.InputName;
+% syslin.OutputName = Z.OutputName; % reconcile names to facilitate comparison
+% clf
+% compare(Z, syslin2, syslin3, syslin4, syslin5)
+% 
+% % Extract state-space matrices from the idss object
+% A = syslin5.A;  % Extract state matrix
+% B = syslin5.B;  % Extract input matrix
+% C = syslin5.C;  % Extract output matrix
+% D = syslin5.D;  % Extract direct transmission matrix
+% 
+% % create the transfer function from the state-space representation
+% [num, den] = ss2tf(A, B, C, D)
