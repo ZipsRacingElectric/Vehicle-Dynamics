@@ -1,59 +1,55 @@
-#!/usr/bin/env python
-
 import sys
 import platform
+import os
 import can
 import subprocess
 import time
 import math
 
-def ensure_can_interface(interface='can0', bitrate=1000000):
+baudrate = 1000000                      # Baud Rate in bits/s
+channel_mac = '/dev/cu.usbmodem14101'   # Path to serial device channel if using macOS
+send_id = 0x123                         # Transmit message ID
+response_id = 0x124                     # Recieve message ID
+timeout = 1.0                           # Maximum time to wait for response
+
+def check_can_interface(system="none"):
     """
-    Checks if the CAN interface is available and up.
-    On Linux, uses 'ip' command.
-    On macOS (Darwin), uses 'ifconfig'.
-    Returns True if the interface is detected and active, otherwise False.
+    Checks if the CAN interface is available.
+    For Linux (socketcan), uses the 'ip' command to check interface status.
+    For macOS (Darwin), checks if the serial device exists.
+    Returns True if the interface/device is available, else False.
     """
-    system = platform.system()
     if system == 'Linux':
         try:
-            output = subprocess.check_output(['ip', 'link', 'show', interface],
+            output = subprocess.check_output(['ip', 'link', 'show', can.rc['channel']],
                                              stderr=subprocess.STDOUT).decode()
         except subprocess.CalledProcessError:
-            print(f"Interface {interface} not found. Please check your CAN hardware connection.")
+            print(f"Channel {can.rc['channel']} not found. Please check your CAN hardware connection.")
             return False
-        # On Linux, look for 'state UP'
+        # Check if interface is UP
         if 'state UP' not in output:
             try:
-                print(f"{interface} is down. Attempting to bring it up at {bitrate} bit/s...")
+                print(f"{can.rc['channel']} is down. Attempting to bring it up at {can.rc['bitrate']} bit/s...")
                 subprocess.check_call([
-                    'sudo', 'ip', 'link', 'set', interface,
-                    'up', 'type', 'can', 'bitrate', str(bitrate)
+                    'sudo', 'ip', 'link', 'set', can.rc['channel'],
+                    'up', 'type', 'can', 'bitrate', str(can.rc['bitrate'])
                 ])
             except subprocess.CalledProcessError:
-                print(f"Failed to bring up interface {interface}.")
+                print(f"Failed to bring up interface {can.rc['channel']}.")
                 return False
-            print(f"{interface} is now up.")
+            print(f"{can.rc['channel']} is now up.")
         else:
-            print(f"{interface} is already up.")
+            print(f"{can.rc['channel']} is already up.")
         return True
 
     elif system == 'Darwin':
-        # On macOS, use ifconfig to check for the interface.
-        try:
-            output = subprocess.check_output(['ifconfig', interface],
-                                             stderr=subprocess.STDOUT).decode()
-        except subprocess.CalledProcessError:
-            print(f"Interface {interface} not found on macOS. Please check your CAN hardware connection.")
+        if not os.path.exists(can.rc['channel']):
+            print(f"Serial channel {can.rc['channel']} not found. Please check your CAN hardware connection.")
             return False
-        # Check if the interface appears active.
-        if "status: active" in output or "UP" in output:
-            print(f"{interface} appears active on macOS.")
-            return True
         else:
-            print(f"{interface} is not active on macOS. Bringing up the interface may not be supported.")
-            return False
-
+            print(f"Serial channel {can.rc['channel']} found on macOS.")
+            # On Darwin no need to bring the interface up beforehand.
+            return True
     else:
         print(f"Unsupported OS: {system}")
         return False
@@ -71,32 +67,50 @@ def main():
         print("Error reading arguments:", e)
         print(float('nan'))
         sys.exit(1)
+    
+    # Check the operating system
+    system = platform.system()
 
+    if system == 'Linux':
+        print("Linux system detected.")
+        can.rc['interface'] = 'socketcan'
+        can.rc['channel'] = 'vcan0'
+        can.rc['bitrate'] = baudrate
+    elif system == 'Darwin':
+        print("macOS system detected.")
+        can.rc['interface'] = 'slcan'
+        can.rc['channel'] = channel_mac
+        can.rc['bitrate'] = baudrate
+    else:
+        print("Unsupported OS.")
+        print(float('nan'))
+        sys.exit(0)
+    
     # Check if the CAN interface is available.
-    if not ensure_can_interface():
+    if not check_can_interface(system):
         print("CAN interface not available.")
         print(float('nan'))
         sys.exit(0)
     
+    # Initialize the CAN bus with the appropriate backend.
     try:
-        # Initialize the CAN bus (using Linux socketcan or appropriate driver)
-        bus = can.interface.Bus(channel='can0', bustype='socketcan')
+        bus = can.interface.Bus()
     except Exception as e:
         print("Error initializing CAN bus:", e)
         print(float('nan'))
         sys.exit(0)
     
+    # Create CAN message
     try:
-        # Prepare the data payload (each value is limited to one byte)
+        # Prepare the data payload (each value constrained to one byte)
         data = [input_data & 0xFF, plant_data & 0xFF, time_step & 0xFF]
     except Exception as e:
         print("Error converting data values:", e)
         data = [0, 0, 0]
     
-    send_id = 0x123
-    response_id = 0x124
-    msg = can.Message(arbitration_id=send_id, data=data, extended_id=False)
+    msg = can.Message(arbitration_id=send_id, data=data, is_extended_id=False)
     
+    # Send CAN message
     try:
         bus.send(msg)
         print("Sent CAN message with ID {} and data: {}".format(hex(send_id), data))
@@ -105,12 +119,11 @@ def main():
         print(float('nan'))
         sys.exit(0)
     
-    # Block and wait for a response (up to 1 second)
+    # Block and wait for a response (timeout: 1 second)
     start_time = time.time()
-    timeout = 1.0
     actuating_signal = None
     while True:
-        response = bus.recv(timeout=0.1)
+        response = bus.recv(timeout)
         if response is not None and response.arbitration_id == response_id:
             actuating_signal = response.data[0]
             print("Received response with ID {}: {}".format(hex(response_id), response.data))
@@ -125,7 +138,7 @@ def main():
     except Exception:
         actuating_signal = float('nan')
     
-    # Print the final actuating signal as the last line (MATLAB will capture this)
+    # Print the final actuating signal (MATLAB can capture the last printed line)
     print(actuating_signal)
     
     # Clean up the bus (optional)
