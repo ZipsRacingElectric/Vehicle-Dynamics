@@ -19,34 +19,17 @@ commands for your given system
 clear; close all; clc;
 Simulink.sdi.clear; % clear old simulink runs
 
-test = true;
+test = false;
 
 %% Test that the python can interface is working
 if (test)
-    input_data = int32(10);
-    plant_data = int32(20);
-    time_step  = int32(30);
+    input_data = -0.2354;
+    plant_data = 10.6;
+    time_step  = 300;
+    vector = [input_data, plant_data, time_step];
     
-    % Construct the command string.
-    % Make sure to use the correct path to your Python interpreter in the virtual env.
-    command = sprintf('./venv/bin/python can_module.py %d %d %d', input_data, plant_data, time_step);
-    
-    % Call the Python script using system()
-    [status, cmdout] = system(command);
-    
-    % Check if the command executed successfully.
-    if status == 0
-        % Assume the final line of output contains the actuating signal.
-        % Split the output by newline and take the last non-empty line.
-        lines = strsplit(strtrim(cmdout), '\n');
-        actuating_signal_str = lines{end};
-        actuating_signal = str2double(actuating_signal_str);
-        disp(cmdout);
-        fprintf('Actuating Signal: %f\n', actuating_signal);
-    else
-        disp('Error running Python script:');
-        disp(cmdout);
-    end
+    % This function is on the path in send_can_message.m
+    output = send_can_message(vector);
 
 else
     open_system('hil_simulink');

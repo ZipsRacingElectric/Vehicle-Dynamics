@@ -10,7 +10,7 @@ baudrate = 1000000                      # Baud Rate in bits/s
 channel_mac = '/dev/cu.usbmodem14101'   # Path to serial device channel if using macOS
 send_id = 0x123                         # Transmit message ID
 response_id = 0x124                     # Recieve message ID
-timeout = 1.0                           # Maximum time to wait for response
+timeout = 0.01                           # Maximum time to wait for response
 
 def check_can_interface(system="none"):
     """
@@ -53,6 +53,13 @@ def check_can_interface(system="none"):
     else:
         print(f"Unsupported OS: {system}")
         return False
+    
+def pack_int16(x):
+    # Check that x is within the int16 range.
+    if x < -32768 or x > 32767:
+        raise ValueError(f"Value {x} out of range for int16")
+    # Convert to 2 bytes using big-endian. Use 'little' if required.
+    return list(x.to_bytes(2, byteorder='big', signed=True))
 
 def main():
     # Expecting exactly three arguments: input_data, plant_data, and time_step.
@@ -60,9 +67,10 @@ def main():
         print("Usage: can_module.py <input_data> <plant_data> <time_step>")
         sys.exit(1)
     try:
-        input_data = int(sys.argv[1])
-        plant_data = int(sys.argv[2])
-        time_step  = int(sys.argv[3])
+        # Data will be converted to the equivalent to int16_t in C:
+        input_data = pack_int16(int(round(float(sys.argv[1]))))
+        plant_data = pack_int16(int(round(float(sys.argv[2]))))
+        time_step  = pack_int16(int(round(float(sys.argv[3]))))
     except Exception as e:
         print("Error reading arguments:", e)
         print(float('nan'))
@@ -102,8 +110,8 @@ def main():
     
     # Create CAN message
     try:
-        # Prepare the data payload (each value constrained to one byte)
-        data = [input_data & 0xFF, plant_data & 0xFF, time_step & 0xFF]
+        # Prepare the data payload (each value constrained to two byte)
+        data = input_data + plant_data + time_step
     except Exception as e:
         print("Error converting data values:", e)
         data = [0, 0, 0]
