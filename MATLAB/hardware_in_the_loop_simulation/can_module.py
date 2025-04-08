@@ -5,12 +5,14 @@ import can
 import subprocess
 import time
 import math
+import struct
 
 baudrate = 1000000                      # Baud Rate in bits/s
 channel_mac = '/dev/cu.usbmodem14101'   # Path to serial device channel if using macOS
 send_id = 0x123                         # Transmit message ID
 response_id = 0x124                     # Recieve message ID
-timeout = 0.01                           # Maximum time to wait for response
+timeout = 1                           # Maximum time to wait for response
+actuating_signal = None
 
 def check_can_interface(system="none"):
     """
@@ -133,8 +135,9 @@ def main():
     while True:
         response = bus.recv(timeout)
         if response is not None and response.arbitration_id == response_id:
-            actuating_signal = response.data[0]
-            print("Received response with ID {}: {}".format(hex(response_id), response.data))
+            # Unpack little-endian signed 16-bit int
+            actuating_signal = struct.unpack_from('<h', response.data, 0)[0]
+            print(f"Received response with ID {hex(response_id)}: {response.data}")
             break
         if time.time() - start_time > timeout:
             print("Timeout waiting for CAN response.")
