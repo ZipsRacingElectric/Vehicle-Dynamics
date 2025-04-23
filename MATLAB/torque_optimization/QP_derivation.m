@@ -201,6 +201,37 @@ disp('Difference (should be 0):');
 pretty(difference)
 
 %% Constraints
+syms T_total_min T_total_max P_total_min P_total_max real
+syms T_min_fl T_min_fr T_min_rl T_min_rr real
+syms T_max_fl T_max_fr T_max_rl T_max_rr real
+syms s_min s_max real
+syms b_fl b_fr b_rl b_rr real
+
+l = [T_min_fl; T_min_fr; T_min_rl; T_min_rr; P_total_min; T_total_min; (s_min - b_fl); (s_min - b_fr); (s_min - b_rl); (s_min - b_rr)]; % Matrix of lower bound constraints
+u = [T_max_fl; T_max_fr; T_max_rl; T_max_rr; P_total_max; T_total_max; (s_max - b_fl); (s_max - b_fr); (s_max - b_rl); (s_max - b_rr)]; % Matrix of upper bound constraints
+
+% A matrix for individual motor torque limits
+A_motor_torque = diag([1 1 1 1]);
+
+% A matrix for total power limit
+syms n_batt n_inv n_fl n_fr n_rl n_rr real
+syms w_fl w_fr w_rl w_rr real
+A_total_power = (1 / (n_batt + n_inv)) * [(w_fl / n_fl) (w_fr / n_fr) (w_rl / n_rl) (w_rr / n_rr)];
+
+% A matrix for total torque limit
+A_total_torque = [1 1 1 1];
+
+% A matrix for slip ratio limits
+% We make unique constraint limits to account for the constant term when
+% this constraint is converted to matrix form
+b_fl = s_fl_0 - (Fx_fl_0 / dFx_fl_ds);
+b_fr = s_fr_0 - (Fx_fr_0 / dFx_fr_ds);
+b_rl = s_rl_0 - (Fx_rl_0 / dFx_rl_ds);
+b_rr = s_rr_0 - (Fx_rr_0 / dFx_rr_ds);
+
+A_slip_ratio = diag([1/(R * dFx_fl_ds) 1/(R * dFx_fr_ds) 1/(R * dFx_rl_ds) 1/(R * dFx_rr_ds)]);
+
+A = cat(1, A_motor_torque, A_total_power, A_total_torque, A_slip_ratio);
 
 %% QP Problem Form
 % QP form is 1/2 * T^T * P * T + q^T * T. Also, P = 2*Q. We derive this manually
@@ -219,7 +250,7 @@ disp(diffP)
 q = simplify(-2 * ((w1/alpha_1)*(A1.' * b1) + (w2/alpha_2)*(A2.' * b2) + (w3/alpha_3)*(A3.' * b3)))
 
 %% Save QP Matricies
-save('QP_matrices.mat', 'P', 'q');
+save('QP_matrices.mat', 'A', 'P', 'q', 'l', 'u');
 
 %% Helper Functions
 function force_v = tire_to_vehicle(force_t, delta)
