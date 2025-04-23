@@ -1,3 +1,10 @@
+% Wheel MOI Thing
+% takes a velocity vector and estimates the cost per lap of larger tires vs
+% heavier tires, based on the rotational kinetic energy blah blah
+
+% written by Logan Haydu April 2024
+
+
 % Time and Velocity:
 time = 0:100;
 v = (3/4)*cos((time/4) + pi) + 0.75;
