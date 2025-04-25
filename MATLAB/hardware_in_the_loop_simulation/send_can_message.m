@@ -1,7 +1,7 @@
 function output = send_can_message(data)
     persistent py_process py_stdin py_stdout
 
-    java.lang.Thread.sleep(100);
+    java.lang.Thread.sleep(10);
     
     CAN_DATA_SCALING_FACTOR = 1000;
 

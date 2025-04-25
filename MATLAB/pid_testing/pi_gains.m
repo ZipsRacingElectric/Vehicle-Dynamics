@@ -30,30 +30,45 @@ Vq2=griddata(v, deg, K_i, Xq, Yq, 'cubic');
 
 % Plot the original data and the interpolated result
 figure;
-subplot(1,2,1);
-scatter(v, deg, 100, K_i, 'filled'); % Original scattered data points
-title('Original Irregularly Spaced Data');
-colorbar;
-
-subplot(1,2,2);
 surf(Xq, Yq, Vq2); % Interpolated surface
-title('Interpolated Data');
-xlabel('v');
-ylabel('deg');
+title('Ki Gain Map');
+xlabel('Velocity (m/s)');
+ylabel('Steering Angle (degrees)');
 zlabel('Ki');
 colorbar;
 
-
 figure;
-subplot(1,2,1);
-scatter(v, deg, 100, K_p, 'filled'); % Original scattered data points
-title('Original Irregularly Spaced Data');
-colorbar;
-
-subplot(1,2,2);
 surf(Xq, Yq, Vq1); % Interpolated surface
-title('Interpolated Data');
-xlabel('v');
-ylabel('deg');
+title('Kp Gain Map');
+xlabel('Velocity (m/s)');
+ylabel('Steering Angle (degrees)');
 zlabel('Kp');
 colorbar;
+
+% Improved Ki Gain Map
+figure;
+surf(Xq, Yq, Vq2);                    % Smooth the color transitions
+colormap(parula);                     % Use a visually pleasing colormap
+colorbar;
+title('Ki Gain Map', 'FontSize', 14, 'FontWeight', 'bold');
+xlabel('Velocity (m/s)', 'FontSize', 12);
+ylabel('Steering Angle (degrees)', 'FontSize', 12);
+zlabel('Ki', 'FontSize', 12);
+grid on;
+set(gca, 'FontSize', 12, 'LineWidth', 1);   
+colorbar;% Set a better viewing angle
+
+% Improved Kp Gain Map
+figure;
+surf(Xq, Yq, Vq1);
+colormap(parula);                      % A slightly different colormap
+colorbar;
+title('Kp Gain Map', 'FontSize', 14, 'FontWeight', 'bold');
+xlabel('Velocity (m/s)', 'FontSize', 12);
+ylabel('Steering Angle (degrees)', 'FontSize', 12);
+zlabel('Kp', 'FontSize', 12);
+grid on;
+set(gca, 'FontSize', 12, 'LineWidth', 1);
+
+% Save pi gains to .mat file
+save('results/tuned_gains.mat', K_p, K_i, v, deg)

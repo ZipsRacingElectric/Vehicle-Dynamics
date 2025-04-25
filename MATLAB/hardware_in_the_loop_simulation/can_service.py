@@ -8,7 +8,7 @@ import math
 import struct
 
 baudrate = 1000000                      # Baud Rate in bits/s
-channel_mac = '/dev/cu.usbmodem14101'   # Path to serial device channel if using macOS
+channel_mac = '/dev/cu.usbmodem14201'   # Path to serial device channel if using macOS
 send_id = 0x123                         # Transmit message ID
 response_id = 0x124                     # Recieve message ID
 timeout = 0.01                          # Maximum time to wait for response
