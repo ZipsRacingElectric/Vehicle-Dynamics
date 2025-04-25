@@ -55,6 +55,41 @@ ToeAnglePoints = GetTotalTDisplacement(Displacements);
 XDistance = getXDistance(FL.ucaOutboard(1,1),FL.toeOutboard(1,1));
 ToeAngleChange = getAngle(ToeAnglePoints,XDistance);
 
+%% Plotting Camber and Toe Angle Changes vs Applied Moment
+
+% Define a range of moments to apply (for example, varying only Fx or Mz)
+numTests = 20;
+momentSweep = linspace(0, 1e6, numTests); % vary Mx (roll moment), in N·mm
+
+camberChanges = zeros(1, numTests);
+toeChanges = zeros(1, numTests);
+
+for i = 1:numTests
+    TestCase = [0; 0; 0.0089; momentSweep(i); 6.5259; 0]; % Only Mx is changing
+    Forces = solvySolve(SystemMatrix, TestCase);
+    ReorderedForces  = [Forces.LCAFore Forces.LCAAft Forces.UCAFore Forces.UCAAft Forces.Toe Forces.Push];
+    Displacements = getDisplacements(SusSpringSeries, ReorderedForces, getUnitVectors(FL,FLpointPairs));
+    
+    CamberAnglePoints = GetTotalCDisplacement(Displacements);
+    ZDistance = getZDistance(FL.ucaOutboard(3,1), FL.lcaOutboard(3,1));
+    camberChanges(i) = getAngle(CamberAnglePoints, ZDistance);
+
+    ToeAnglePoints = GetTotalTDisplacement(Displacements);
+    XDistance = getXDistance(FL.ucaOutboard(1,1),FL.toeOutboard(1,1));
+    toeChanges(i) = getAngle(ToeAnglePoints, XDistance);
+end
+
+% Plotting
+figure;
+plot(momentSweep / 1e5, camberChanges, '-o', 'LineWidth', 2); hold on;
+plot(momentSweep / 1e5, toeChanges, '-s', 'LineWidth', 2);
+xlabel('Applied Mx (×10^5 N·mm)');
+ylabel('Angle Change (degrees)');
+title('Camber and Toe Angle Change vs Applied Mx');
+legend('Camber Change', 'Toe Change');
+grid on;
+set(gca, 'FontSize', 12);
+
 %% Functions
 
 function PointPairs = getPointPairs(~)
@@ -97,7 +132,8 @@ function UnitVectors = getUnitVectors(suspensionStuff, pointPairs)
     end
 end
 
-function PositionMatrix = getPositionMatrix(suspensionStuff, pointPairs)
+function PositionMatrix = getPositionMatrix(suspensionStuff, point ...
+    Pairs)
      numPoints = size(pointPairs, 1);
     PositionMatrix = zeros(3, numPoints);
     
