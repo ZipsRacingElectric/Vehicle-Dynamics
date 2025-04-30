@@ -4,16 +4,17 @@
 
 % Written by Logan Haydu April 2024
 
-filepath = '..\DATA_BUCKET\SampleDataForDataBucket.csv'
-columnTitles = string({'Time', 'VehicleSpeed'})
-
-data = Data_Brita(filepath,columnTitles)
-
-
+filepath = '..\DATA_BUCKET\SampleDataForDataBucket.csv';
+columnTitles = string({'Time', 'VehicleSpeed'});
+data = Data_Brita(filepath,columnTitles);
 
 % Time and Velocity:
-time = data.Time
+time = data.Time;
+v = data.VehicleSpeed / 2.237;
 
+% Column Vector Correction:
+time = time(:);
+v = v(:);
 
 % Car Parameters:
 m = 200;
@@ -29,13 +30,13 @@ r_tire2_m = r_tire2_in / 39.37;
 I2 = 0.5 * m_tire2 * r_tire2_m^2;
 
 % Translational Kinetic Energy:
-KE_t = 0.5 * m *data.VehicleSpeed.^2;
+KE_t = 0.5 * m *v.^2;
 
 % Rotational Kinetic Energy:
-w1 = data.VehicleSpeed / r_tire1_m;
+w1 = v / r_tire1_m;
 KE_r1_one = 0.5 * I1 * w1.^2;
 KE_r1_all = 4 * KE_r1_one;
-w2 = data.VehicleSpeed / r_tire2_m;
+w2 = v / r_tire2_m;
 KE_r2_one = 0.5 * I2 * w2.^2;
 KE_r2_all = 4 * KE_r2_one;
 
@@ -45,8 +46,8 @@ KE_r2_all = 4 * KE_r2_one;
 dt = time(2) - time(1);
 
 % Angular Acceleration
-alpha1 = [0 diff(w1)/dt];
-alpha2 = [0 diff(w2)/dt];
+alpha1 = [0; diff(w1)/dt];
+alpha2 = [0; diff(w2)/dt];
 
 % Torque and Power
 tau1 = I1 * alpha1;
@@ -86,7 +87,7 @@ disp(['Total Energy Consumed (r = 13" tires): ' num2str(energy_consumed_r2) ' J'
 
 % Velocity vs Time Plot
 figure(1);
-plot(time,data.VehicleSpeed, 'b', 'LineWidth', 1);
+plot(time,v, 'b', 'LineWidth', 1);
 xlabel('Time (s)');
 ylabel('Velocity (m/s)');
 title('Velocity vs Time');
