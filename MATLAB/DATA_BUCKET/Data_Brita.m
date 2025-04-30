@@ -3,11 +3,14 @@
 % CleanWaterCols as string array.
 % Abigail Tucker, 04/24/25 
 
-filepath = ("C:\Users\ATuck\OneDrive - The University of Akron\SampleDataForDataBucket.csv")
+% Example: FOR NOW UNTIL DATA POND IS ONLINE!!!!
+% CSVs ARE TO BE ELIMINATED!!! DEAD!!! KILLED!!!! GONE!!!☢️🍄
 
-CleanWaterCols = string({'a_y_', 'a_x_'})
+%filepath = '..DATA_POND\SampleDataForDataBucket.csv'
+%CleanWaterCols = string({'a_y_', 'a_x_'})
+%CleanWater = DataBrita(filepath, CleanWaterCols)
 
-CleanWater = DataBrita(filepath, CleanWaterCols)
+
 
 function CleanWater = DataBrita(filepath, CleanWaterCols)
 
