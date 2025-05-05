@@ -29,12 +29,12 @@ SystemMatrix = BuildMatrix(FL, FLpointPairs);
 GetSuspensionData
 
 % Define Forces and Moments
-TestCase = [0; 0; 0.0089; 5.3761; 6.5259; 0] * 1e5;
+TestCase = [0; 0; 0.0; 5.3761; 6.5259; 0] * 1e5;
 
 % Calculates spring constants
 Ksus = SpringySpring(GetSuspensionData);
-Kre = SpringySpring(GetSuspensionData);
-Ks = [Ksus; Kre];
+%Kre = SpringySpring(GetSuspensionData);
+Ks = [Ksus];
 SusSpringSeries = SpringSeries(Ks);
 
 % Calculates and Orders Forces
@@ -58,8 +58,8 @@ ToeAngleChange = getAngle(ToeAnglePoints,XDistance);
 %% Plotting Camber and Toe Angle Changes vs Applied Moment
 
 % Define a range of moments to apply (for example, varying only Fx or Mz)
-numTests = 20;
-momentSweep = linspace(0, 1e6, numTests); % vary Mx (roll moment), in N·mm
+momentSweep = 0:100:400;  % Apply Mx from 0 to 150 N·m in 25 N·m increments
+numTests = length(momentSweep);  % Update the number of test cases
 
 camberChanges = zeros(1, numTests);
 toeChanges = zeros(1, numTests);
@@ -81,14 +81,26 @@ end
 
 % Plotting
 figure;
-plot(momentSweep / 1e5, camberChanges, '-o', 'LineWidth', 2); hold on;
-plot(momentSweep / 1e5, toeChanges, '-s', 'LineWidth', 2);
-xlabel('Applied Mx (×10^5 N·mm)');
+plot(momentSweep / 1000, camberChanges, '-s', 'LineWidth', 2); hold on;
+plot(momentSweep / 1000, toeChanges, '-o', 'LineWidth', 2);
+xlabel('Applied Mx (1000 N·mm)');
 ylabel('Angle Change (degrees)');
 title('Camber and Toe Angle Change vs Applied Mx');
 legend('Camber Change', 'Toe Change');
 grid on;
 set(gca, 'FontSize', 12);
+
+knownMoments = .001*9.81.*[0, 2000, 3000, 4000]*.5;  % N·mm
+knownDisplacements = rad2deg(atan([0, 4, 6.5, 9]./1473)); % mm displacement 
+
+% Plot
+hold on
+plot(knownMoments, knownDisplacements, 'o-', 'LineWidth', 2);
+% xlabel('Applied Moment (N·m)');
+% ylabel('Measured Toe Displacement (mm)');
+% title('Measured Displacement vs Applied Moment');
+% grid on;
+% set(gca, 'FontSize', 12);
 
 %% Functions
 
@@ -132,8 +144,7 @@ function UnitVectors = getUnitVectors(suspensionStuff, pointPairs)
     end
 end
 
-function PositionMatrix = getPositionMatrix(suspensionStuff, point ...
-    Pairs)
+function PositionMatrix = getPositionMatrix(suspensionStuff, pointPairs)
      numPoints = size(pointPairs, 1);
     PositionMatrix = zeros(3, numPoints);
     
