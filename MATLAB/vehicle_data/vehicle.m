@@ -377,8 +377,8 @@ classdef vehicle < handle
             obj.average_corner_mass = obj.unsprung_mass_total / 4;
             obj.front_mass = obj.mass_total * obj.front_mass_distribution;
             obj.rear_mass = obj.mass_total * (1 - obj.front_mass_distribution);
-            obj.front_corner_mass = obj.front_mass / 2;
-            obj.rear_corner_mass = obj.rear_mass / 2;
+            obj.front_corner_mass = obj.front_mass / 2;                             % total weight (in kg) on a front wheel
+            obj.rear_corner_mass = obj.rear_mass / 2;                               % total weight (in kg) on a rear wheel
             
             % Dimensions
             obj.a = obj.wheelbase * (1 - obj.front_mass_distribution);
@@ -402,10 +402,10 @@ classdef vehicle < handle
             obj.total_roll_rate_rear = (obj.roll_wheel_rate_rear * obj.tire_stiffness) / (obj.roll_wheel_rate_rear + obj.tire_stiffness);
 
             % Aerodynamics
-            obj.downforce_at_skidpad_front = (obj.cla_at_skidpad * obj.air_density * 0.5 * obj.velocity_skidpad^2) * obj.center_of_pressure_distribution / obj.g;
-            obj.downforce_at_skidpad_rear = (obj.cla_at_skidpad * obj.air_density * 0.5 * obj.velocity_skidpad^2) * (1 - obj.center_of_pressure_distribution) / obj.g;
-            obj.downforce_at_max_velocity_front = (obj.cla_at_max_velocity * obj.air_density * 0.5 * obj.velocity_max^2) * obj.cop_at_max_velocity / obj.g;
-            obj.downforce_at_max_velocity_rear = (obj.cla_at_max_velocity * obj.air_density * 0.5 * obj.velocity_max^2) * (1 - obj.cop_at_max_velocity) / obj.g;
+            obj.downforce_at_skidpad_front = (obj.cla_at_skidpad * obj.air_density * 0.5 * obj.velocity_skidpad^2) * obj.center_of_pressure_distribution;
+            obj.downforce_at_skidpad_rear = (obj.cla_at_skidpad * obj.air_density * 0.5 * obj.velocity_skidpad^2) * (1 - obj.center_of_pressure_distribution);
+            obj.downforce_at_max_velocity_front = (obj.cla_at_max_velocity * obj.air_density * 0.5 * obj.velocity_max^2) * obj.cop_at_max_velocity;
+            obj.downforce_at_max_velocity_rear = (obj.cla_at_max_velocity * obj.air_density * 0.5 * obj.velocity_max^2) * (1 - obj.cop_at_max_velocity);
 
             % Lateral Load Transfer Calculations
             obj.height_nra_to_sm_center = abs((obj.roll_center_rear - obj.roll_center_front) * (obj.a - obj.a_sprung) - (-obj.b - obj.a) * obj.cg_sprung + (-obj.b) * obj.roll_center_front - obj.roll_center_rear * obj.a) / sqrt((obj.roll_center_front - obj.roll_center_rear)^2 + (-obj.b - obj.a)^2);
