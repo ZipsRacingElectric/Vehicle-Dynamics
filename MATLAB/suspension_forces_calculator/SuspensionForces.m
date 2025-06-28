@@ -1,5 +1,5 @@
 clear
-%% Suspension force calc, slightly more polished version
+%% Suspension force calc, even more slightly polished version
     % Written by Ben Model, 2025 VD Lead
 
     % Calculates the forces in each suspension member (CA's, push/tie rods)
@@ -13,10 +13,20 @@ clear
 
 writeForcesToSpreadsheet = true;
 
+addpath vehicle_data
+
 folderWithDesignSpreadsheets = 'C:\Users\benmo\OneDrive - The University of Akron\Documents - Zips Racing FSAE\ZR25\Vehicle Dynamics\System\Analysis\';
 
-designSpreadsheet = strcat(folderWithDesignSpreadsheets,'ZR25_SuspensionDesign.xlsx')
-pointsSpreadsheet = strcat(folderWithDesignSpreadsheets,'ZR25_SuspensionForcesHeavy.xlsx')
+githubFolder = '\vehicle_data\';
+parameterSpreadsheet = strcat(githubFolder,'ZR25_data.xlsx');
+pointsSpreadsheet = strcat(folderWithDesignSpreadsheets,'ZR26_SuspensionForces.xlsx');
+
+
+%% THERE IS A HUMAN IN THE CAR YOU ARE RESPONSIBLE FOR!!!!!!!!
+% These can be tweaked once the team is confident that the current
+% cases (from 2025, the first year this was used) provide sufficient
+% margins of safety. Don't put a control arm through your friend's leg
+% :)
 
 %% Define Load Cases
     % Load cases, applied at contact patch:
@@ -28,11 +38,6 @@ pointsSpreadsheet = strcat(folderWithDesignSpreadsheets,'ZR25_SuspensionForcesHe
         % 1.75G corner, 3G bump, 2G brake
         % 3G Bump, 2G Brake backwards (50/50 bias)
 
-    %% THERE IS A HUMAN IN THE CAR YOU ARE RESPONSIBLE FOR!!!!!!!!
-    % These can be tweaked once the team is confident that the current
-    % cases (from 2025, the first year this was used) provide sufficient
-    % margins of safety. Don't put a control arm through your friend's leg
-    % :)
 
 
 LoadCases = [-1.6 0 1;        % 2g break, FWD
@@ -59,7 +64,7 @@ aero = [1 0 1 0 1 1 1 0 1 1 1 1];               % Aero loads on (1), off (0), bi
 % this helps keep parameters consistent between iterations
 % update everything in the parameters excel file. Save after editing!
 % File also must be closed to run!!!!
-zr = car(designSpreadsheet);
+zr = vehicle(parameterSpreadsheet);
 
 
 %% Load Points Locations
@@ -228,24 +233,26 @@ function tireFz = getTireFz(car,loadCase,aeroBoolean)
     latG = loadCase(2);
     bump = loadCase(3);
     %% Static + Aero Loads + bump
-    loadFL = car.g*(car.frontCornerWeight + aeroBoolean*car.downforceVmaxFront/2 + (bump - 1)*car.sprungMass*car.weightBias/2); 
-    loadFR = car.g*(car.frontCornerWeight + aeroBoolean*car.downforceVmaxFront/2 + (bump - 1)*car.sprungMass*car.weightBias/2);
-    loadRL = car.g*(car.rearCornerWeight + aeroBoolean*car.downforceVmaxRear/2 + (bump - 1)*car.sprungMass*(1-car.weightBias)/2);
-    loadRR = car.g*(car.rearCornerWeight + aeroBoolean*car.downforceVmaxRear/2 + (bump - 1)*car.sprungMass*(1-car.weightBias)/2);
+    % 9.81*(mass over front corner * (addl. bump)*sprung mass) * aero load
+    loadFL = car.g*(car.front_corner_mass + (bump-1)*car.sprung_mass_front) + aeroBoolean*car.downforce_at_max_velocity_front/2; 
+    loadFR = car.g*(car.front_corner_mass + (bump-1)*car.sprung_mass_front) + aeroBoolean*car.downforce_at_max_velocity_front/2;
+    loadRL = car.g*(car.rear_corner_mass +  (bump-1)*car.sprung_mass_rear)  + aeroBoolean*car.downforce_at_max_velocity_rear/2;
+    loadRR = car.g*(car.rear_corner_mass +  (bump-1)*car.sprung_mass_rear)  + aeroBoolean*car.downforce_at_max_velocity_rear/2;
 
     %% Lateral Weight Transfer
-    loadFL = loadFL + car.fLLTD*latG;
-    loadFR = loadFR - car.fLLTD*latG;
-    loadRL = loadRL + car.rLLTD*latG;
-    loadRR = loadRR - car.rLLTD*latG;
+    loadFL = loadFL + car.lltd_front *latG;
+    loadFR = loadFR - car.lltd_front *latG;
+    loadRL = loadRL + car.lltd_rear*latG;
+    loadRR = loadRR - car.lltd_rear*latG;
 
     %% Longditudinal Weight Transfer
     % also tuck into a nice struct
-    tireFz.FL = loadFL - car.LongLoadTransfer*longG/2;
-    tireFz.FR = loadFR - car.LongLoadTransfer*longG/2;
-    tireFz.RL = loadRL + car.LongLoadTransfer*longG/2;
-    tireFz.RR = loadRR + car.LongLoadTransfer*longG/2;
+    tireFz.FL = loadFL - car.long_load_transfer*longG/2;
+    tireFz.FR = loadFR - car.long_load_transfer*longG/2;
+    tireFz.RL = loadRL + car.long_load_transfer*longG/2;
+    tireFz.RR = loadRR + car.long_load_transfer*longG/2;
 
+    %% no fake downforce- make zero if negative
     if tireFz.FL <=0;tireFz.FL=0;end
     if tireFz.FR <=0;tireFz.FR=0;end
     if tireFz.RL <=0;tireFz.RL=0;end
@@ -263,7 +270,7 @@ function tireFy = getTireFy(car,loadCase,loads)
     % this should be a conservative assumption, as the derivative of the
     % max possible force decreases 
 
-    totalFy = -loadCase(2)*car.mass*car.g;
+    totalFy = -loadCase(2)*car.mass_total*car.g;
 
 
     % solve simple force/moment balance for car at SS lat g
@@ -287,7 +294,7 @@ function tireFX = getTireFX(car,loadCase,loads,biasFront,direction)
     % max possible force decreases 
     
     Ax = loadCase(1);
-    totalFx = Ax*car.mass*car.g;
+    totalFx = Ax*car.mass_total*car.g;
     
     % longd. weight transfer on axles
     frontAxleFx = direction*biasFront*totalFx;
