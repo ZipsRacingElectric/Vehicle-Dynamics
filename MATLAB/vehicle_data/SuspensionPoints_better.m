@@ -31,6 +31,7 @@ classdef SuspensionPoints_better < handle
         pushInboard
        
         contactPatch
+        tireCenter
     end
 
     methods
@@ -72,6 +73,9 @@ classdef SuspensionPoints_better < handle
                 loc = 'CP_';
                 obj.contactPatch = getPoint(obj,pointsTable,frontRear,link,loc);
                 
+            % TIRE CENTER
+                loc = 'CENTER_';
+                obj.tireCenter = getPoint(obj,pointsTable,frontRear,link,loc);
         end
 
         function point = getPoint(obj,pts,fr,link,loc)
@@ -97,7 +101,7 @@ classdef SuspensionPoints_better < handle
             obj.pushInboard = obj.pushInboard .* flipY;
            
             obj.contactPatch = obj.contactPatch .* flipY;   
-
+            obj.tireCenter = obj.tireCenter .* flipY; 
             % lmao.
             r =0;
 
