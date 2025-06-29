@@ -10,7 +10,7 @@
 
 
 % Define file paths
-filepath = 'C:\Users\ATuck\OneDrive - The University of Akron\ZR25\Vehicle Dynamics\System\Analysis\'
+filepath = 'C:\Users\benmo\OneDrive - The University of Akron\Documents - Zips Racing FSAE\ZR25\Vehicle Dynamics\System\Analysis\'
 pointsfile = 'ZR25_SuspensionForcesHeavy.xlsx'
 
 % Load suspension points
@@ -58,14 +58,14 @@ ToeAngleChange = getAngle(ToeAnglePoints,XDistance);
 %% Plotting Camber and Toe Angle Changes vs Applied Moment
 
 % Define a range of moments to apply (for example, varying only Fx or Mz)
-momentSweep = 0:100:400;  % Apply Mx from 0 to 150 N·m in 25 N·m increments
+momentSweep = 0:10000:30000;  % Apply Mx from 0 to 150 N·m in 25 N·m increments
 numTests = length(momentSweep);  % Update the number of test cases
 
 camberChanges = zeros(1, numTests);
 toeChanges = zeros(1, numTests);
 
 for i = 1:numTests
-    TestCase = [0; 0; 0.0089; momentSweep(i); 6.5259; 0]; % Only Mx is changing
+    TestCase = [0; 0; 0.0089; momentSweep(i); 0; 0]; % Only Mx is changing
     Forces = solvySolve(SystemMatrix, TestCase);
     ReorderedForces  = [Forces.LCAFore Forces.LCAAft Forces.UCAFore Forces.UCAAft Forces.Toe Forces.Push];
     Displacements = getDisplacements(SusSpringSeries, ReorderedForces, getUnitVectors(FL,FLpointPairs));
@@ -81,12 +81,13 @@ end
 
 % Plotting
 figure;
-plot(momentSweep / 1000, camberChanges, '-s', 'LineWidth', 2); hold on;
-plot(momentSweep / 1000, toeChanges, '-o', 'LineWidth', 2);
-xlabel('Applied Mx (1000 N·mm)');
-ylabel('Angle Change (degrees)');
-title('Camber and Toe Angle Change vs Applied Mx');
-legend('Camber Change', 'Toe Change');
+%plot(momentSweep / 1000, camberChanges, '-s', 'LineWidth', 2); 
+hold on;
+plot(momentSweep/1000, toeChanges*100);
+xlabel('Applied Mx (N·m)');
+ylabel('Deflection (degrees)');
+title('Toe Deflection vs Applied Mx');
+legend('Predicted Toe Change', 'Measured Toe Change');
 grid on;
 set(gca, 'FontSize', 12);
 
@@ -94,13 +95,14 @@ knownMoments = .001*9.81.*[0, 2000, 3000, 4000]*.5;  % N·mm
 knownDisplacements = rad2deg(atan([0, 4, 6.5, 9]./1473)); % mm displacement 
 
 % Plot
-hold on
+
 plot(knownMoments, knownDisplacements, 'o-', 'LineWidth', 2);
 % xlabel('Applied Moment (N·m)');
 % ylabel('Measured Toe Displacement (mm)');
 % title('Measured Displacement vs Applied Moment');
 % grid on;
 % set(gca, 'FontSize', 12);
+legend('Predicted Toe Change', 'Measured Toe Change');
 
 %% Functions
 
