@@ -235,6 +235,8 @@ classdef vehicle < handle
         function obj = vehicle(parametersFile)
             % UNTITLED Construct an instance of this class
             % Constructor function - pass parameters file
+
+            obj.setupCheck(parametersFile)
             parameterTable = readtable(parametersFile,'Sheet','parameters');
             
             % stores unchanged parameters from Excel file for reset
@@ -278,7 +280,7 @@ classdef vehicle < handle
             obj.tire_loaded_radius = obj.parameters('tire_loaded_radius');     
             obj.gear_ratio = obj.parameters('gear_ratio');                 
             obj.tire_mu = obj.parameters('tire_mu');     
-            obj.tire_mu_correction_factor = obj.parameters('tire_mu_correction_factor')
+            obj.tire_mu_correction_factor = obj.parameters('tire_mu_correction_factor');
             obj.tire_stiffness = obj.parameters('tire_stiffness');        
             obj.tire_width = obj.parameters('tire_width');
 
@@ -505,5 +507,32 @@ classdef vehicle < handle
             downforce = 0.5 * obj.air_density * velocity^2 * obj.Cl * obj.frontal_area;
         end
 
+        function setupCheck(obj,filejawn)
+            %% Setup check (courtesy of gattCPT
+            % expected repo name 
+            expectedRepo = '\GitHub\Vehicle-Dynamics\MATLAB';
+            
+            % check working directory contains repo
+            cwd = pwd;
+            if ~contains(cwd, expectedRepo)
+                error(['🚨☢️ WRONG WORKING DIRECTORY ☢️ 🚨' newline ...
+                       'Expected to be somewhere inside: ' expectedRepo newline ...
+                       'Currently at: ' cwd newline ...
+                       'change directory to your GitHub repo root first, then Vehicle-Dynamics\MATLAB']);
+            end
+            
+            % define file
+            filepath = fullfile(cwd, filejawn);
+            
+            % check that the file exists
+            if ~isfile(filepath)
+                error(['🚨 ☢️ DATA FILE MISSING ☢️ 🚨' newline ...
+                       'Could not find: ' fileJawn newline ...
+                       'Make sure the Excel file exists in the vehicle_data folder.']);
+            end
+            
+            disp(['✅ Setup looks alright' newline  'meow 🗨️🐈']);
+
+end
     end
 end
