@@ -2,32 +2,50 @@
 % takes a velocity vector and estimates the cost per lap of larger tires vs
 % heavier tires, based on the rotational kinetic energy
 
-% Written by Logan Haydu April 2024
+% Written by Logan Haydu April 2025
 
-filepath = '..\DATA_BUCKET\SampleDataForDataBucket.csv';
-columnTitles = string({'Time', 'VehicleSpeed'});
-data = Data_Brita(filepath,columnTitles);
+% filepath = '..\DATA_BUCKET\SampleDataForDataBucket.csv';
+Testdata = readmatrix("C:\Users\ATuck\OneDrive - The University of Akron\ZR25\Vehicle Dynamics\Data\2025.06.16 - Mary Gladwin Shakedown\decoded_vd.csv"');  % or whatever your file is called
+time = Testdata(:,1);                        
 
-% Time and Velocity:
-time = data.Time;
-v = data.VehicleSpeed / 2.237;
+% First column = time
+% Average RPM from 4 wheels
+AVGRPM = (Testdata(:,2) + Testdata(:,3) + Testdata(:,4) + Testdata(:,5)) / 4;
+
+% Effective radius of the wheel (meters)
+r = (13 / 2) * 0.0254;  % 13-inch wheel diameter converted to radius in meters
+
+% Calculate angular velocity (rad/s)
+omega = 2 * pi * AVGRPM / 60;
+
+% Calculate linear velocity (m/s)
+v_mps = omega * r;
+v = v_mps
+
+
+%% want regen or no want regen
+regen_enabled = false;     % Set to false to disable regen
+regen_efficiency = 0.6;   % Only matters if regen_enabled = true
+
+
+
+%% Time and Velocity:
+%time = data.Time;
+% v = data.VehicleSpeed / 2.237;
 
 % Column Vector Correction:
 time = time(:);
 v = v(:);
 
 % Car Parameters:
-m = 200;
+m = 230;
 
-% Tire Parameters:
-m_tire1 = 10;
-r_tire1_in = 10;
-r_tire1_m = r_tire1_in / 39.37;
-I1 = 0.5 * m_tire1 * r_tire1_m^2;
-m_tire2 = 13;
-r_tire2_in = 13;
-r_tire2_m = r_tire2_in / 39.37;
-I2 = 0.5 * m_tire2 * r_tire2_m^2;
+% Tire Parameters
+I1 = .25         % guestimate, change tomorrow ask teams pretty pls tonks
+I2 = .46;       % what unit is pls confirm
+
+r_tire1_m = 16 * 25.4/1000/2
+r_tire2_m = 20. * 25.4/1000/2
 
 % Translational Kinetic Energy:
 KE_t = 0.5 * m *v.^2;
@@ -58,32 +76,43 @@ P2 = tau2 .* w2;
 % Energy accounting
 energy_consumed_r1 = 0;
 energy_consumed_r2 = 0;
-regen_efficiency = 0.6;  % 60% recovery
-regen_enabled = true;
 cumulative_energy_r1 = zeros(size(time));
 cumulative_energy_r2 = zeros(size(time));
 
 for i = 1:length(time)
-    % Tire 1 (Acceleration or Deceleration)
-    if tau1(i) >= 0  % If accelerating
+    % For Tire 1
+    if tau1(i) >= 0  % Acceleration: energy consumed
         energy_consumed_r1 = energy_consumed_r1 + P1(i) * dt;
-    else  % Decelerating (Regenerating)
-        energy_consumed_r1 = energy_consumed_r1 + (1 - regen_efficiency * regen_enabled) * abs(P1(i)) * dt;  % Save energy during regen
+    else  % Deceleration
+        if regen_enabled
+            energy_consumed_r1 = energy_consumed_r1 + (1 - regen_efficiency) * abs(P1(i)) * dt;
+        else
+            energy_consumed_r1 = energy_consumed_r1 + abs(P1(i)) * dt;
+        end
     end
     cumulative_energy_r1(i) = energy_consumed_r1;
-    
-    % Tire 2 (Acceleration or Deceleration)
-    if tau2(i) >= 0  % If accelerating
+
+    % For Tire 2
+    if tau2(i) >= 0
         energy_consumed_r2 = energy_consumed_r2 + P2(i) * dt;
-    else  % Decelerating (Regenerating)
-        energy_consumed_r2 = energy_consumed_r2 + (1 - regen_efficiency * regen_enabled) * abs(P2(i)) * dt;  % Save energy during regen
+    else
+        if regen_enabled
+            energy_consumed_r2 = energy_consumed_r2 + (1 - regen_efficiency) * abs(P2(i)) * dt;
+        else
+            energy_consumed_r2 = energy_consumed_r2 + abs(P2(i)) * dt;
+        end
     end
     cumulative_energy_r2(i) = energy_consumed_r2;
 end
 
+% 4 wheels on car
+cumulative_energy_r2 = cumulative_energy_r2 .*4;
+cumulative_energy_r1 = cumulative_energy_r1 .*4;
+
+
 %% RESULTS AND PLOTS %%
-disp(['Total Energy Consumed (r = 10" tires): ' num2str(energy_consumed_r1) ' J']);
-disp(['Total Energy Consumed (r = 13" tires): ' num2str(energy_consumed_r2) ' J']);
+disp(['Total Energy Consumed (r = 10" tires): ' num2str(energy_consumed_r1/1000) ' kJ']);
+disp(['Total Energy Consumed (r = 13" tires): ' num2str(energy_consumed_r2/1000) ' kJ']);
 
 % Velocity vs Time Plot
 figure(1);
@@ -118,10 +147,20 @@ grid on;
 
 % Cumulative Energy Plot
 figure(3);
-plot(time, cumulative_energy_r1, 'b-', 'LineWidth', 1); hold on;
-plot(time, cumulative_energy_r2, 'r--', 'LineWidth', 1);
+plot(time, .001.*cumulative_energy_r1, 'b-', 'LineWidth', 1); hold on;
+plot(time, .001.*cumulative_energy_r2, 'r--', 'LineWidth', 1);
 xlabel('Time (s)');
-ylabel('Cumulative Energy Consumed (J)');
-title('Cumulative Energy Consumption Over Time (with Regen)');
-legend('r = 10" Tires', 'r = 14" Tires');
+ylabel('Cumulative Energy Consumed (kJ)');
+title('Cumulative Energy Consumption Over 1 lap (with Regen)');
+legend('r = 10" Tires', 'r = 13" Tires');
 grid on;
+
+
+totalDist = cumtrapz(time,v);
+totalDist = totalDist(end);
+
+scaleyfactorydoo = 22000/totalDist; % total distance on data under endurance distance
+
+differenceeydoo = (cumulative_energy_r2(end) - cumulative_energy_r1(end) ) * scaleyfactorydoo % total kJ diff with regen
+
+differenceeydoo = differenceeydoo/3600 % in kwh

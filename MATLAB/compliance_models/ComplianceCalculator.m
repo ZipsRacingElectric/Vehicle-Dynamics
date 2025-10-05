@@ -6,7 +6,7 @@
 % This will be used to compare real test data from the car for design
 % purposes
 
-% Written by Abbie Tucker, spring 2025
+% Written by Abigail Tucker, spring 2025
 
 
 % Define file paths
@@ -14,7 +14,7 @@ filepath = 'C:\Users\benmo\OneDrive - The University of Akron\Documents - Zips R
 pointsfile = 'ZR25_SuspensionForcesHeavy.xlsx'
 
 % Load suspension points
-FL = SuspensionPoints_better(fullfile(filepath, pointsfile), false);
+FL = SuspensionPoints_better(fullfile(filepath, pointsfile), false,'m');
 disp(class(FL))
 
 % Define suspension point names
@@ -26,19 +26,24 @@ SystemMatrix = BuildMatrix(FL, FLpointPairs);
 
 % Suspension Component Data
 % ordered as:R_LCA_FORE, R_LCA_AFT, R_UCA_FORE, R_UCA_AFT, R_TIE, R_PUSH
-GetSuspensionData
+   SuspensionDataStruct.lengths = [287.05 277.27 255.42 271.54 275.28 306.55]./1000
+   SuspensionDataStruct.tubeODs = [0.625 0.625 0.5 0.5 0.5 0.5].*25.4./1000
+   SuspensionDataStruct.tubeWallThiccs = [0.028 0.028 0.028 0.035 0.028 0.028].*25.4./1000
+   SuspensionDataStruct.youngsModi = 205e9*ones(size(SuspensionDataStruct.lengths));
+
 
 % Define Forces and Moments
-TestCase = [0; 0; 0.0; 5.3761; 6.5259; 0] * 1e5;
+load = [0; 0; 0.0; 5.3761; 6.5259; 0] * 1e5;
 
 % Calculates spring constants
-Ksus = SpringySpring(GetSuspensionData);
+Ksus = SpringySpring(SuspensionDataStruct);
 %Kre = SpringySpring(GetSuspensionData);
-Ks = [Ksus];
+Ks = [Ksus; Ksus];
+% SpringSeries takes stacked matrix likr [Ksus K_rodEnds K_knuckles]
 SusSpringSeries = SpringSeries(Ks);
 
 % Calculates and Orders Forces
-Forces = solvySolve(SystemMatrix, TestCase);
+Forces = solvySolve(SystemMatrix, load);
 ReorderedForces  = [Forces.LCAFore Forces.LCAAft Forces.UCAFore Forces.UCAAft Forces.Toe Forces.Push];
 
 % Calculates Displacement and Displacement Vectors
@@ -58,15 +63,24 @@ ToeAngleChange = getAngle(ToeAnglePoints,XDistance);
 %% Plotting Camber and Toe Angle Changes vs Applied Moment
 
 % Define a range of moments to apply (for example, varying only Fx or Mz)
+<<<<<<< Updated upstream
 momentSweep = 0:10000:30000;  % Apply Mx from 0 to 150 N·m in 25 N·m increments
+=======
+momentSweep = 0:1:40;  % Apply Mx from 0 to 150 N·m in 25 N·m increments
+>>>>>>> Stashed changes
 numTests = length(momentSweep);  % Update the number of test cases
 
 camberChanges = zeros(1, numTests);
 toeChanges = zeros(1, numTests);
 
 for i = 1:numTests
+<<<<<<< Updated upstream
     TestCase = [0; 0; 0.0089; momentSweep(i); 0; 0]; % Only Mx is changing
     Forces = solvySolve(SystemMatrix, TestCase);
+=======
+    load = [0; 0; 0; momentSweep(i); 0; 0]; % Only Mx is changing
+    Forces = solvySolve(SystemMatrix, load);
+>>>>>>> Stashed changes
     ReorderedForces  = [Forces.LCAFore Forces.LCAAft Forces.UCAFore Forces.UCAAft Forces.Toe Forces.Push];
     Displacements = getDisplacements(SusSpringSeries, ReorderedForces, getUnitVectors(FL,FLpointPairs));
     
@@ -81,6 +95,7 @@ end
 
 % Plotting
 figure;
+<<<<<<< Updated upstream
 %plot(momentSweep / 1000, camberChanges, '-s', 'LineWidth', 2); 
 hold on;
 plot(momentSweep/1000, toeChanges*100);
@@ -88,11 +103,20 @@ xlabel('Applied Mx (N·m)');
 ylabel('Deflection (degrees)');
 title('Toe Deflection vs Applied Mx');
 legend('Predicted Toe Change', 'Measured Toe Change');
+=======
+%plot(momentSweep, camberChanges, '-s', 'LineWidth', 2); 
+hold on;
+plot(momentSweep, toeChanges, '-o', 'LineWidth', 2);
+xlabel('Applied Mx (N·m)');
+ylabel('Angle Change (degrees)');
+title('Camber and Toe Angle Change vs Applied Mx');
+%legend('Camber Change', 'Toe Change');
+>>>>>>> Stashed changes
 grid on;
 set(gca, 'FontSize', 12);
 
-knownMoments = .001*9.81.*[0, 2000, 3000, 4000]*.5;  % N·mm
-knownDisplacements = rad2deg(atan([0, 4, 6.5, 9]./1473)); % mm displacement 
+knownMoments = .001*9.81.*[0, 2000, 3000, 4000]*.5;  % N·m
+knownDisplacements = rad2deg(atan([0, 4, 6.5, 9]./1473)); % mm displacement to angle 
 
 % Plot
 
@@ -117,14 +141,7 @@ function PointPairs = getPointPairs(~)
         'toeInboard', 'toeOutboard'}
 end
 
-function SuspensionDataStruct = GetSuspensionData()
-    
-   SuspensionDataStruct.lengths = [287.05 277.27 255.42 271.54 275.28 306.55]
-   SuspensionDataStruct.tubeODs = [0.625 0.625 0.5 0.5 0.5 0.5].*25.4
-   SuspensionDataStruct.tubeWallThiccs = [0.028 0.028 0.028 0.035 0.028 0.028].*25.4
-   SuspensionDataStruct.youngsModi = 205000*ones(size(SuspensionDataStruct.lengths));
 
-end
 
 function tubeArea = getTubeArea(tubeOD,tubeWallThicc)
     tubeArea = .25*pi*(tubeOD.^2 - (tubeOD - 2.*tubeWallThicc ).^2);
@@ -192,22 +209,24 @@ end
 
 function SpringsInSeries = SpringSeries(Ks)
      % k's = vector of spring constants
+     % handles if Ks is many springs in series or one spring in series,
+     % shouldn't break if one.
     [rows, cols] = size(Ks); % Get the matrix dimensions
 
    if rows == 1 % check if Ks is (1 x n)
-      SpringsInSeries = Ks
+      SpringsInSeries = Ks;
 
    else
-      SpringsInSeries = 1 ./ sum(1./Ks)
+      SpringsInSeries = 1 ./ sum(1./Ks);
    end
 
 end
 
 function Displacements = getDisplacements(Ks,Forces,unitVectors)
 
-Displacements = Forces./Ks
+   Displacements = Forces./Ks;
 
-   Displacements = Displacements.*unitVectors
+   Displacements = Displacements.*unitVectors;
 
 end
 

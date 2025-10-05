@@ -1,0 +1,1 @@
+carrycar = vehicle("/vehicle_data/zr25_data.xlsx")

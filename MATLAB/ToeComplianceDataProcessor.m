@@ -1,9 +1,9 @@
-    % toe compliance data processer feed in forces and deflections get back
+% toe compliance data processer feed in forces and deflections get back
 % angles num num. 
 
 clear, clc
 
-Excel = readtable("C:\Users\ATuck\OneDrive - The University of Akron\Documents\GitHub\Vehicle-Dynamics\MATLAB\compliance_models\Compliance Testing ZR25.xlsx")
+Excel = readtable("C:\Users\ATuck\OneDrive - The University of Akron\Compliance Testing ZR25.xlsx")
 Distancem = 1
 
 
@@ -47,7 +47,7 @@ plot(Compliance)
 
 function moments = GetMoment(FKg, Dm) % get moments back in Nm
 
-    moments = FKg*Dm % in Newtons?
+    moments = FKg*9.81.*Dm % in Newtons?
 end
 
 function r = GetDisplacements(r1in, r2in)
