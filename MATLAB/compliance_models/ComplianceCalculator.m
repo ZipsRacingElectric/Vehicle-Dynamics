@@ -64,7 +64,11 @@ ToeAngleChange = getAngle(ToeAnglePoints,XDistance);
 
 % Define a range of moments to apply (for example, varying only Fx or Mz)
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 momentSweep = 0:10000:30000;  % Apply Mx from 0 to 150 N·m in 25 N·m increments
+=======
+momentSweep = 0:1:40;  % Apply Mx from 0 to 150 N·m in 25 N·m increments
+>>>>>>> Stashed changes
 =======
 momentSweep = 0:1:40;  % Apply Mx from 0 to 150 N·m in 25 N·m increments
 >>>>>>> Stashed changes
@@ -75,8 +79,13 @@ toeChanges = zeros(1, numTests);
 
 for i = 1:numTests
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     TestCase = [0; 0; 0.0089; momentSweep(i); 0; 0]; % Only Mx is changing
     Forces = solvySolve(SystemMatrix, TestCase);
+=======
+    load = [0; 0; 0; momentSweep(i); 0; 0]; % Only Mx is changing
+    Forces = solvySolve(SystemMatrix, load);
+>>>>>>> Stashed changes
 =======
     load = [0; 0; 0; momentSweep(i); 0; 0]; % Only Mx is changing
     Forces = solvySolve(SystemMatrix, load);
@@ -96,6 +105,7 @@ end
 % Plotting
 figure;
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 %plot(momentSweep / 1000, camberChanges, '-s', 'LineWidth', 2); 
 hold on;
 plot(momentSweep/1000, toeChanges*100);
@@ -104,6 +114,8 @@ ylabel('Deflection (degrees)');
 title('Toe Deflection vs Applied Mx');
 legend('Predicted Toe Change', 'Measured Toe Change');
 =======
+=======
+>>>>>>> Stashed changes
 %plot(momentSweep, camberChanges, '-s', 'LineWidth', 2); 
 hold on;
 plot(momentSweep, toeChanges, '-o', 'LineWidth', 2);
@@ -111,6 +123,9 @@ xlabel('Applied Mx (N·m)');
 ylabel('Angle Change (degrees)');
 title('Camber and Toe Angle Change vs Applied Mx');
 %legend('Camber Change', 'Toe Change');
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 grid on;
 set(gca, 'FontSize', 12);
