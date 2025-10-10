@@ -1,6 +1,8 @@
 
 % This Toe Compliance calculator uses deflection and moment measurements to
 % calculate the toe compliance in degrees/Nm
+% Written by Abigail Tucker - 10/10/25
+
 
 % Process:
 % Pull in Excel Data -> 
@@ -59,8 +61,7 @@ ToeMoments = GetMoment(forcesApplied,dLeverArm)
 % then package all of the values in 2 easy to work with matrices, one for
 % each wheel.
 
-% First, assign variable names to the values of each dial indicator. The
-% naming convention will be DI1 (displacement indicator one) etc...
+% First, assign variable names to the values of each dial indicator. 
 
 Dial1 = Excel{1:4,2};
 Dial2 = Excel{1:4,3};
