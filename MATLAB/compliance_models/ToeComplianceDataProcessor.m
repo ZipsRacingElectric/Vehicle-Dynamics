@@ -1,6 +1,6 @@
 
 
-% This Toe Compliance calculator uses deflection and moment measures to
+% This Toe Compliance calculator uses deflection and moment measurements to
 % calculate the toe compliance in degrees/Nm
 
 % Process:
@@ -18,7 +18,7 @@ clear, clc
 
 %% 1. Pull in data from excel
 % Here I use the "readtable" function. This pulls the data in as a table
-% and automatically detecs headers making it easy to call values or
+% and automatically detects headers making it easy to call values or
 % specific index values
 
 Excel = readtable("C:\Users\ATuck\Documents\GitHub\Vehicle-Dynamics\MATLAB\compliance_models\Compliance Testing ZR25.xlsx")
@@ -38,35 +38,35 @@ dLeverArm = 1 % Lever arm length in meters.
 % our distance values should all be in meters, our angle values should
 % be in degrees, and our force values in newtons.
 
-% Next we need to define our forces. These are stored in a column titled Kg
+% Next we need to define our forces. Our mass values are stored in a column titled Kg
 % We can load the four differnet load cases into a matrix under one
 % variable name.
 
-Forces = Excel.kg(1:4)
+Mass = Excel.kg(1:4)
 
 % This is an alternative way to call the same values by indexing their
-% cells. Forces = Excel{1:4,1} 1:4 means rows 1 through 4 the , 1 pulls
+% cells. Mass = Excel{1:4,1} 1:4 means rows 1 through 4 the , 1 pulls
 % those rows from column 1
 
 % Now we are ready to find our moments. Lets use a function for this. 
 
-ToeMoments = GetMoment(Forces,dLeverArm)
+ToeMoments = GetMoment(Mass,dLeverArm)
 
 %% moment function
-% This function needs fed forces (FKg) and lever arm length (LAD)
+% This function needs fed mass (Kg) and lever arm length (LAD)
 % We start by writing what the output will be, in this case "moments".
 % Next we define the name of our function "GetMoment" and put the
-% arguements it will need in  parenthasis (FKg, LAD)
+% arguements it will need in  parenthesis (FKg, LAD)
 
-function moments = GetMoment(FKg, LAD) % get moments back in Nm
+function moments = GetMoment(Kg, LAD) % get moments back in Nm
 
 % We then write the driving equation using the variables defined in the title. 
-    moments = FKg*LAD*9.81 % {kg*m*m/s^2) = Nm
+    moments = Kg*LAD*9.81 % {kg*m*m/s^2) = Nm
 
 end
 
 %% 3. Find displacements of dial indicators
-% to find the diplacements we need to calulate the difference between the
+% to find the diplacements we need to calculate the difference between the
 % movement of the two indicators for each of the four applied moment
 % values. We do this for both sides of the car. This leaves us with
 % 8 displacements to find from 16 numbers. Lets use another function to speed it up and
@@ -80,8 +80,6 @@ DI1 = Excel{1:4,2}
 DI2 = Excel{1:4,3}
 DI3 = Excel{1:4,4}
 DI4 = Excel{1:4,5}
-
-% now lets build our two matrices both 
 
 % In the excel file these values were recorded in hundredths of an inch. We
 % need to convert this to meters within our displacements function
@@ -114,13 +112,10 @@ end
 
 d = Excel{3,6} 
 
-% this pulls a single cell which cant easily be divided with the 4x1
-% displacement matrices. Lets fix this by making into a repeating 4x1
-% matric so dimensions match
+% this pulls a single cell which can't easily be divided with the 4x1
+% displacement matrices. We'll have to account for this in our function
              
-val = str2double(d{1});       % convert '15.5' → 15.5 numeric
-DY = repmat(val, 4, 1);       % make 4x1 numeric column
-
+DY = str2double(d{1});       % convert '15.5' → 15.5 numeric
 
 
 % now we can solve for the angles at each force interval. Naming convention
@@ -131,7 +126,8 @@ TALS = GetCompAng(DY, DL); % adjacent side theta calc
 %% Compliance angle function
 function theta = GetCompAng(Dispx,Dispy)
 
-theta = rad2deg(atan(Dispy./Dispx));
+theta = rad2deg(atan(Dispy./Dispx)); 
+% here we use ./ to divide each element of the matrix by the scalar. 
 
 
 end
@@ -154,17 +150,18 @@ end
 figure
 
 subplot(2,1,1)
-plot(ToeMoments, TARS)
+plot(ToeMoments, TARS, 'b', 'Marker','*')
 title("Toe Compliance RS")
 xlabel('Nm')
 ylabel("Degrees")
+grid on 
 
 subplot(2,1,2)
-plot(ToeMoments, TALS)
+plot(ToeMoments, TALS, 'r', 'Marker','*')
 title("Toe Compliance LS")
 xlabel('Nm')
 ylabel("Degrees")
- 
+grid on
 
 
 
