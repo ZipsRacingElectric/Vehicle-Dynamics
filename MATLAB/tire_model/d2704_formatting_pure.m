@@ -59,8 +59,8 @@ addpath(genpath(parentDirectory));
 % break in procedures, spring rates, have already been removed.
 % Note: the 12 psi sweep in this file is a new tire, the second file
 % contains a 12 psi sweep at a more broken in tire
-file1 = load("../tire_data/d2704/data/B2356run23.mat");
-file2 = load("../tire_data/d2704/data/B2356run24.mat");
+file1 = load(parentDirectory + "/tire_data/d2704/data/B2356run23.mat");
+file2 = load(parentDirectory + "/tire_data/d2704/data/B2356run24.mat");
 
 time_step = 1 / 100; % time step between data points
 
