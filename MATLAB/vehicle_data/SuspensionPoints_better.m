@@ -38,8 +38,9 @@ classdef SuspensionPoints_better < handle
         function obj = SuspensionPoints_better(pointsFile,isFront)
             %UNTITLED Construct an instance of this class
             %   Constructor function - 
-
-            pointsTable = readtable(pointsFile,'Sheet','points');
+            
+            obj.setupCheck(pointsFile)
+            pointsTable = readtable(pointsFile,Sheet='points');
             pointsTable = containers.Map(pointsTable.Var1, pointsTable.Var2);
 
             if isFront
@@ -106,6 +107,34 @@ classdef SuspensionPoints_better < handle
             r =0;
 
         end    
+
+        function setupCheck(obj,filejawn)
+            %% Setup check (courtesy of gattCPT
+            % expected repo name 
+            expectedRepo = '\GitHub\Vehicle-Dynamics\MATLAB';
+            
+            % check working directory contains repo
+            cwd = pwd;
+            if ~contains(cwd, expectedRepo)
+                error(['🚨☢️ WRONG WORKING DIRECTORY ☢️ 🚨' newline ...
+                       'Expected to be somewhere inside: ' expectedRepo newline ...
+                       'Currently at: ' cwd newline ...
+                       'change directory to your GitHub repo root first, then Vehicle-Dynamics\MATLAB']);
+            end
+            
+            % define file
+            filepath = fullfile(filejawn);
+
+            % check that the file exists
+            if ~isfile(filepath)
+                error(['🚨 ☢️ DATA FILE MISSING ☢️ 🚨' newline ...
+                       'Could not find: ' filejawn newline ...
+                       'Make sure the Excel file exists in the vehicle_data folder.']);
+            end
+            
+            disp(['✅ Points sheet exists, probably' newline  'meow 🗨️🐈']);
+
+end
     end
 end
 
