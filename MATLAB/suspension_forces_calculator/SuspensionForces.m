@@ -81,7 +81,7 @@ RR.mirror;
         % quick validation to yell at you if your load case vectors aren't the same
         % length
         if (length(LoadCases)-length(bias))~= 0 || (length(LoadCases)-length(direction))~= 0 || (length(LoadCases)-length(aero))~= 0
-            error('Load Case Vector Lengths not consistent, dummy!!')
+            error('🐷 Load Case Vector Lengths not consistent, dummy!!')
         end
 
 for i=1:1:length(LoadCases)
@@ -117,11 +117,11 @@ for i=1:1:length(LoadCases)
         % Right Rear
         linkForcesRR(i) = solvySolve(forcesRR,RR);
 end
-
+disp(['SQWUAAAKK!!! 🗨️🦅' newline  'Forces solved successfully!'])
 
 %% Paste results into excel spreadsheet
 if writeForcesToSpreadsheet
-    nLoadCases = length(LoadCases)
+    nLoadCases = length(LoadCases);
     startCell = 4;
     endCell = startCell + nLoadCases;
 
@@ -129,8 +129,8 @@ if writeForcesToSpreadsheet
 
     % also multiply by -1, for conventional tension/compression sign
     s = -1.*struct2table(linkForcesFL);
-    writetable(s,pointsSpreadsheet,'Sheet','Suspension Forces','Range',cell('J',startCell),'WriteVariableNames',false)
-    s
+    writetable(s,pointsSpreadsheet,Sheet='Suspension Forces',Range=cell('J',startCell),WriteVariableNames=false)
+    
     s = -1.*struct2table(linkForcesFR);
     writetable(s,pointsSpreadsheet,'Sheet','Suspension Forces','Range',cell('J',endCell),'WriteVariableNames',false)
     
@@ -141,7 +141,7 @@ if writeForcesToSpreadsheet
     writetable(s,pointsSpreadsheet,'Sheet','Suspension Forces','Range',cell('Q',endCell),'WriteVariableNames',false)
     
     % wheel loads
-    s = struct2table(forcesStruct)
+    s = struct2table(forcesStruct);
     writetable(s,pointsSpreadsheet,'Sheet','Wheel Loads','Range','E2','WriteVariableNames',true)
     
     % Load Cases
@@ -157,7 +157,7 @@ if writeForcesToSpreadsheet
     loadCaseStruct.travelDirection = direction';
     loadCaseStruct.AeroApplied = aero';
     
-    s = struct2table(loadCaseStruct)
+    s = struct2table(loadCaseStruct);
     writetable(s,pointsSpreadsheet,'Sheet','Suspension Forces','Range','C4','WriteVariableNames',false)
 
 end
