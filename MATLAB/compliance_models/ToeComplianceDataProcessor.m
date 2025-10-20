@@ -100,8 +100,8 @@ toeBase = str2double(d{1}) * 0.0254;       % convert '15.5' → 15.5 numeric
 
 % now we can solve for the angles at each force interval. Naming convention
 % toe angle on right side = TARS
-TARS = GetComplianceAng(toeBase, DisplacementR); % corner side theta calc
-TALS = GetComplianceAng(toeBase, DisplacementL); % adjacent side theta calc
+TARS = GetComplianceAng(DisplacementR, toeBase); % corner side theta calc
+TALS = GetComplianceAng(DisplacementL, toeBase); % adjacent side theta calc
 
 
 %% Find compliance for each side (degrees per Nm) 
@@ -134,25 +134,31 @@ grid on
 
 %% displacement function
 function distance = GetDisplacements(D1in, D2in)
-
+if D1in >0
     distance = D1in-D2in;
     % convert to meters
     distance = distance*.0000254; % from hundredths to meters
-
+elseif D1in == 0
+    D1in = 0
+elseif D1in <0
+ distance = D2in-D1in;
+    % convert to meters
+    distance = distance*.0000254; % from hundredths to meters
+ end
 end
 
 %% compliance function
 
 function TC = GetToeCompliance(ang,Moment) % outputs degrees per Kg
 
-    TC = ang./Moment;
+    TC = ang/Moment;
 
 end
 
 %% Compliance angle function
 function theta = GetComplianceAng(Dispx,Dispy)
 
-    theta = rad2deg(atan(Dispy./Dispx)); 
+    theta = rad2deg(atan(Dispx./Dispy)); 
     % here we use ./ to divide each element of the matrix by the scalar. 
 end
 
