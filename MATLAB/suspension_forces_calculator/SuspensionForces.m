@@ -15,10 +15,10 @@ writeForcesToSpreadsheet = true;
 
 addpath vehicle_data
 
-folderWithDesignSpreadsheets = 'C:\Users\benmo\OneDrive - The University of Akron\Documents - Zips Racing FSAE\ZR25\Vehicle Dynamics\System\Analysis\';
+folderWithDesignSpreadsheets = 'C:\Users\ATuck\Documents\GitHub\Vehicle-Dynamics\MATLAB\vehicle_data\';
 
 githubFolder = '\vehicle_data\';
-parameterSpreadsheet = strcat(githubFolder,'ZR25_data.xlsx');
+parameterSpreadsheet = strcat(githubFolder,'zr26_data.xlsx');
 pointsSpreadsheet = strcat(folderWithDesignSpreadsheets,'ZR26_SuspensionForces.xlsx');
 
 
@@ -121,16 +121,16 @@ end
 
 %% Paste results into excel spreadsheet
 if writeForcesToSpreadsheet
-    nLoadCases = length(LoadCases)
+    nLoadCases = length(LoadCases);
     startCell = 4;
-    endCell = startCell + nLoadCases;
+     endCell = startCell + nLoadCases;
 
     cell =@(letter,number) strcat(letter,string(number));
 
     % also multiply by -1, for conventional tension/compression sign
     s = -1.*struct2table(linkForcesFL);
-    writetable(s,pointsSpreadsheet,'Sheet','Suspension Forces','Range',cell('J',startCell),'WriteVariableNames',false)
-    s
+    writetable(s,pointsSpreadsheet,'Sheet','Suspension Forces' ,'Range',cell('J',startCell), 'WriteVariableNames', false)
+    
     s = -1.*struct2table(linkForcesFR);
     writetable(s,pointsSpreadsheet,'Sheet','Suspension Forces','Range',cell('J',endCell),'WriteVariableNames',false)
     
@@ -148,19 +148,22 @@ if writeForcesToSpreadsheet
     sp = char(ones([length(LoadCases),1]).*32);       % array of spaces
     c = char(ones([length(LoadCases),1]).*44);
     a = string(LoadCases(:,1)) +c+sp+ string(LoadCases(:,2)) +c+sp+ string(LoadCases(:,3));      % this is so dumb lmao
-    
+  
     s = array2table(a);
-    writetable(s,pointsSpreadsheet,'Sheet','Wheel Loads','Range','B3','WriteVariableNames',false)
+    writetable(s, pointsSpreadsheet, 'Sheet', 'Wheel Loads', 'Range', 'B3', 'WriteVariableNames', false);
 
+    % --- Load Case Struct ---
     loadCaseStruct.Loads = a;
     loadCaseStruct.brakeBias = bias';
     loadCaseStruct.travelDirection = direction';
     loadCaseStruct.AeroApplied = aero';
-    
-    s = struct2table(loadCaseStruct)
-    writetable(s,pointsSpreadsheet,'Sheet','Suspension Forces','Range','C4','WriteVariableNames',false)
 
+   s = struct2table(loadCaseStruct);
+    writetable(s, pointsSpreadsheet, 'Sheet', 'Suspension Forces', 'Range', 'C4', 'WriteVariableNames', false);
+
+  
 end
+
 
 
 %% Functions
