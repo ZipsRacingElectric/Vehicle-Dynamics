@@ -24,9 +24,13 @@ for i=1:1:nPoints
 %          r(j) =  norm(x(:,i) - nodes(:,j));
 %     end
     
-     s = rbfcoeff(n+1) + sum(rbfcoeff(1:n).*feval(phi, r, rbfconst));
+        s = rbfcoeff(n+1) + sum(rbfcoeff(1:n).*feval(phi, r, rbfconst));
  
-	for k=1:dim
+    % this should be equivalent to below,  just better..
+    % but completely unvalidated.......
+    % s = s + rbfcoeff(n+2:n+1+dim)*x(:,i);
+	
+    for k=1:dim
        s=s+rbfcoeff(k+n+1)*x(k,i);     % linear part
 	end
 	f(i) = s;
