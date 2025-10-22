@@ -15,11 +15,12 @@ writeForcesToSpreadsheet = true;
 
 addpath vehicle_data
 
-folderWithDesignSpreadsheets = 'C:\Users\ATuck\Documents\GitHub\Vehicle-Dynamics\MATLAB\vehicle_data\';
+folderWithDesignSpreadsheets = 'C:\Users\andre\OneDrive - The University of Akron\Shared Documents\ZR26\Vehicle Dynamics\100 Suspension\Suspension Points\';
 
 githubFolder = '\vehicle_data\';
 parameterSpreadsheet = strcat(githubFolder,'zr26_data.xlsx');
 pointsSpreadsheet = strcat(folderWithDesignSpreadsheets,'ZR26_SuspensionForces.xlsx');
+
 
 
 %% THERE IS A HUMAN IN THE CAR YOU ARE RESPONSIBLE FOR!!!!!!!!
