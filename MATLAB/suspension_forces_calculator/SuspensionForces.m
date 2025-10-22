@@ -13,9 +13,9 @@ clear
 
 writeForcesToSpreadsheet = true;
 
-addpath vehicle_data
+addpath vehicle_data ;
 
-folderWithDesignSpreadsheets = 'C:\Users\andre\OneDrive - The University of Akron\Shared Documents\ZR26\Vehicle Dynamics\100 Suspension\Suspension Points\';
+folderWithDesignSpreadsheets = 'C:\Users\ATuck\OneDrive - The University of Akron\Zips Racing FSAE - ZR26\Vehicle Dynamics\100 Suspension\Suspension Points\';
 
 githubFolder = '\vehicle_data\';
 parameterSpreadsheet = strcat(githubFolder,'zr26_data.xlsx');
