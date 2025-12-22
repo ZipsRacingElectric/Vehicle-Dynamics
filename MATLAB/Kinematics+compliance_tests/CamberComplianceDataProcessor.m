@@ -166,5 +166,5 @@ end
 function moments = GetMoment(Kg, LAD) % get moments back in Nm
 
 % We then write the driving equation using the variables defined in the title. 
-    moments = Kg*LAD*9.81; % {kg*m*m/s^2) = Nm
+    moments = Kg*LAD*9.81; % {kgf*m*m/s^2) = Nm
 end
