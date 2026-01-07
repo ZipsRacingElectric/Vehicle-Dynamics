@@ -4,42 +4,24 @@
 % FSAE vehicle, using parameters from your 'zr' object.
 % It creates the high-level signal flow and subsystem placeholders
 % for you to fill in with equations and models later.
-% Abigail Tucker/Chat 10/27/25
+% Abigail Tucker 10/27/25
 % ------------------------------------------------------------
 
 
 addpath vehicle_data ;
 githubFolder = '\vehicle_data\';
 parameterSpreadsheet = strcat(githubFolder,'zr26_data.xlsx');
+Zr26 = vehicle(parameterSpreadsheet);
 
 %zr26 = vehicle(parameterSpreadsheet);
 %% Ensure zr object is available
-if ~exist('zr26', 'var')
+if ~exist('Zr26', 'var')
     % Path to your meme image
     memePath = fullfile(pwd, 'SillyGoose.png'); % or .png, etc.
 
     if isfile(memePath)
         % Read and display the meme
         img = imread(memePath);
-        figure('Name','Silly Goose Detected','NumberTitle','off');
-        imshow(img);
-        title('Silly Goose 🪿 – Vehicle object not found!');
-
-         img = imread(memePath);
-        figure('Name','Silly Goose Detected','NumberTitle','off');
-        imshow(img);
-        title('Silly Goose 🪿 – Vehicle object not found!');
-         img = imread(memePath);
-        figure('Name','Silly Goose Detected','NumberTitle','off');
-        imshow(img);
-        title('Silly Goose 🪿 – Vehicle object not found!');
-
-         img = imread(memePath);
-        figure('Name','Silly Goose Detected','NumberTitle','off');
-        imshow(img);
-        title('Silly Goose 🪿 – Vehicle object not found!');
-
-         img = imread(memePath);
         figure('Name','Silly Goose Detected','NumberTitle','off');
         imshow(img);
         title('Silly Goose 🪿 – Vehicle object not found!');
