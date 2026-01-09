@@ -24,7 +24,7 @@ clear, clc, close all
 % and automatically detects headers making it easy to call values or
 % specific index values
 
-filePath = "C:\Users\ATuck\OneDrive - The University of Akron\Zips Racing FSAE - ZR26\Vehicle Dynamics\200 Controls\Kinematics+Compliance Testing\Camber Compliance\Camber Compliance ZR25.xlsx";
+filePath = "C:\Users\ATuck\OneDrive - The University of Akron\Zips Racing FSAE - ZR26\Vehicle Dynamics\200 Controls\Kinematics+Compliance Testing\Camber Compliance\Camber Compliance ZR25 (example).xlsx";
 
 Excel = readtable(filePath);
 FrontPositiveCamber = readtable(filePath, "Range", "FrontPositive");
@@ -40,7 +40,7 @@ RearNegativeCamber = readtable(filePath, "Range", "RearNegative");
 % length never changed and the values is defined in the excel table. We can
 % start by calling this value from the taable
 
-ArmLength = Excel.LengthOfMomentArmMAll(1);
+ArmLength = Excel.LengthOfMomentArm_m_All(1);
 LeverArm =  ones(4,1).*ArmLength; % Lever arm length in meters.
 
 % This is when we need to start being aware of what units we are working
@@ -123,23 +123,23 @@ DisplacementRN = GetDisplacements(Dial2RN, Dial1RN) ;% rear negative
 % the second tringle side.
              
 
-VerticalDistance = Excel.VerticalDistanceBetweenDialIndicatorsMAll(1);
+VerticalDistance = Excel.VerticalDistanceBetweenDialIndicators_m_All(1);
 CamberBase =  ones(4,1).*VerticalDistance;
 
 % now we can solve for the angles at each force interval. Naming convention
-% toe angle on right side = TARS
+% Camber angle on front right side, positive = CAFRP
 
 % Front Positive
-TAFRP = GetComplianceAng(CamberBase, DisplacementFRP); % corner side theta calc
-TAFLP = GetComplianceAng(CamberBase, DisplacementFLP); % adjacent side theta calc
+CAFRP = GetComplianceAng(CamberBase, DisplacementFRP); % corner side theta calc
+CAFLP = GetComplianceAng(CamberBase, DisplacementFLP); % adjacent side theta calc
 
 % Front Negative
-TAFRN = GetComplianceAng(CamberBase, DisplacementFRN);
-TAFLN = GetComplianceAng(CamberBase, DisplacementFLN);
+CAFRN = GetComplianceAng(CamberBase, DisplacementFRN);
+CAFLN = GetComplianceAng(CamberBase, DisplacementFLN);
 
 % Rear Positive
-TARP = GetComplianceAng(CamberBase, DisplacementRP);
-TARN = GetComplianceAng(CamberBase, DisplacementRN);
+CARP = GetComplianceAng(CamberBase, DisplacementRP);
+CARN = GetComplianceAng(CamberBase, DisplacementRN);
 
 
 %% Find compliance for each side (degrees per Nm) 
@@ -147,18 +147,18 @@ TARN = GetComplianceAng(CamberBase, DisplacementRN);
 % angle change per applied Nm of force.
 
 % Front Positive
-CFRP = GetCamberCompliance(TAFRP, CamberMomentsFP); % compliance at test corner
-CFLP = GetCamberCompliance(TAFLP, CamberMomentsFP); % compliance at adjacent corner
+CFRP = GetCamberCompliance(CAFRP, CamberMomentsFP); % compliance at test corner
+CFLP = GetCamberCompliance(CAFLP, CamberMomentsFP); % compliance at adjacent corner
 
 % Front Negative
-CFRN = GetCamberCompliance(TAFRN, CamberMomentsFN);
-CFLN = GetCamberCompliance(TAFLN, CamberMomentsFN);
+CFRN = GetCamberCompliance(CAFRN, CamberMomentsFN);
+CFLN = GetCamberCompliance(CAFLN, CamberMomentsFN);
 
 % Rear Postive
-CRP = GetCamberCompliance(TARP, CamberMomentsRP);
+CRP = GetCamberCompliance(CARP, CamberMomentsRP);
 
 % Rear Negative
-CRN = GetCamberCompliance(TARN, CamberMomentsRN);
+CRN = GetCamberCompliance(CARN, CamberMomentsRN);
 
 
 %% 5. Plot the reults (should be linearish)
@@ -171,37 +171,37 @@ markers = {'*','o','s','^','d','x'};
 
 % Front Right Positive
 subplot(2,3,1)
-plot(CamberMomentsFP, TAFRP, 'Color', colors{1}, 'Marker', markers{1}, 'LineWidth',1.5)
+plot(CamberMomentsFP, CAFRP, 'Color', colors{1}, 'Marker', markers{1}, 'LineWidth',1.5)
 title("Front Right Positive")
 xlabel('Nm'); ylabel("Degrees"); grid on
 
 % Front Left Positive
 subplot(2,3,4)
-plot(CamberMomentsFP, TAFLP, 'Color', colors{2}, 'Marker', markers{2}, 'LineWidth',1.5)
+plot(CamberMomentsFP, CAFLP, 'Color', colors{2}, 'Marker', markers{2}, 'LineWidth',1.5)
 title("Front Left Positive")
 xlabel('Nm'); ylabel("Degrees"); grid on
 
 % Front Right Negative
 subplot(2,3,2)
-plot(CamberMomentsFN, TAFRN, 'Color', colors{3}, 'Marker', markers{3}, 'LineWidth',1.5)
+plot(CamberMomentsFN, CAFRN, 'Color', colors{3}, 'Marker', markers{3}, 'LineWidth',1.5)
 title("Front Right Negative")
 xlabel('Nm'); ylabel("Degrees"); grid on
 
 % Front Left Negative
 subplot(2,3,5)
-plot(CamberMomentsFN, TAFLN, 'Color', colors{4}, 'Marker', markers{4}, 'LineWidth',1.5)
+plot(CamberMomentsFN, CAFLN, 'Color', colors{4}, 'Marker', markers{4}, 'LineWidth',1.5)
 title("Front Left Negative")
 xlabel('Nm'); ylabel("Degrees"); grid on
 
 % Rear Positive
 subplot(2,3,3)
-plot(CamberMomentsRP, TARP, 'Color', colors{5}, 'Marker', markers{5}, 'LineWidth',1.5)
+plot(CamberMomentsRP, CARP, 'Color', colors{5}, 'Marker', markers{5}, 'LineWidth',1.5)
 title("Rear Positive")
 xlabel('Nm'); ylabel("Degrees"); grid on
 
 % Rear Negative
 subplot(2,3,6)
-plot(CamberMomentsRN, TARN, 'Color', colors{6}, 'Marker', markers{6}, 'LineWidth',1.5)
+plot(CamberMomentsRN, CARN, 'Color', colors{6}, 'Marker', markers{6}, 'LineWidth',1.5)
 title("Rear Negative")
 xlabel('Nm'); ylabel("Degrees"); grid on
 
@@ -214,12 +214,12 @@ colors = {'b','r','g','m','c','k'};
 markers = {'*','o','s','^','d','x'};
 
 % Plot each curve
-plot(CamberMomentsFP, TAFRP, 'Color', colors{1}, 'Marker', markers{1}, 'LineWidth',2)
-plot(CamberMomentsFP, TAFLP, 'Color', colors{2}, 'Marker', markers{2}, 'LineWidth',2)
-plot(CamberMomentsFN, TAFRN, 'Color', colors{3}, 'Marker', markers{3}, 'LineWidth',2)
-plot(CamberMomentsFN, TAFLN, 'Color', colors{4}, 'Marker', markers{4}, 'LineWidth',2)
-plot(CamberMomentsRP, TARP, 'Color', colors{5}, 'Marker', markers{5}, 'LineWidth',2)
-plot(CamberMomentsRN, TARN, 'Color', colors{6}, 'Marker', markers{6}, 'LineWidth',2)
+plot(CamberMomentsFP, CAFRP, 'Color', colors{1}, 'Marker', markers{1}, 'LineWidth',2)
+plot(CamberMomentsFP, CAFLP, 'Color', colors{2}, 'Marker', markers{2}, 'LineWidth',2)
+plot(CamberMomentsFN, CAFRN, 'Color', colors{3}, 'Marker', markers{3}, 'LineWidth',2)
+plot(CamberMomentsFN, CAFLN, 'Color', colors{4}, 'Marker', markers{4}, 'LineWidth',2)
+plot(CamberMomentsRP, CARP, 'Color', colors{5}, 'Marker', markers{5}, 'LineWidth',2)
+plot(CamberMomentsRN, CARN, 'Color', colors{6}, 'Marker', markers{6}, 'LineWidth',2)
 
 % Labels, title, and grid
 xlabel('Nm')
@@ -240,15 +240,15 @@ function distance = GetDisplacements(D1in, D2in)
 
     distance = D1in-D2in;
     % convert to meters
-    distance = distance*.0000254; % from hundredths to meters
+    distance = distance*.0000254; % from thousandths to meters
 
 end
 
 %% compliance function
 
-function TC = GetCamberCompliance(ang,Moment) % outputs degrees per Kg
+function C = GetCamberCompliance(ang,Moment) % outputs degrees per Kg
 
-    TC = ang./Moment;
+    C = ang./Moment;
 
 end
 
