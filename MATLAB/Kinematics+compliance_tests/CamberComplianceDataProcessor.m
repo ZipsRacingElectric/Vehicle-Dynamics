@@ -10,9 +10,13 @@
 % Find camber angle -> 
 % Find compliance -> 
 % plot results🐸
+%% What you need to do if using this for compliance testing!!
 
+% 1) Fill out camber compliance excel sheet with corect uints. dont change
+%names or placement
+% 2) Copy and paste your own filepath to that sheet below
 
-
+%%
 clear, clc, close all
 
 %% 1. Pull in data from excel
