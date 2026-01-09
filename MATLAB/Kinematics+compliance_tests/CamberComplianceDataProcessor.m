@@ -12,7 +12,7 @@
 % plot results🐸
 %% What you need to do if using this for compliance testing!!
 
-% 1) Fill out camber compliance excel sheet with corect uints. dont change
+% 1) Fill out camber compliance excel sheet with correct uints. dont change
 %names or placement
 % 2) Copy and paste your own filepath to that sheet below
 
@@ -100,15 +100,15 @@ Dial2RN = RearNegativeCamber.DialIndicator2__001In_RN;
 % need to convert this to meters within our displacements function
 % lets call the function and build our two, [4x1] matrices
 
-DisplacementFRP = GetDisplacements(Dial2FP, Dial1FP) ;% displacement at corner
-DisplacementFLP = GetDisplacements(Dial4FP, Dial3FP) ;% displacement at adjacent corner
+DisplacementFRP = GetDisplacements(Dial1FP, Dial2FP) ;% displacement at corner
+DisplacementFLP = GetDisplacements(Dial3FP, Dial4FP) ;% displacement at adjacent corner
 
-DisplacementFRN = GetDisplacements(Dial2FN, Dial1FN) ;% displacement at corner
-DisplacementFLN = GetDisplacements(Dial4FN, Dial3FN) ;% displacement at adjacent corner
+DisplacementFRN = GetDisplacements(Dial1FN, Dial2FN) ;% displacement at corner
+DisplacementFLN = GetDisplacements(Dial3FN, Dial4FN) ;% displacement at adjacent corner
 
-DisplacementRP = GetDisplacements(Dial2RP, Dial1RP) ;% rear positive
+DisplacementRP = GetDisplacements(Dial1RP, Dial2RP) ;% rear positive
 
-DisplacementRN = GetDisplacements(Dial2RN, Dial1RN) ;% rear negative
+DisplacementRN = GetDisplacements(Dial1RN, Dial2RN) ;% rear negative
 
 % Using a function here has saved us a lot lines of calculations
 
@@ -139,6 +139,8 @@ CAFLN = GetComplianceAng(CamberBase, DisplacementFLN);
 
 % Rear Positive
 CARP = GetComplianceAng(CamberBase, DisplacementRP);
+
+% Rear Negative
 CARN = GetComplianceAng(CamberBase, DisplacementRN);
 
 
@@ -147,18 +149,18 @@ CARN = GetComplianceAng(CamberBase, DisplacementRN);
 % angle change per applied Nm of force.
 
 % Front Positive
-CFRP = GetCamberCompliance(CAFRP, CamberMomentsFP); % compliance at test corner
-CFLP = GetCamberCompliance(CAFLP, CamberMomentsFP); % compliance at adjacent corner
+CFRP = GetCompliance(CAFRP, CamberMomentsFP); % compliance at test corner
+CFLP = GetCompliance(CAFLP, CamberMomentsFP); % compliance at adjacent corner
 
 % Front Negative
-CFRN = GetCamberCompliance(CAFRN, CamberMomentsFN);
-CFLN = GetCamberCompliance(CAFLN, CamberMomentsFN);
+CFRN = GetCompliance(CAFRN, CamberMomentsFN);
+CFLN = GetCompliance(CAFLN, CamberMomentsFN);
 
 % Rear Postive
-CRP = GetCamberCompliance(CARP, CamberMomentsRP);
+CRP = GetCompliance(CARP, CamberMomentsRP);
 
 % Rear Negative
-CRN = GetCamberCompliance(CARN, CamberMomentsRN);
+CRN = GetCompliance(CARN, CamberMomentsRN);
 
 
 %% 5. Plot the reults (should be linearish)
@@ -205,6 +207,8 @@ plot(CamberMomentsRN, CARN, 'Color', colors{6}, 'Marker', markers{6}, 'LineWidth
 title("Rear Negative")
 xlabel('Nm'); ylabel("Degrees"); grid on
 
+% Add a single title above all subplots
+sgtitle('Camber Compliance by Applied Moment (abs)')
 
 figure(2)
 hold on
@@ -238,7 +242,7 @@ hold off
 %% displacement function
 function distance = GetDisplacements(D1in, D2in)
 
-    distance = D1in-D2in;
+    distance = abs(D1in)+abs(D2in);
     % convert to meters
     distance = distance*.0000254; % from thousandths to meters
 
@@ -246,7 +250,7 @@ end
 
 %% compliance function
 
-function C = GetCamberCompliance(ang,Moment) % outputs degrees per Kg
+function C = GetCompliance(ang,Moment) % outputs degrees per Kg
 
     C = ang./Moment;
 
