@@ -30,7 +30,7 @@ bumpSteerAngle = atand(X./Y) % Calculate bump steer angle in degrees
 x = Z
 y = bumpSteerAngle
 plot(x, y)
-xlabel('Z Movement')
+xlabel('Z Movement')-
 ylabel('Bump Steer Angle')
 title('Bump Steer Angle vs Z Movement');
 grid on;

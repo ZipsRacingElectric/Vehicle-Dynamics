@@ -26,7 +26,7 @@ clear, clc, close all
 
 filePath = "C:\Users\ATuck\OneDrive - The University of Akron\Zips Racing FSAE - ZR26\Vehicle Dynamics\200 Controls\Kinematics+Compliance Testing\Camber Compliance\Camber Compliance ZR25 (example).xlsx";
 
-Excel = readtable(filePath);
+excel = readtable(filePath);
 FrontPositiveCamber = readtable(filePath, "Range", "FrontPositive");
 FrontNegativeCamber = readtable(filePath, "Range", "FrontNegative");
 RearPositiveCamber = readtable(filePath, "Range", "RearPositive");
@@ -40,7 +40,7 @@ RearNegativeCamber = readtable(filePath, "Range", "RearNegative");
 % length never changed and the values is defined in the excel table. We can
 % start by calling this value from the taable
 
-ArmLength = Excel.LengthOfMomentArm_m_All(1);
+ArmLength = excel.LengthOfMomentArm_m_All(1);
 LeverArm =  ones(4,1).*ArmLength; % Lever arm length in meters.
 
 % This is when we need to start being aware of what units we are working
@@ -123,7 +123,7 @@ DisplacementRN = GetDisplacements(Dial1RN, Dial2RN) ;% rear negative
 % the second tringle side.
              
 
-VerticalDistance = Excel.VerticalDistanceBetweenDialIndicators_m_All(1);
+VerticalDistance = excel.VerticalDistanceBetweenDialIndicators_m_All(1);
 CamberBase =  ones(4,1).*VerticalDistance;
 
 % now we can solve for the angles at each force interval. Naming convention

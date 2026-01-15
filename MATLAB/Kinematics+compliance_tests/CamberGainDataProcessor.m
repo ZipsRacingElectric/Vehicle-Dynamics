@@ -1,11 +1,16 @@
 % Camber Gain Script that calculates camber gain from wheel travel and
-% camber angle. It also estimates ride senstivity, optimal static camber,
+% camber angle. It also estimates ride senstivity, 
 % and outputs pretty graphs for design judges.
+
+%% Instructions
+% copy filepath in for data
+% update ridheight and operating range.
 
 % Abigail Tucker 12/23/25
 
 clear
 clc
+close all
 
 %replace filepath with the your file location. Use associated camber gain
 %excel sheet. Remember to clsoe excel before running
@@ -13,7 +18,7 @@ data = readtable("C:\Users\ATuck\OneDrive - The University of Akron\Zips Racing 
 
 WheelTravel = data.WheelDisplacement;
 
-CamberAngle = data.CamberAngle;
+CamberAngle = data.CamberAngle_recordTo3Decimals_;
 
 
 % measure distance from full droop to ride height, input value.
@@ -42,13 +47,15 @@ ax = gca;
 ax.YAxis.TickLabelFormat = '%.3g';
 xlabel('Wheel Travel [mm]')
 ylabel('Camber Gain [deg/mm]')
+ylim([0.0, 0.1])
 grid on
 hold on
 
 yl = ylim;
-% This deifines operating range based on other fsae estiates, please
+
+% This deifines operating range based on other fsae estimates, please
 % replace with better estimate if possible.
-operatingRange = patch([45 75 75 45], ...
+operatingRange = patch([30 80 80 30], ...
       [yl(1) yl(1) yl(2) yl(2)], ...
       [0.85 0.85 0.85], ...
       'FaceAlpha', 0.5, ...
@@ -58,17 +65,20 @@ xline(RideHeight, '--k', 'Ride Height', 'LineWidth', 1.5)
 uistack(operatingRange,'bottom')  % moves patch behind all lines
 %% Quantified RHS
 
-operatingWindow = [45 75]; % mm
+operatingWindow = [30 80]; % mm
 opIdx = WheelTravel >= operatingWindow(1) & WheelTravel <= operatingWindow(2);
 
 meanGain = mean(CamberGain(opIdx));
-stdGain  = std(CamberGain(opIdx)); % sensitivity metric
+stdGain  = std(CamberGain(opIdx)); % sensitivity metric aim for >0.005
+gain_pct = meanGain * 25.4; % deg/mm → deg/in
+
 
 %% Punched in plot of operating area
 
 subplot(3,1,3)
 plot(WheelTravel(opIdx), CamberGain(opIdx))
 yline(meanGain,'--k','Mean Gain')
+ylim([0.0, 0.1])
 grid on
 
 
@@ -76,10 +86,16 @@ grid on
 fprintf('\n===== CAMBER GAIN DESIGN METRICS =====\n')
 fprintf('Mean Gain: %.4f\n', meanGain)
 fprintf('Ride height tuning sensitivity: %.4f\n', stdGain)
+fprintf('percent gain per inch', gain_pct)
 fprintf('=====================================\n')
 
 
-
+% Quick check of ride height sensitivity
+if stdGain < 0.005
+    fprintf('Ride height sensitivity is OK ✅🐦\n');
+else
+    fprintf('Ride height sensitivity is HIGH ⚠️🚮\n');
+end
 
 
 

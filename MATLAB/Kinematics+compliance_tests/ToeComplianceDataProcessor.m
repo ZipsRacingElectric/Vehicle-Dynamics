@@ -20,7 +20,7 @@ close all
 
 %% 1. Pull in data from excel
 
-filePath = "C:\Users\ATuck\OneDrive - The University of Akron\Zips Racing FSAE - ZR26\Vehicle Dynamics\200 Controls\Kinematics+Compliance Testing\Toe Compliance\Toe Compliance.xlsx";
+filePath = "C:\Users\ATuck\OneDrive - The University of Akron\Zips Racing FSAE - ZR26\Vehicle Dynamics\200 Controls\Kinematics+Compliance Testing\Toe Compliance\Toe Compliance ZR25 (example).xlsx";
 
 Excel = readtable(filePath);
 FrontPositiveToe = readtable(filePath, "Range", "FrontPositive");
