@@ -60,7 +60,7 @@ operatingRange = patch([30 80 80 30], ...
       [0.85 0.85 0.85], ...
       'FaceAlpha', 0.5, ...
       'EdgeColor', 'b');
-xline(RideHeight, '--k', 'Ride Height', 'LineWidth', 1.5)
+xline(RideHeight, '-.k', 'Ride Height', 'LineWidth', 1.5)
 
 uistack(operatingRange,'bottom')  % moves patch behind all lines
 %% Quantified RHS
@@ -70,7 +70,7 @@ opIdx = WheelTravel >= operatingWindow(1) & WheelTravel <= operatingWindow(2);
 
 meanGain = mean(CamberGain(opIdx));
 stdGain  = std(CamberGain(opIdx)); % sensitivity metric aim for >0.005
-gain_pct = meanGain * 25.4; % deg/mm → deg/in
+
 
 
 %% Punched in plot of operating area
@@ -86,7 +86,6 @@ grid on
 fprintf('\n===== CAMBER GAIN DESIGN METRICS =====\n')
 fprintf('Mean Gain: %.4f\n', meanGain)
 fprintf('Ride height tuning sensitivity: %.4f\n', stdGain)
-fprintf('percent gain per inch', gain_pct)
 fprintf('=====================================\n')
 
 
