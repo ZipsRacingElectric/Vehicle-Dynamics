@@ -3,7 +3,7 @@
 %% Estamates ride height sensitivity 
 clear, clc
 %% 
-Excel=readtable("C:\Users\Fahrn\OneDrive\Desktop\Ecar team\Bumpsteer excel.xlsx") ;
+Excel=readtable("C:\Users\ATuck\OneDrive - The University of Akron\Zips Racing FSAE - ZR26\Vehicle Dynamics\200 Controls\Kinematics+Compliance Testing\BumpSteer\Bumpsteer excel.xlsx") ;
 %% 
 WheelLift=Excel.ZMovement_mm_ ;
 %% 
