@@ -15,17 +15,16 @@ L = Lf+Lr ;
 
 %% Load test data
 
-Data = readtable("C:\Users\ATuck\OneDrive - The University of Akron\Zips Racing FSAE - ZR26\Vehicle Dynamics\200 Controls\Bicycle Model data test.csv");
+Data = readtable("C:\Users\Ben\OneDrive - The University of Akron\Shared Documents - Zips Racing FSAE\ZR26\Vehicle Dynamics\200 Controls\Data Excels\GY 11.19.25_0603 step steer.csv");
+Data = Data(Data.timestamps >= 194 & Data.timestamps <= 242, :)
 
 % Define the subset of rows to analyze
-rows = 19327:21276;
-
 % Extract and smooth the subset
-U = mean(Data.SPEED(rows));
-r = mean(Data.BOSCH_Z_ANGLE_RATE(rows));
-ay = mean(Data.BOSCH_Y_ACCELERATION(rows));
+U = (Data.SPEED);
+r = (Data.BOSCH_Z_ANGLE_RATE);
+ay = (Data.BOSCH_Y_ACCELERATION);
 
-time = Data.timestamps(rows); % s
+time = Data.timestamps; % s
 
 
 %% Lateral Load Estimation
@@ -35,6 +34,9 @@ time = Data.timestamps(rows); % s
 %% Slip angle estimate
 
 [SAF, SAR] = GetSlipAngles(Lf, Lr, U, r); % rad
+
+SAF_deg = -rad2deg(SAF);   %deg
+SAR_deg = -rad2deg(SAR);   %deg
 
 %% Cornering stiffnesses
 % System of equations
@@ -125,6 +127,28 @@ title('Steady-State: Ideal Yaw Rate vs Steering Wheel Angle')
 % --- Export lookup table ---
 lookup_table = table(SteeringWheelAngle', r_ideal_deg', 'VariableNames', {'SteeringWheel_deg','IdealYawRate_deg_s'});
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% --- Plot lookup ---
+figure(3);
+scatter(SAF_deg, Fyf, 'blue', 'LineWidth', 1.5);
+hold on
+scatter(SAR_deg, Fyr, 'red','LineWidth',1.5);
+xlim([-15 15]);
+ylim([-6000 6000]);
+hold on
+grid on
+xlabel('slip angle')
+ylabel('lateral force')
+title('lateral force vs slip angle');
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+figure(4);
+plot(time, ay, 'blue', 'LineWidth', 1.5);
+hold on
+grid on
+xlabel('time')
+ylabel('lateral accel')
+title('lateral accel vs time');
 
 %% Functions
 
