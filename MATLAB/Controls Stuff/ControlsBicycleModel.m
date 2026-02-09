@@ -8,6 +8,11 @@ close all
 
 %% Bicycle model parameters
 
+addpath vehicle_data ;
+githubFolder = '\vehicle_data\';
+parameterSpreadsheet = strcat(githubFolder,'zr26_data.xlsx');
+ZR26 = vehicle(parameterSpreadsheet);
+
 m = 313.5;        % kg
 Lf = 0.7344;       % m
 Lr = 0.7956;       % m
@@ -15,8 +20,8 @@ L = Lf+Lr ;
 
 %% Load test data
 
-Data = readtable("C:\Users\Ben\OneDrive - The University of Akron\Shared Documents - Zips Racing FSAE\ZR26\Vehicle Dynamics\200 Controls\Data Excels\GY 11.19.25_0603 step steer.csv");
-Data = Data(Data.timestamps >= 194 & Data.timestamps <= 242, :)
+Data = readtable("C:\Users\ATuck\OneDrive - The University of Akron\Zips Racing FSAE - ZR26\Vehicle Dynamics\200 Controls\Bicycle Model data test.csv");
+Data = Data(Data.timestamps >= 175 & Data.timestamps <= 258, :);
 
 % Define the subset of rows to analyze
 % Extract and smooth the subset
@@ -133,8 +138,8 @@ figure(3);
 scatter(SAF_deg, Fyf, 'blue', 'LineWidth', 1.5);
 hold on
 scatter(SAR_deg, Fyr, 'red','LineWidth',1.5);
-xlim([-15 15]);
-ylim([-6000 6000]);
+xlim([-10 10]);
+ylim([-1500 1500]);
 hold on
 grid on
 xlabel('slip angle')
@@ -149,6 +154,51 @@ grid on
 xlabel('time')
 ylabel('lateral accel')
 title('lateral accel vs time');
+%% Cubic fit tire model 
+
+valid_f = ~isnan(SAF_deg) & ~isnan(Fyf);
+valid_r = ~isnan(SAR_deg) & ~isnan(Fyr);
+
+% Fit cubic using only valid data
+Af = [SAF_deg(valid_f), SAF_deg(valid_f).^3];
+Ar = [SAR_deg(valid_r), SAR_deg(valid_r).^3];
+
+coef_f = Af \ Fyf(valid_f);
+coef_r = Ar \ Fyr(valid_r);
+
+C1_f = coef_f(1);
+C3_f = -coef_f(2);
+
+C1_r = coef_r(1);
+C3_r = -coef_r(2);
+
+% ----- Limit model to measured data range -----
+max_alpha_f = max(abs(SAF_deg(valid_f)));
+max_alpha_r = max(abs(SAR_deg(valid_r)));
+
+alpha_plot_f = linspace(-max_alpha_f, max_alpha_f, 200);
+alpha_plot_r = linspace(-max_alpha_r, max_alpha_r, 200);
+
+Fy_front_model = CubicTireModel(alpha_plot_f, C1_f, C3_f);
+Fy_rear_model  = CubicTireModel(alpha_plot_r, C1_r, C3_r);
+
+
+% ----- Plot -----
+figure;
+scatter(SAF_deg(valid_f), Fyf(valid_f), 10, 'b'); hold on
+scatter(SAR_deg(valid_r), Fyr(valid_r), 10, 'r');
+
+plot(alpha_plot_f, Fy_front_model, 'k','LineWidth',2);
+plot(alpha_plot_r, Fy_rear_model, 'k--','LineWidth',2);
+
+
+xlabel('Slip Angle [deg]')
+ylabel('Lateral Force [N]')
+title('Measured Data vs Cubic Tire Model')
+grid on
+
+
+
 
 %% Functions
 
@@ -168,11 +218,27 @@ function [LateralLoadFront, LateralLoadRear] = GetLateralLoads(Masskg, ayg, Lfm,
 end
 
 function [SlipAngleFront, SlipAngleRear] = GetSlipAngles(LengthFrontm, LengthRearm, Speedkmperhr, YawRatedegpers)
- 
-    U = Speedkmperhr * (1000/3600);            % km/h → m/s
-    r = YawRatedegpers * (pi/180);             % deg/s → rad/s
 
-    % Slip angles (rad) 
-    SlipAngleFront = (LengthFrontm .* r) ./ U;  % rad
-    SlipAngleRear  = (LengthRearm  .* r) ./ U;  % rad
+    % Convert units
+    U = Speedkmperhr * (1000/3600);   % km/h → m/s
+    r = YawRatedegpers * (pi/180);    % deg/s → rad/s
+
+    % Minimum speed threshold (m/s)
+    minSpeed = 5;   % adjust if needed (~11 mph)
+
+    % Preallocate with NaN (so bad regions don't explode)
+    SlipAngleFront = NaN(size(U));
+    SlipAngleRear  = NaN(size(U));
+
+    % Valid data mask
+    valid = U > minSpeed;
+
+    % Slip angles (rad)
+    SlipAngleFront(valid) = (LengthFrontm .* r(valid)) ./ U(valid);
+    SlipAngleRear(valid)  = (LengthRearm  .* r(valid)) ./ U(valid);
+
+end
+
+function Fy = CubicTireModel(alpha, C1, C3)
+    Fy = C1 .* alpha - C3 .* alpha.^3;
 end
