@@ -3,7 +3,7 @@
 % this code will plot vertical wheel travel against corresponding damper
 % length providing the motion ratio for each corner 
 
-% Written B=by Abigail Tucker 01/09/26
+% Written by Abigail Tucker 01/09/26
 
 clc, clear
 close all
@@ -51,40 +51,60 @@ fprintf('Rear Left   Motion Ratio: %.3f\n', AMRRL)
 fprintf('Rear Right  Motion Ratio: %.3f\n', AMRRR)
 
 
-%% Plot Corners
+%% Plot Motion Ratio vs Wheel Travel
 
-figure(1)
+figure(2)
+clf
 
-% Define colors and markers for each curve
 colors = {'b','r','g','m'};
 
-subplot(2, 2, 1)
-plot(FLWheelDisplacment, FLDamperLength,'Color', colors{1}, 'LineWidth',1.5)
-xlabel('Damper Length (mm)'); ylabel('Wheel Displacement, (mm)')
+% ---- Front Left ----
+subplot(2,2,1)
+plot(FLWheelDisplacment, MotionRatioFL, ...
+    'Color', colors{1}, 'LineWidth', 1.5)
+xlabel('Wheel Displacement (mm)')
+ylabel('Motion Ratio (dDamper / dWheel)')
+title('Front Left')
 grid on
 
-subplot(2, 2, 2)
-plot(FRWheelDisplacment, FRDamperLength, 'Color', colors{2}, 'LineWidth',1.5)
-xlabel('Damper Length (mm)'); ylabel('Wheel Displacement, (mm)')
+% ---- Front Right ----
+subplot(2,2,2)
+plot(FRWheelDisplacment, MotionRatioFR, ...
+    'Color', colors{2}, 'LineWidth', 1.5)
+xlabel('Wheel Displacement (mm)')
+ylabel('Motion Ratio (dDamper / dWheel)')
+title('Front Right')
 grid on
 
-subplot(2, 2, 3)
-plot( RLWheelDisplacment, RLDamperLength, 'Color', colors{3}, 'LineWidth',1.5)
-xlabel('Damper Length (mm)'); ylabel('Wheel Displacement, (mm)')
+% ---- Rear Left ----
+subplot(2,2,3)
+plot(RLWheelDisplacment, MotionRatioRL, ...
+    'Color', colors{3}, 'LineWidth', 1.5)
+xlabel('Wheel Displacement (mm)')
+ylabel('Motion Ratio (dDamper / dWheel)')
+title('Rear Left')
 grid on
 
-subplot(2, 2, 4)
-plot( RRWheelDisplacment, RRDamperLength, 'Color', colors{4}, 'LineWidth',1.5)
-xlabel('Damper Length (mm)'); ylabel('Wheel Displacement, (mm)')
+% ---- Rear Right ----
+subplot(2,2,4)
+plot(RRWheelDisplacment, MotionRatioRR, ...
+    'Color', colors{4}, 'LineWidth', 1.5)
+xlabel('Wheel Displacement (mm)')
+ylabel('Motion Ratio (dDamper / dWheel)')
+title('Rear Right')
 grid on
 
-% Add a single title above all subplots
-sgtitle('Motion Ratio By Corner')
+sgtitle('Instantaneous Motion Ratio vs Wheel Travel')
+
 
 %% Functions
 
-function  MotionRatio = GetMotionRatio(displacement, DamperLength)
+function MotionRatio = GetMotionRatio(displacement, DamperLength)
 
-            MotionRatio = displacement./DamperLength;
-end 
+    dDamper = gradient(DamperLength);
+    dWheel  = gradient(displacement);
+
+    MotionRatio = dDamper ./ dWheel;
+
+end
 
