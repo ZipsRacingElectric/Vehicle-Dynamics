@@ -22,7 +22,7 @@ L = ZR25.wheelbase ;
 %% Load test data
 
 Data = readtable("C:\Users\ATuck\OneDrive - The University of Akron\Zips Racing FSAE - ZR26\Vehicle Dynamics\200 Controls\Bicycle Model data test.csv");
-Data = Data(Data.timestamps >= 1 & Data.timestamps <= 258, :); % define time range of interest
+Data = Data(Data.timestamps >= 130 & Data.timestamps <= 150, :); % define time range of interest
 
 %% data + filtering
 
@@ -43,7 +43,7 @@ r_raw_con  = r_raw * (pi/180);      % deg/s -> rad/s
 ay_raw_con = ay_raw * 9.81;         % g -> m/s^2
 
 %  Low-Pass Butterworth Filter
-fc = 5;                         % Cutoff frequency (Hz)
+fc = 6;                         % Cutoff frequency (Hz)
 [bfilt,afilt] = butter(2, fc/(Fs/2));    % 2nd-order Butterworth
 
 % Apply Zero-Phase Filtering 
@@ -52,20 +52,17 @@ r  = filtfilt(bfilt,afilt,r_raw_con);
 ay = filtfilt(bfilt,afilt,ay_raw_con);
 
 
-%% Bias handling  
-ay = ay +(0.1*(1000/3600));
-r  = r  - (0.1*(pi/180));
-
 %% Lateral Load Estimation
 
 [Fyf, Fyr] = GetLateralLoads(m, ay, a, b); % newtons
 
 %% Slip angle estimate
+delta_est = (L .* r) ./ U;   % rad
 
-[SAF, SAR] = GetSlipAngles(a, b, U, r); % rad
+[SAF, SAR] = GetSlipAngles(a, b, U, r, delta_est); % rad
 
-SAF_deg = -rad2deg(SAF);   %deg negative included for convention, need to look into more
-SAR_deg = -rad2deg(SAR);   %deg
+SAF_deg = rad2deg(SAF);   %deg negative included for convention, need to look into more
+SAR_deg = rad2deg(SAR);   %deg
 
 %% body slip estimate
 
@@ -94,7 +91,7 @@ beta_deg = rad2deg(beta);
 % m(dv+V*r) = Fy1 +Fy2
 % 0 = Lf*Fy1-Lr*Fy2
 
-Ca_f = Fyf./SAF;         % N/rad  
+Ca_f = Fyf./SAF;         % N/rad  +
 Ca_r = Fyr./SAR;         % N/rad  
 
 Ca_f_deg = (Ca_f)* (pi/180); %N/deg
@@ -141,7 +138,7 @@ Cr_mean = mean(Ca_r(~isnan(Ca_r)));
 SteeringRatio = 5.764;   % column-to-tire ratio
 
 % --- Steady-state mean speed and lateral acceleration ---
-U_mean  = mean(U);  %m/s
+%U_mean  = mean(U);  %m/s
 ay_mean = mean(ay(~isnan(ay)));   % m/s^2
 
 
@@ -153,13 +150,14 @@ K_us = (m * (b*Cr_mean - a*Cf_mean)) / (Cf_mean * Cr_mean * L);
 % Ideal Steering Angle Sweep
 aygen = linspace(0, 2*9.81, 200);   % 0 to 2g sweep (m/s^2)
 
-delta = (L/U_mean^2 + K_us) .* aygen; % rad 
-delta_deg = delta*(180/pi); % convert to deg
+U_ref = mean(U(~isnan(U)));          % representative speed (scalar)
 
+delta = (L/(U_ref^2) + K_us) .* aygen;   % rad
+delta_deg = rad2deg(delta);               % deg
 
 % Numerator denominator 
-Num = delta*(Cf_mean*Cr_mean*L*U_mean); % 
-Den = (Cf_mean*Cr_mean*(L^2))-(m*(U_mean^2)*(a*Cf_mean-b*Cr_mean));
+Num = delta*(Cf_mean*Cr_mean*L.*U_ref); % 
+Den = (Cf_mean*Cr_mean*(L^2))-(m*(U_ref^2)*(a*Cf_mean-b*Cr_mean));
 
 r_ideal = Num/Den; % rad/s
 r_ideal_deg = r_ideal*(180/pi);
@@ -266,7 +264,7 @@ function [LateralLoadFront, LateralLoadRear] = GetLateralLoads(Masskg, ay, a, b)
 
 end
 
-function [SlipAngleFront, SlipAngleRear] = GetSlipAngles(a, b, speed, r)
+function [SlipAngleFront, SlipAngleRear] = GetSlipAngles(a, b, speed, r, delta)
 
   
     % Minimum speed threshold (m/s)
@@ -280,8 +278,8 @@ function [SlipAngleFront, SlipAngleRear] = GetSlipAngles(a, b, speed, r)
     valid = speed > minSpeed;
 
     % Slip angles (rad)
-    SlipAngleFront(valid) = (a .* r(valid)) ./ speed(valid);
-    SlipAngleRear(valid)  = (b  .* r(valid)) ./ speed(valid);
+    SlipAngleFront(valid) = (a .* r(valid)) ./ speed(valid) - delta(valid);
+    SlipAngleRear(valid)  = -(b .* r(valid)) ./ speed(valid);
 
 end
 
