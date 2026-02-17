@@ -9,7 +9,7 @@ clc, clear
 close all
 
 
-filePath = "C:\Users\ATuck\OneDrive - The University of Akron\Zips Racing FSAE - ZR26\Vehicle Dynamics\200 Controls\Kinematics+Compliance Testing\Motion Ratio\Motion Ratio Excel.xlsx";
+filePath = "/Users/khoi/Library/CloudStorage/OneDrive-TheUniversityofAkron/200 Controls/Kinematics+Compliance Testing/Motion Ratio/Motion Ratio Excel.xlsx";
 excel = readtable(filePath);
 
 % Load corner Data
