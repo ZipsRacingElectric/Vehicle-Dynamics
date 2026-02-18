@@ -48,3 +48,4 @@ octave-workspace
 # Remove the python virtual enviornment used in the HIL test
 /MATLAB/hardware_in_the_loop_simulation/venv/*
 
+MATLAB/Kinematics+compliance_tests/Bumpsteer.m
