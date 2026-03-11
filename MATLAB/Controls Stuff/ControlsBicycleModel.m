@@ -21,12 +21,18 @@ L = ZR25.wheelbase ;
 
 %% Load test data
 
-Data = readtable("C:\Users\ATuck\OneDrive - The University of Akron\Zips Racing FSAE - ZR26\Vehicle Dynamics\200 Controls\Bicycle Model data test.csv");
-Data = Data(Data.timestamps >= 130 & Data.timestamps <= 150, :); % define time range of interest
+Data = readtable("C:\Users\ATuck\OneDrive - The University of Akron\Zips Racing FSAE - ZR26\Vehicle Dynamics\200 Controls\Data Excels\Goodyear data slalom + circles.csv");
+Data = Data(Data.timestamps >= 0 & Data.timestamps <= 500, :); % define time range of interest
 
 %% data + filtering
 
 time = Data.timestamps; % s
+
+% define circles
+smallCirc = Data(Data.timestamps >= 35 & Data.timestamps <= 47, :);
+MediumCirc = Data(Data.timestamps >= 61.5 & Data.timestamps <= 75, :);
+LsrgeCirc = Data(Data.timestamps >= 86 & Data.timestamps <= 104, :);
+XLargeCirc = Data(Data.timestamps >= 120 & Data.timestamps <= 142, :);
 
 %Time / Sampling 
 dt = mean(diff(time));
@@ -36,6 +42,7 @@ Fs = 1/dt;                 % Sampling frequency (Hz)
 U_raw  = Data.SPEED;                    % km/h
 r_raw  = Data.BOSCH_Z_ANGLE_RATE;       % deg/s
 ay_raw = Data.BOSCH_Y_ACCELERATION;     % g
+
 
 % Unit Conversions 
 U_raw_con  = U_raw * (1000/3600);   % km/h -> m/s
@@ -61,29 +68,9 @@ delta_est = (L .* r) ./ U;   % rad
 
 [SAF, SAR] = GetSlipAngles(a, b, U, r, delta_est); % rad
 
-SAF_deg = rad2deg(SAF);   %deg negative included for convention, need to look into more
+SAF_deg = rad2deg(SAF);   %deg 
 SAR_deg = rad2deg(SAR);   %deg
 
-%% body slip estimate
-
-beta = zeros(size(U));
-tau = 5;                 % decay time constant (seconds)
-alpha = dt/tau;          % decay factor
-
-for i = 2:length(U)
-
-    if U(i) > 5
-        betadot_i = (ay(i)/U(i)) - r(i);
-    else
-        betadot_i = 0;
-    end
-
-    % Leaky integration
-    beta(i) = beta(i-1) + betadot_i*dt - alpha*beta(i-1);
-
-end
-
-beta_deg = rad2deg(beta);
 
 
 %% Cornering stiffnesses
@@ -96,6 +83,28 @@ Ca_r = Fyr./SAR;         % N/rad
 
 Ca_f_deg = (Ca_f)* (pi/180); %N/deg
 Ca_r_deg = (Ca_r)* (pi/180); %N/deg
+
+minSlip = deg2rad(0.5);
+
+valid_f = abs(SAF) > minSlip;
+valid_r = abs(SAR) > minSlip;
+
+Ca_f = NaN(size(SAF));
+Ca_r = NaN(size(SAR));
+
+Ca_f(valid_f) = Fyf(valid_f)./SAF(valid_f);
+Ca_r(valid_r) = Fyr(valid_r)./SAR(valid_r);
+
+%% body slip estimate
+% im not gonna deal with this right now
+% R = r*(180/pi)./U; % deg/s m/s -> deg/m
+% 
+% Wr = ZR25.rear_mass;
+% alphar = Wr.*(U.^2)./(Ca_r_deg.*R);
+% 
+% 
+% beta = 57.3*(b./R)-alphar;
+
 
 %% Plot cornering stiffness and speed
 
@@ -143,12 +152,10 @@ ay_mean = mean(ay(~isnan(ay)));   % m/s^2
 
 
 % Understeer gradient (rad/(m/s^2))
-K_us = (m * (b*Cr_mean - a*Cf_mean)) / (Cf_mean * Cr_mean * L);
-
-
+K_us = (m/L) * ( (b/Cr_mean) - (a/Cf_mean) );
 
 % Ideal Steering Angle Sweep
-aygen = linspace(0, 2*9.81, 200);   % 0 to 2g sweep (m/s^2)
+aygen = linspace(-2*9.81, 2*9.81, 400);   % 0 to 2g sweep (m/s^2)
 
 U_ref = mean(U(~isnan(U)));          % representative speed (scalar)
 
@@ -164,10 +171,17 @@ r_ideal_deg = r_ideal*(180/pi);
 
 SteeringWheelAngle = delta_deg*SteeringRatio;
 
+%% Alternate yaw for sanity 
+
+% 
+% r_ideal_check = (U_ref ./ (L + K_us*U_ref^2)) .* delta;
+% r_ideal_deg_check = rad2deg(r_ideal_check);
 
 %% Plot lookup 🔎
 figure(2);
 plot(SteeringWheelAngle, r_ideal_deg, 'b', 'LineWidth', 1.5); hold on
+xlim([0,30])
+ylim([0,30])
 grid on
 xlabel('Steering Wheel Angle [deg]')
 ylabel('Ideal Yaw Rate [deg/s]')
@@ -175,7 +189,26 @@ title('Steady-State: Ideal Yaw Rate vs Steering Wheel Angle')
 
 % --- Export lookup table ---
 lookup_table = table(SteeringWheelAngle', r_ideal_deg', 'VariableNames', {'SteeringWheel_deg','IdealYawRate_deg_s'});
+% Ensure column vectors
+SteeringWheel_lookup = SteeringWheelAngle(:);
+Yaw_lookup = r_ideal_deg(:);
 
+% Sort (VERY IMPORTANT)
+[SteeringWheel_lookup, idx] = sort(SteeringWheel_lookup);
+Yaw_lookup = Yaw_lookup(idx);
+
+% Remove duplicate breakpoints (Simulink requires strictly increasing)
+[Steer_bp, uniqueIdx] = unique(SteeringWheel_lookup);
+Yaw_table = Yaw_lookup(uniqueIdx);
+
+% Ensure column vectors
+Steer_bp = Steer_bp(:);
+Yaw_table = Yaw_table(:);
+
+% Sanity check
+if any(diff(Steer_bp) <= 0)
+    error('Steering breakpoints must be strictly increasing.')
+end
 
 %% Plot tire 🛞 
 figure(3);
@@ -243,11 +276,11 @@ grid on
 
 
 %% sanity plots
-figure(6)
-plot(time, beta_deg)
-grid on
-xlabel('time')
-ylabel('deg')
+% figure(6)
+% plot(SteeringWheelAngle, r_ideal_deg_check)
+% grid on
+% xlabel('steering ang')
+% ylabel('r deg')
 
 %% Functions
 
