@@ -1,50 +1,42 @@
 clear, clc
+%Given Wheel Rate, Spring Rate, ARB
+addpath vehicle_data ;
+githubFolder = '\vehicle_data\';
+parameterSpreadsheet = strcat(githubFolder,'zr25_data.xlsx');
+ZR26 = vehicle(parameterSpreadsheet);
 
-run('/Users/khoi/Documents/GitHub/Vehicle-Dynamics/MATLAB/Kinematics+compliance_tests/MotionRatioDataProcessor.m');
-%Given Motion Ratio, Spring Rate, ARB
+frontTrackWidth = ZR26.track_width_front;
+rearTrackWidth = ZR26.track_width_rear;
 
-ZR25 = vehicle('/Users/khoi/Documents/GitHub/Vehicle-Dynamics/MATLAB/vehicle_data/vehicle.m')
+rearARBStiffness = ZR26.wheel_rate_from_bar_front;
+springRate = [0.4, 0.5, 0.1, 10, 40, 25, 70, 150, 500, 1200];
 
-frontTrackWidth = 20
-rearTrackWidth = 22
-
-frontARBStiffness = 2
-rearARBStiffness = 2
-
-springRateF = [0.4, 0.5, 0.1, 10, 40, 25, 70, 150, 500, 1200];
-springRateR = [0.4, 0.5, 0.1, 10, 40, 25, 70, 150, 500, 1200];
-
-AMRF = (AMRFR + AMRFL) ./ 2
-AMRR = (AMRRR + AMRRL) ./ 2
-
-
-wheelRateF = springRateF .* AMRF.^2;
-wheelRateR = springRateR .* AMRR.^2;
+wheelRateF = ZR26.wheel_rate_front;
+wheelRateR = ZR26.wheel_rate_rear;
 
 axleStiffnessF = wheelRateF .* frontTrackWidth ./ 2;
 axleStiffnessR = wheelRateR .* frontTrackWidth ./ 2;
 
-axleStiffnessF = axleStiffnessF + frontARBStiffness;
 axleStiffnessR = axleStiffnessR + rearARBStiffness;
 
+
 % Calculate total stiffness for the front and rear axles
-
-A = numel(springRateF)
-B = numel(frontARBStiffness)
-table = nan(A,B);
-
+rowForTable = numel(springRate);
+preTableF = [springRate', repmat(wheelRateF', rowForTable, 1)];
+preTableR = [springRate', repmat(rearARBStiffness', rowForTable, 1), repmat(wheelRateR', rowForTable, 1)];
+axleStiffnessFTable = nan(rowForTable,1);
+axleStiffnessRTable = nan(rowForTable,1);
+totalRollStiffnessTable = nan(rowForTable,1);
 % Populate the table with calculated stiffness values
-for i = 1:A
-    for j = 1:B
-      table(i,j) = totalStiffness(axleStiffnessF,axleStiffnessR)
-    end
-
+for i = 1:rowForTable
+axleStiffnessFTable(i,1) = wheelRateF .* frontTrackWidth ./ 2;
 end
-     
-
-function [avg] = totalStiffness(axleStiffnessF, axleStiffnessR) ;
-
-result = axleStiffnessF + axleStiffnessR;
-avg = mean(result);
-
+for i = 1:rowForTable
+axleStiffnessRTable(i,1) = wheelRateR .* rearTrackWidth ./ 2 + rearARBStiffness;
 end
+for i = 1:rowForTable
+totalRollStiffnessTable(i,1) = axleStiffnessFTable(i) + axleStiffnessRTable(i);
+end
+
+tableF = [preTableF, axleStiffnessFTable, totalRollStiffnessTable]
+tableR = [preTableR, axleStiffnessRTable, totalRollStiffnessTable]
