@@ -6,7 +6,7 @@ parameterSpreadsheet = strcat(githubFolder,'zr25_data.xlsx');
 ZR26 = vehicle(parameterSpreadsheet);
 
 frontTrackWidth = ZR26.track_width_front;
-rearTrackWidth = ZR26.track_width_rear;
+rearTrackWidth = ZR26.track_width_rear; 
 
 rearARBStiffness = ZR26.wheel_rate_from_bar_front;
 springRate = [0.4, 0.5, 0.1, 10, 40, 25, 70, 150, 500, 1200];
