@@ -8,7 +8,7 @@
 % simulink 
 
 % FOR FUTURE USERS: you need to update vehicle data spreadsheet, steering
-% ration (hidden in function below).Youll need to clear my 4 circles and
+% ratio (hidden in function below).Youll need to clear my 4 circles and
 % adapt to whatever your chosen data set consists of (this is where one
 % funciton would be way easier). 
 
@@ -33,6 +33,7 @@ m = ZR25.mass_total;        % kg
 a = ZR25.a;       % m
 b = ZR25.b;       % m
 L = ZR25.wheelbase ;
+Iz = ZR25.yaw_polar_inertia; %kg * m^2,
 
 %% Load test data
 
@@ -153,6 +154,8 @@ GetCorneringStiffnessPlots(ax4, time_XLarge, Ca_f_deg_XLarge, Ca_r_deg_XLarge, '
 [SteeringWheelAngle_Large, r_ideal_Large, r_ideal_deg_Large] = GetIdealYaw(U_Large, L, SAF_Deg_Large, Fyf_Large, SAR_Deg_Large, Fyr_Large, ay_Large, m, a, b);
 [SteeringWheelAngle_XLarge, r_ideal_XLarge, r_ideal_deg_XLarge] = GetIdealYaw(U_XLarge, L, SAF_Deg_XLarge, Fyf_XLarge, SAR_Deg_XLarge, Fyr_XLarge, ay_XLarge, m, a, b);
 
+
+% mirror data
 % Small circle
 SteeringWheelAngle_Small = [SteeringWheelAngle_Small; -SteeringWheelAngle_Small];
 r_ideal_Small           = [r_ideal_Small; -r_ideal_Small];
@@ -177,6 +180,17 @@ r_ideal_XLarge           = [r_ideal_XLarge; -r_ideal_XLarge];
 r_ideal_deg_XLarge       = [r_ideal_deg_XLarge; -r_ideal_deg_XLarge];
 U_XLarge                 = [U_XLarge; U_XLarge];
 
+%% Understeer Gradient 
+% 
+% p = polyfit(U(valid), K(valid), 2); % quadratic fit
+% K_fit = polyval(p, U_bp);
+% 
+% figure
+% scatter(U(valid), K(valid), 10, 'filled')
+% grid on
+% xlabel('Speed [m/s]')
+% ylabel('Understeer Gradient K')
+% title('Understeer Gradient vs Speed')
 %% Alternate yaw for sanity 
 
 % 
@@ -184,6 +198,22 @@ U_XLarge                 = [U_XLarge; U_XLarge];
 % r_ideal_deg_check = rad2deg(r_ideal_check);
 
 fit = goodnessOfFit(Ca_r,Ca_f,'NRMSE') ;
+% 
+% Yaw_table_Check = zeros(length(U_bp), length(delta_bp));
+% 
+% for i = 1:length(U_bp)
+%     for j = 1:length(delta_bp)
+% 
+%         U = U_bp(i);
+%         delta = deg2rad(delta_bp(j) / SteeringRatio);
+% 
+%         K_use = K_mean; % or interp from fit
+% 
+%         r = (U / (L + K_use * U^2)) * delta;
+% 
+%         Yaw_table_Check(i,j) = rad2deg(r);
+%     end
+% end
 
 %% Plot Ideal Yaw 🔎
 figure
@@ -302,10 +332,10 @@ for i = 1:length(U_bp)
 end
 %% Simulink
 % Save for Simulink
-Steering_bp = delta_bp(:);
-Speed_bp = U_bp(:);
-Yaw_table = Yaw_table;
-save('YawLookupTable.mat','Steering_bp','Speed_bp','Yaw_table')
+% Steering_bp = delta_bp(:);
+% Speed_bp = U_bp(:);
+% Yaw_table = Yaw_table;
+% save('YawLookupTable.mat','Steering_bp','Speed_bp','Yaw_table')
 
 
 %% Sanity Check
@@ -565,12 +595,7 @@ SteeringRatio = 5.764;
 
 % Steering from bicycle kinematics
 delta = (L .* ay) ./ (U.^2);     % rad
-
-% Convert to steering wheel angle
 SteeringWheelAngle = rad2deg(delta) * SteeringRatio;
-
-% Understeer gradient
-%K_us = (m/L) * ((b./Cr) - (a./Cf));
 
 % Ideal yaw
 Num = delta .* (Cf * Cr * L .* U);
