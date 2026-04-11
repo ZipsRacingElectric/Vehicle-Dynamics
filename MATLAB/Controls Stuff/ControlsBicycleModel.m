@@ -34,6 +34,9 @@ a = ZR25.a;       % m
 b = ZR25.b;       % m
 L = ZR25.wheelbase ;
 Iz = ZR25.yaw_polar_inertia; %kg * m^2,
+TWFront = ZR25.track_width_front; % m
+TWRear = ZR25.track_width_rear; % m
+WheelRadius = ZR25.tire_loaded_radius ; % m
 
 %% Load test data
 
@@ -215,7 +218,7 @@ fit = goodnessOfFit(Ca_r,Ca_f,'NRMSE') ;
 %     end
 % end
 
-%% Plot Ideal Yaw 🔎
+%% Plot Ideal Yaw
 figure
 tiledlayout(2,2)
 
