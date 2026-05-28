@@ -44,6 +44,8 @@ Data = readtable("C:\Users\ATuck\OneDrive - The University of Akron\Zips Racing 
 Data = Data(Data.timestamps >= 0 & Data.timestamps <= 500, :); % define time range of interest
 %time = Data.timestamps; % s
 
+
+
 %% data + filtering
 
 % define circles
@@ -61,6 +63,19 @@ XLargeCirc = Data(Data.timestamps >= 120 & Data.timestamps <= 142, :);
 [U_Large, r_Large, ay_Large, time_Large] = GetGoodData(LargeCirc);
 [U_XLarge, r_XLarge, ay_XLarge, time_XLarge] = GetGoodData(XLargeCirc);
 
+%% Validation Variables
+
+Torquedata = readtable("C:\Users\ATuck\OneDrive - The University of Akron\Zips Racing FSAE - ZR26\Vehicle Dynamics\200 Controls\Data Excels\Actual_Torques.csv");
+TorquedataLargeCirc = Torquedata(Torquedata.timestamps >= 86 & Torquedata.timestamps <= 104, :);
+
+LiveSpeed = LargeCirc.SPEED;
+LiveSteeringAng = LargeCirc.STEERING_ANGLE;
+LiveYaw = LargeCirc.BOSCH_Z_ANGLE_RATE;
+
+FL_ActualTorque = TorquedataLargeCirc.FL_ACTUAL_TORQUE_VALUE;
+FR_ActualTorque = TorquedataLargeCirc.FR_ACTUAL_TORQUE_VALUE;
+RR_ActualTorque = TorquedataLargeCirc.RR_ACTUAL_TORQUE_VALUE;
+RL_ActualTorque = TorquedataLargeCirc.RL_ACTUAL_TORQUE_VALUE;
 
 %% Lateral Load Estimation
 
@@ -291,48 +306,55 @@ F = scatteredInterpolant(delta_all, U_all, yaw_all,'natural','linear');
 Yaw_table = F(DELTA, U);
 
 
-%3-dPlot
-% figure
-% surf(delta_bp, U_bp, Yaw_table)
-% 
-% xlabel('Steering Wheel Angle [deg]')
-% ylabel('Speed [m/s]')
-% zlabel('Ideal Yaw Rate [deg/s]')
-% 
-% title('Yaw Rate Lookup Table')
-% % colorbar
-% % shading interp
-% 
-% hold on
-%% Emoji Plot
+% 3-dPlot
 figure
-hold on
-grid on
+surf(delta_bp, U_bp, Yaw_table)
 
 xlabel('Steering Wheel Angle [deg]')
 ylabel('Speed [m/s]')
 zlabel('Ideal Yaw Rate [deg/s]')
+
 title('Yaw Rate Lookup Table')
+% colorbar
+% shading interp
+combined = [[NaN delta_bp];
+            [U_bp(:) Yaw_table]];
 
-view(45,25)
+writematrix(combined,'YawRateLookupTable.xlsx')
 
-% Set axis limits so text becomes visible
-axis([min(delta_bp) max(delta_bp) min(U_bp) max(U_bp) min(Yaw_table(:)) max(Yaw_table(:))])
+hold on
+%% Emoji Plot
+% figure
+% hold on
+% grid on
+% 
+% xlabel('Steering Wheel Angle [deg]')
+% ylabel('Speed [m/s]')
+% zlabel('Ideal Yaw Rate [deg/s]')
+% title('Yaw Rate Lookup Table')
+% 
+% view(45,25)
+% 
+% % Set axis limits so text becomes visible
+% axis([min(delta_bp) max(delta_bp) min(U_bp) max(U_bp) min(Yaw_table(:)) max(Yaw_table(:))])
+% 
+% for i = 1:length(U_bp)
+%     for j = 1:length(delta_bp)
+% 
+%         z = Yaw_table(i,j);
+% 
+%         if ~isnan(z)
+%             text(delta_bp(j), U_bp(i), z, '🐸', ...
+%                 'HorizontalAlignment','center', ...
+%                 'VerticalAlignment','middle', ...
+%                 'FontSize',30)
+%         end
+% 
+%     end
+% end
 
-for i = 1:length(U_bp)
-    for j = 1:length(delta_bp)
 
-        z = Yaw_table(i,j);
 
-        if ~isnan(z)
-            text(delta_bp(j), U_bp(i), z, '🐸', ...
-                'HorizontalAlignment','center', ...
-                'VerticalAlignment','middle', ...
-                'FontSize',30)
-        end
-
-    end
-end
 %% Simulink
 % Save for Simulink
 % Steering_bp = delta_bp(:);
@@ -418,7 +440,40 @@ ylabel('Lateral Force [N]')
 title('Measured Data vs Cubic Tire Model')
 grid on
 
+%% Design Plots
 
+figure()
+scatter(SAF_deg, Fyf, 'blue', 'LineWidth', 1.5);
+hold on
+plot(alpha_plot_f, Fy_front_model, 'k','LineWidth',2);
+
+yline(2200, 'k--', 'LineWidth',1.5);   % upper bound
+yline(-2200, 'k--', 'LineWidth',1.5);  % lower bound
+
+xlim([-8 8]);
+ylim([-2500 2500]);
+xlabel('Slip Angle Front [deg]')
+ylabel('Lateral Force [N]')
+title('Front: Test Data vs Cubic Tire Model')
+grid on
+legend('Test Data','Cubic Fit','Max Lateral Load Estimate (Front)')
+
+
+figure()
+scatter(SAR_deg, Fyr, 'red','LineWidth',1.5);
+hold on
+plot(alpha_plot_r, Fy_rear_model, 'k-','LineWidth',2);
+
+yline(2100, 'k--', 'LineWidth',1.5);
+yline(-2100, 'k--', 'LineWidth',1.5);
+
+xlim([-8 8]);
+ylim([-2500 2500]);
+xlabel('Slip Angle Rear [deg]')
+ylabel('Lateral Force [N]')
+title('Rear: Test Data vs Cubic Tire Model')
+grid on
+legend('Test Data','Cubic Fit','Maximum Lateral Load Estimate (Rear)')
 %% sanity plots
 % figure(6)
 % plot(SteeringWheelAngle, r_ideal_deg_check)
@@ -460,8 +515,8 @@ function [SlipAngleFront, SlipAngleRear, SAF_deg, SAR_deg] = GetSlipAngles(a, b,
     valid = speed > minSpeed;
 
     % Slip angles (rad)
-    SlipAngleFront(valid) = (a .* r(valid)) ./ speed(valid) - delta(valid);
-    SlipAngleRear(valid)  = -(b .* r(valid)) ./ speed(valid);
+    SlipAngleFront(valid) = -(a .* r(valid)) ./ speed(valid) + delta(valid);
+    SlipAngleRear(valid)  = (b .* r(valid)) ./ speed(valid);
 
     SAF_deg = rad2deg(SlipAngleFront);   %deg 
     SAR_deg = rad2deg(SlipAngleRear);   %deg

@@ -531,7 +531,7 @@ classdef vehicle < handle
                        'Make sure the Excel file exists in the vehicle_data folder.']);
             end
             
-            disp(['✅ Setup looks alright' newline  'meow 🗨️🐈']);
+            disp(['✅ Setup looks alright' newline  'meow 🗨️🐈🦩']);
 
 end
     end

@@ -53,7 +53,7 @@ hold on
 
 yl = ylim;
 
-% This deifines operating range based on other fsae estimates, please
+% This defines operating range based on other fsae estimates, please
 % replace with better estimate if possible.
 operatingRange = patch([30 80 80 30], ...
       [yl(1) yl(1) yl(2) yl(2)], ...
