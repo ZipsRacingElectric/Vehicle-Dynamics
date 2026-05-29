@@ -298,8 +298,8 @@ yaw_all = yaw_all(valid);
 
 
 
-U_bp = linspace(min(U_all), max(U_all), 15);      % speed breakpoints
-delta_bp = linspace(-100, 100, 40);
+U_bp = linspace(0, max(U_all), 100);      % speed breakpoints
+delta_bp = linspace(0, 100, 100);
 [DELTA, U] = meshgrid(delta_bp, U_bp);
 
 F = scatteredInterpolant(delta_all, U_all, yaw_all,'natural','linear');
