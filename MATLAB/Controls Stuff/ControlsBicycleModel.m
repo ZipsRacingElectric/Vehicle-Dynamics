@@ -321,7 +321,7 @@ combined = [[NaN delta_bp];
             [U_bp(:) Yaw_table]];
 
 writematrix(combined,'YawRateLookupTable.xlsx')
-
+cTable = main(combined)
 hold on
 %% Emoji Plot
 % figure
@@ -666,6 +666,8 @@ end
 
 function GetYawPlots(ax, SteeringWheelAngle, r_ideal_deg, titleStr)
 
+
+
 axes(ax)
 hold on
 
@@ -687,3 +689,84 @@ ylabel('Ideal Yaw Rate [deg/s]')
 title(titleStr)
 
 end
+
+function x = main (A)
+
+  B = A(2:end, 2:end);
+
+  width = size (B, 2);
+  height = size (B, 1);
+
+  if ((A (1, 2) > 0.01) || (A (1, 2) < -0.01))
+    fprintf ("theta_0 must equal 0. Use 'help vcu_yaw_table' for more details.\n")
+    return
+  end
+
+  if (A (2, 1) > 0.01 || A (2, 1) < -0.01)
+    fprintf ("V_0 must equal 0. Use 'help vcu_yaw_table' for more details.\n")
+    return
+  end
+
+  for (x = 1:width)
+    if (B (1, x) > 0.01 || B (1, x) < -0.01)
+      fprintf ("Y_0x values must all equal 0. Use 'help vcu_yaw_table' for more details.\n")
+      return
+    end
+  end
+
+  for (y = 1:height)
+    if (B (y, 1) > 0.01 || B (y, 1) < -0.01)
+      fprintf ("Y_x0 values must all equal 0. Use 'help vcu_yaw_table' for more details.\n")
+      return
+    end
+  end
+
+  fprintf ("\r\n-- BEGIN C SNIPPET --\r\n\r\n");
+
+  fprintf ("/// @brief The maximum steering angle defined by the lookup table, in degrees.\n");
+  fprintf ("#define STEERING_ANGLE_MAX %.4f\n", A (1, end));
+  fprintf ("\n");
+  fprintf ("/// @brief The width of the lookup table along the steering angle axis. Note this axis is mirrored.\n");
+  fprintf ("#define STEERING_ANGLE_WIDTH %i\n", width);
+  fprintf ("\n")
+  fprintf ("/// @brief The maximum vehicle speed defined by the lookup table, in km/h.\n");
+  fprintf ("#define VEHICLE_SPEED_MAX %.4f\n", A (end, 1) * 3.6);
+  fprintf ("\n")
+  fprintf ("/// @brief The width of the lookup table along the vehicle speed axis. This axis is not mirrored.\n");
+  fprintf ("#define VEHICLE_SPEED_WIDTH %i\n", height);
+  fprintf ("\n");
+  fprintf ("/// @brief The lookup table of ideal yaw rates, in degrees per second.\n");
+  fprintf ("static const float YAW_LOOKUP_TABLE [VEHICLE_SPEED_WIDTH][STEERING_ANGLE_WIDTH] =\n");
+  fprintf ("{\n");
+
+  for (y = 1:height)
+
+    fprintf ("\t{ ");
+
+    for (x = 1:width)
+
+      fprintf ("%8.4f", B (y, x));
+
+      if (x ~= width)
+        fprintf (", ");
+      else
+        fprintf (" }");
+      end
+
+    end
+
+    if (y ~= height)
+      fprintf (",\n");
+    else
+      fprintf ("\n");
+    end
+
+  end
+
+  fprintf ("};\n");
+
+  fprintf ("\n-- END C SNIPPET --\n\n")
+    
+end
+
+
