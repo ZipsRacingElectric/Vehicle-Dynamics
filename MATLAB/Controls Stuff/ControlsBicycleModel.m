@@ -298,10 +298,9 @@ yaw_all = yaw_all(valid);
 
 
 
-U_bp = linspace(0, max(U_all), 100);      % speed breakpoints
-delta_bp = linspace(0, 100, 100);
+U_bp = linspace(0, 80/3.6, 81);      % speed breakpoints
+delta_bp = linspace(0, 120, 121);
 [DELTA, U] = meshgrid(delta_bp, U_bp);
-
 F = scatteredInterpolant(delta_all, U_all, yaw_all,'natural','linear');
 Yaw_table = F(DELTA, U);
 
@@ -720,52 +719,50 @@ function x = main (A)
       return
     end
   end
+  fileID = fopen("./Controls Stuff/vcu_yaw_table.txt",'w');
 
-  fprintf ("\r\n-- BEGIN C SNIPPET --\r\n\r\n");
-
-  fprintf ("/// @brief The maximum steering angle defined by the lookup table, in degrees.\n");
-  fprintf ("#define STEERING_ANGLE_MAX %.4f\n", A (1, end));
-  fprintf ("\n");
-  fprintf ("/// @brief The width of the lookup table along the steering angle axis. Note this axis is mirrored.\n");
-  fprintf ("#define STEERING_ANGLE_WIDTH %i\n", width);
-  fprintf ("\n")
-  fprintf ("/// @brief The maximum vehicle speed defined by the lookup table, in km/h.\n");
-  fprintf ("#define VEHICLE_SPEED_MAX %.4f\n", A (end, 1) * 3.6);
-  fprintf ("\n")
-  fprintf ("/// @brief The width of the lookup table along the vehicle speed axis. This axis is not mirrored.\n");
-  fprintf ("#define VEHICLE_SPEED_WIDTH %i\n", height);
-  fprintf ("\n");
-  fprintf ("/// @brief The lookup table of ideal yaw rates, in degrees per second.\n");
-  fprintf ("static const float YAW_LOOKUP_TABLE [VEHICLE_SPEED_WIDTH][STEERING_ANGLE_WIDTH] =\n");
-  fprintf ("{\n");
+  fprintf (fileID, "/// @brief The maximum steering angle defined by the lookup table, in degrees.\n");
+  fprintf (fileID, "#define STEERING_ANGLE_MAX %.4f\n", A (1, end));
+  fprintf (fileID,"\n");
+  fprintf (fileID, "/// @brief The width of the lookup table along the steering angle axis. Note this axis is mirrored.\n");
+  fprintf (fileID,"#define STEERING_ANGLE_WIDTH %i\n", width);
+  fprintf (fileID, "\n")
+  fprintf (fileID, "/// @brief The maximum vehicle speed defined by the lookup table, in km/h.\n");
+  fprintf (fileID, "#define VEHICLE_SPEED_MAX %.4f\n", A (end, 1) * 3.6);
+  fprintf (fileID,"\n")
+  fprintf (fileID, "/// @brief The width of the lookup table along the vehicle speed axis. This axis is not mirrored.\n");
+  fprintf (fileID,"#define VEHICLE_SPEED_WIDTH %i\n", height);
+  fprintf (fileID,"\n");
+  fprintf (fileID,"/// @brief The lookup table of ideal yaw rates, in degrees per second.\n");
+  fprintf (fileID,"static const float YAW_LOOKUP_TABLE [VEHICLE_SPEED_WIDTH][STEERING_ANGLE_WIDTH] =\n");
+  fprintf (fileID,"{\n");
 
   for (y = 1:height)
 
-    fprintf ("\t{ ");
+    fprintf (fileID,"\t{ ");
 
     for (x = 1:width)
 
-      fprintf ("%8.4f", B (y, x));
+      fprintf (fileID,"%8.4f", B (y, x));
 
       if (x ~= width)
-        fprintf (", ");
+        fprintf (fileID,", ");
       else
-        fprintf (" }");
+        fprintf (fileID," }");
       end
 
     end
 
     if (y ~= height)
-      fprintf (",\n");
+      fprintf (fileID,",\n");
     else
-      fprintf ("\n");
+      fprintf (fileID,"\n");
     end
 
   end
 
-  fprintf ("};\n");
+  fprintf (fileID,"};\n");
 
-  fprintf ("\n-- END C SNIPPET --\n\n")
     
 end
 
